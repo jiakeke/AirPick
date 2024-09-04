@@ -35,4 +35,14 @@ The project aims to develop an Airport Pickup Service Platform that allows custo
 
 ## User Stories
 
-- [User Stories](./UserStories.md)
+- [User Stories](./docs/UserStories.md)
+
+## Technical Structure
+
+- [System Structure](./docs/Project-Structure.png)
+- [Functional Structure](./docs/Project-Functions.png)
+
+
+## Presentation
+
+- [First(04.09.2024)](./docs/AirPick-Presentation-1st.pptx)
