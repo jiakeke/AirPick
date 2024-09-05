@@ -39,7 +39,7 @@ The project aims to develop an Airport Pickup Service Platform that allows custo
 
 ## Information Architecture
 
-- [HTML Version](./docs/prototype-html), Axure extension needs to be installed.
+- [HTML Version](./docs/prototype-html) || [ZIP](./docs/prototype-html.zip), Axure extension needs to be installed.
 - [Word Version](./docs/prototype.docx)
 
 ## Technical Structure
