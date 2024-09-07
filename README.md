@@ -51,3 +51,13 @@ The project aims to develop an Airport Pickup Service Platform that allows custo
 ## Presentation
 
 - [First(04.09.2024)](./docs/AirPick-Presentation-1st.pptx)
+
+## Directory Structure
+
+- AirPick
+    - docs
+    - client
+    - server
+        - controllers
+        - models
+        - routes
