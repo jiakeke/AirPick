@@ -57,6 +57,8 @@ The project aims to develop an Airport Pickup Service Platform that allows custo
 - AirPick
     - docs
     - client
+        - src
+            - components
     - server
         - controllers
         - models
