@@ -20,6 +20,7 @@ export default function Modal() {
             </div>
             <div className="modal-body">
               <div className="tabs-listing">
+                {/*Log in and Sign up button uphead*/}
                 <nav>
                   <div
                     className="nav nav-tabs d-flex justify-content-center border-0"
@@ -46,6 +47,9 @@ export default function Modal() {
                     </button>
                   </div>
                 </nav>
+                {/*Log in and Sign up button uphead*/}
+
+                {/*Sign up modal body*/}
                 <div className="tab-content" id="nav-tabContent">
                   <div
                     className="tab-pane fade active show"
@@ -54,6 +58,7 @@ export default function Modal() {
                     aria-labelledby="nav-sign-in-tab"
                   >
                     <form id="form1" className="form-group flex-wrap p-3">
+                      {/*Form to write email*/}
                       <div className="form-input col-lg-12 my-4">
                         <label
                           htmlFor="exampleInputEmail1"
@@ -69,6 +74,7 @@ export default function Modal() {
                           className="form-control ps-3"
                         />
                       </div>
+                      {/*Form to write password*/}
                       <div className="form-input col-lg-12 my-4">
                         <label
                           htmlFor="inputPassword1"
@@ -92,6 +98,8 @@ export default function Modal() {
                           </a>
                         </div>
                       </div>
+
+                      {/*other things, should be in botton*/}
                       <label className="py-3">
                         <input
                           type="checkbox"
