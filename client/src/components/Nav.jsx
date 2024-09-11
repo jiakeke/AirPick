@@ -75,7 +75,7 @@ export default function Nav() {
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal2"
               >
-                Sign in
+                Sign up
               </button>
             </div>
           </section>

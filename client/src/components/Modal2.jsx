@@ -20,6 +20,7 @@ export default function Modal2() {
             </div>
             <div className="modal-body">
               <div className="tabs-listing">
+                {/*Log in and Sign up button uphead*/}
                 <nav>
                   <div
                     className="nav nav-tabs d-flex justify-content-center border-0"
@@ -46,6 +47,9 @@ export default function Modal2() {
                     </button>
                   </div>
                 </nav>
+                {/*Log in and Sign up button uphead*/}
+
+                {/*Sign up modal body*/}
                 <div
                   className="tab-pane fade active show"
                   id="nav-register2"
@@ -53,6 +57,7 @@ export default function Modal2() {
                   aria-labelledby="nav-register-tab2"
                 >
                   <form id="form4" className="form-group flex-wrap p-3">
+                    {/*Form to write email*/}
                     <div className="form-input col-lg-12 my-4">
                       <label
                         htmlFor="exampleInputEmail4"
@@ -68,6 +73,7 @@ export default function Modal2() {
                         className="form-control ps-3"
                       />
                     </div>
+                    {/*Form to write password*/}
                     <div className="form-input col-lg-12 my-4">
                       <label
                         htmlFor="inputPassword4"
@@ -83,7 +89,7 @@ export default function Modal2() {
                         aria-describedby="passwordHelpBlock"
                       />
                     </div>
-
+                    {/*Form to write confirm password*/}
                     <div className="form-input col-lg-12 my-4">
                       <label
                         htmlFor="inputPassword4"
@@ -100,6 +106,38 @@ export default function Modal2() {
                       />
                     </div>
 
+                    {/*Form to select identity*/}
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="flexRadioDefault"
+                        id="flexRadioDefault1"
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="flexRadioDefault1"
+                      >
+                        I'm a passenger
+                      </label>
+                    </div>
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="flexRadioDefault"
+                        id="flexRadioDefault2"
+                        defaultChecked=""
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="flexRadioDefault2"
+                      >
+                        I'm a driver
+                      </label>
+                    </div>
+
+                    {/*Policy and other things, should be down to the bottom*/}
                     <label className="py-3">
                       <input type="checkbox" required="" className="d-inline" />
                       <span className="label-body text-black">
