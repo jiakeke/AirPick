@@ -76,14 +76,14 @@ export default function Modal2() {
                     {/*Form to write password*/}
                     <div className="form-input col-lg-12 my-4">
                       <label
-                        htmlFor="inputPassword4"
+                        htmlFor="inputPassword2"
                         className="form-label fs-6 text-uppercase fw-bold text-black"
                       >
                         Password
                       </label>
                       <input
                         type="password"
-                        id="inputPassword4"
+                        id="inputPassword2"
                         placeholder="Password"
                         className="form-control ps-3"
                         aria-describedby="passwordHelpBlock"
@@ -92,14 +92,14 @@ export default function Modal2() {
                     {/*Form to write confirm password*/}
                     <div className="form-input col-lg-12 my-4">
                       <label
-                        htmlFor="inputPassword4"
+                        htmlFor="inputPassword3"
                         className="form-label fs-6 text-uppercase fw-bold text-black"
                       >
                         Confirm Password
                       </label>
                       <input
                         type="password"
-                        id="inputPassword4"
+                        id="inputPassword3"
                         placeholder="Password"
                         className="form-control ps-3"
                         aria-describedby="passwordHelpBlock"
@@ -107,34 +107,36 @@ export default function Modal2() {
                     </div>
 
                     {/*Form to select identity*/}
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name="flexRadioDefault"
-                        id="flexRadioDefault1"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="flexRadioDefault1"
-                      >
-                        I'm a passenger
-                      </label>
-                    </div>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name="flexRadioDefault"
-                        id="flexRadioDefault2"
-                        defaultChecked=""
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="flexRadioDefault2"
-                      >
-                        I'm a driver
-                      </label>
+                    <div className="container text-center">
+                      <div className="form-check form-check-inline">
+                        <input
+                          className="form-check-input"
+                          type="radio"
+                          name="flexRadioDefault"
+                          id="flexRadioDefault1"
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="flexRadioDefault1"
+                        >
+                          I'm a passenger
+                        </label>
+                      </div>
+                      <div className="form-check form-check-inline">
+                        <input
+                          className="form-check-input"
+                          type="radio"
+                          name="flexRadioDefault"
+                          id="flexRadioDefault2"
+                          defaultChecked=""
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="flexRadioDefault2"
+                        >
+                          I'm a driver
+                        </label>
+                      </div>
                     </div>
 
                     {/*Policy and other things, should be down to the bottom*/}

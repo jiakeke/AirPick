@@ -1,6 +1,7 @@
 @media (max-width: 992px) {
   .offcanvas-collapse {
     position: fixed;
+    z-index: 100;
     top: 65px;
     left: 100%;
     bottom: 0%;
