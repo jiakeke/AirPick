@@ -28,8 +28,8 @@ export default function Modal2() {
                     role="tablist"
                   >
                     <button
-                      className="btn btn-outline-primary text-uppercase me-4"
-                      id="nav-sign-in-tab2"
+                      className="btn btn-outline-primary text-uppercase me-3"
+                      id="nav-sign-in-tab"
                       data-bs-toggle="modal"
                       data-bs-target="#exampleModal"
                       type="button"
@@ -38,9 +38,9 @@ export default function Modal2() {
                     </button>
                     <button
                       className="btn btn-outline-primary text-uppercase active"
-                      id="nav-register-tab2"
-                      data-bs-toggle="tab"
-                      data-bs-target="#nav-register2"
+                      id="nav-register-tab"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal2"
                       type="button"
                     >
                       Sign Up
@@ -87,6 +87,7 @@ export default function Modal2() {
                         placeholder="Password"
                         className="form-control ps-3"
                         aria-describedby="passwordHelpBlock"
+                        autoComplete="off"
                       />
                     </div>
                     {/*Form to write confirm password*/}
@@ -103,6 +104,7 @@ export default function Modal2() {
                         placeholder="Password"
                         className="form-control ps-3"
                         aria-describedby="passwordHelpBlock"
+                        autoComplete="off"
                       />
                     </div>
 
