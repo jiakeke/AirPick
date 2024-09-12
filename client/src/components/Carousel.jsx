@@ -1,6 +1,3 @@
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap/dist/js/bootstrap.js";
-
 {
   /* 幻灯片滑动效果 */
 }

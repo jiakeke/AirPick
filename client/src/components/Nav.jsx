@@ -1,5 +1,4 @@
 import "bootstrap/js/src/collapse.js";
-import "bootstrap/js/dist/modal";
 import "../assets/nav.scss";
 import classNames from "classnames";
 import { useState } from "react";
