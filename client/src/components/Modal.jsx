@@ -1,4 +1,25 @@
+import { useState } from "react";
+
 export default function Modal() {
+  const [user, setUser] = useState({
+    first_name: "",
+    last_name: "",
+    password: "",
+    email: "",
+    phone: "",
+    category: "",
+    balance: "",
+  });
+
+  function handleInputChange(event) {
+    const { name, value } = event.target;
+    setUser((user) => ({ ...user, [name]: value }));
+  }
+
+  const logIn = () => {
+    console.log(user.password);
+  };
+
   return (
     <>
       <div
@@ -72,6 +93,7 @@ export default function Modal() {
                           name="email"
                           placeholder="Email"
                           className="form-control ps-3"
+                          onChange={handleInputChange}
                         />
                       </div>
                       {/*Form to write password*/}
@@ -85,10 +107,12 @@ export default function Modal() {
                         <input
                           type="password"
                           id="inputPassword1"
+                          name="password"
                           placeholder="Password"
                           className="form-control ps-3"
                           aria-describedby="passwordHelpBlock"
                           autoComplete="off"
+                          onChange={handleInputChange}
                         />
                         <div
                           id="passwordHelpBlock"
@@ -112,7 +136,11 @@ export default function Modal() {
                         </span>
                       </label>
                       <div className="d-grid my-3">
-                        <button className="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6">
+                        <button
+                          type="button"
+                          className="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6"
+                          onClick={logIn}
+                        >
                           Log In
                         </button>
                       </div>

@@ -1,4 +1,26 @@
+import { useState } from "react";
+
 export default function Modal2() {
+  const [user, setUser] = useState({
+    first_name: "",
+    last_name: "",
+    password: "",
+    confirmPassword: "",
+    email: "",
+    phone: "",
+    category: "",
+    balance: "",
+  });
+
+  function handleInputChange(event) {
+    const { name, value } = event.target;
+    setUser((user) => ({ ...user, [name]: value }));
+  }
+
+  function signUp() {
+    console.log("123");
+  }
+
   return (
     <>
       <div
@@ -71,6 +93,7 @@ export default function Modal2() {
                         name="email"
                         placeholder="Email"
                         className="form-control ps-3"
+                        onChange={handleInputChange}
                       />
                     </div>
                     {/*Form to write password*/}
@@ -84,10 +107,12 @@ export default function Modal2() {
                       <input
                         type="password"
                         id="inputPassword2"
+                        name="password"
                         placeholder="Password"
                         className="form-control ps-3"
                         aria-describedby="passwordHelpBlock"
                         autoComplete="off"
+                        onChange={handleInputChange}
                       />
                     </div>
                     {/*Form to write confirm password*/}
@@ -101,10 +126,12 @@ export default function Modal2() {
                       <input
                         type="password"
                         id="inputPassword3"
+                        name="confirmPassword"
                         placeholder="Password"
                         className="form-control ps-3"
                         aria-describedby="passwordHelpBlock"
                         autoComplete="off"
+                        onChange={handleInputChange}
                       />
                     </div>
 
@@ -155,7 +182,11 @@ export default function Modal2() {
                       </span>
                     </label>
                     <div className="d-grid my-3">
-                      <button className="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6">
+                      <button
+                        type="button"
+                        className="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6"
+                        onClick={signUp}
+                      >
                         Sign Up
                       </button>
                     </div>
