@@ -1,53 +1,99 @@
 const User=require("../models/userModel")
-
-const getAllUser=(req,res)=>{
-    const allUser=User.getAllUser();
-    res.json(allUser);
-}
-
-const createUser=(req,res)=>{
-    const newUser =User.addNewUser({...req.body});
-    if(newUser){
-        res.json(newUser);
+const mongoose = require("mongoose");
+// GET /users
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find({}).sort({ creatdAt: -1 });
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ message: "Failed to retrieve users" });
     }
-    else{
-        res.status(500).json({ message: "Failed to create user" });
-    }
-}
+};
 
-const getUserById=(req,res)=>{
-    const userId=req.params.userId;
-    const user=User.findUserById(userId);
-    if(user){
-        res.json(user)
-    }else{
-        res.status(404).json({message:"user not found"})
-    }
-}
 
-const updateUser=(req,res)=>{
-    const userId=req.params.userId;
-    const updateUser=User.updateUserById(userId,req.body);
-    if(updateUser){
-        res.json(updateUser)
-    }else{
-        res.status(404).json({message:"user not found"})
+//regist 
+// const userReg=()=>{
+//     todo: createuser
+// }
+
+//login
+
+
+
+// POST /users
+const createUser = async (req, res) => {
+
+    try {
+        const newUser = await User.create({ ...req.body })
+        res.status(201).json(newUser)
+    } catch (error) {
+        res.status(400).json({ message: "Failed to create user", error: error.message });
     }
 }
+//GET /users/:userId
 
-const deleteUser=(req,res)=>{
-    const userId=req.params.userId;
-    const isDeleted=User.deleteUserById(userId);
-    if (isDeleted) {
-        res.json({ message: "user deleted successfully" });
-      } else {
-        // Handle deletion failure (e.g., car not found)
-        res.status(404).json({ message: "user not found" });
-      }
+const getUserById = async (req, res) => {
+    const { userId } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ message: "Invalid user ID" });
+    }
+    try {
+        const user = await User.findById(userId);
+        if (user) {
+            res.status(200).json(user)
+        } else {
+            res.status(404).json({ message: "User not found" });
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Failed to retrieve user" });
+    }
+
 }
 
+//POST /users/:userId
+
+const updateUser = async (req, res) => {
+    const { userId } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ message: "Invalid user ID" });
+    }
+    try {
+        const updatedUser = await User.findByIdAndUpdate(
+            { _id: userId },
+            { ...req.body },
+            { new: true, overwrite: true }
+        );
+        if (updatedUser) {
+            res.status(200).json(updatedUser)
+        } else {
+            res.status(404).json({ message: "User not found" });
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Failed to update user" });
+    }
+}
+
+
+//DELETE /users/:userId
+
+const deleteUser = async (req, res) => {
+    const { userId } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ message: "Invalid user ID" });
+    }
+    try {
+        const deletedUser = await User.findByIdAndDelete({ _id: userId });
+        if (deletedUser) {
+            res.status(200).json({ message: "User deleted successfully" });
+        } else {
+            res.status(404).json({ message: "User not found" });
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Failed to delete user" });
+    }
+}
 module.exports={
-    getAllUser,
+    getAllUsers,
     createUser,
     getUserById,
     updateUser,
