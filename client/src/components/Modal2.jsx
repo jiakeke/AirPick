@@ -39,6 +39,24 @@ export default function Modal2() {
   const signUp = (e) => {
     e.preventDefault();
     if (validateForm()) {
+      fetch("http://localhost:4001/", {
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify({
+          users: [
+            {
+              first_name: "",
+              last_name: "",
+              password: "",
+              confirmPassword: "",
+              email: "",
+              phone: "",
+              category: "",
+              balance: "",
+            },
+          ],
+        }),
+      });
       console.log("log in OK");
     } else {
       console.log("log in error");
