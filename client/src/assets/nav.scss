@@ -1,0 +1,17 @@
+@media (max-width: 992px) {
+  .offcanvas-collapse {
+    position: fixed;
+    z-index: 100;
+    top: 65px;
+    left: 100%;
+    bottom: 0%;
+    width: 45%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background-color: gray;
+    transition: all 0.3s;
+    &.active {
+      transform: translateX(-100%);
+    }
+  }
+}
