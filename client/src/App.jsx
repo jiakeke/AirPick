@@ -1,4 +1,4 @@
-import Nav from "./components/Nav";
+import Nav from "./components/Nav.jsx";
 import Carousel from "./components/Carousel";
 import Orders from "./components/Orders";
 import Map from "./components/Map";

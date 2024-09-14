@@ -36,9 +36,30 @@ export default function Modal2() {
     setPasswordStrength(validatePassword(value));
   };
 
-  function signUp() {
-    console.log("123");
-  }
+  const signUp = (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      console.log("log in OK");
+    } else {
+      console.log("log in error");
+    }
+  };
+
+  const validateForm = () => {
+    validateEmail(user.email);
+    validatePassword(user.password);
+    if (
+      emailValid === true &&
+      passwordStrength === true &&
+      user.password === user.confirmPassword
+    ) {
+      console.log("Validate OK");
+      return true;
+    } else {
+      console.log("Validate Error");
+      return false;
+    }
+  };
 
   return (
     <>

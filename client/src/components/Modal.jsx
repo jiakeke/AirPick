@@ -37,10 +37,24 @@ export default function Modal() {
 
   const logIn = (e) => {
     e.preventDefault();
-    validateForm();
+    if (validateForm()) {
+      console.log("log in OK");
+    } else {
+      console.log("log in error");
+    }
   };
 
-  const validateForm = () => {};
+  const validateForm = () => {
+    validateEmail(user.email);
+    validatePassword(user.password);
+    if (emailValid === true && passwordStrength === true) {
+      console.log("Validate OK");
+      return true;
+    } else {
+      console.log("Validate Error");
+      return false;
+    }
+  };
 
   return (
     <>
@@ -109,6 +123,7 @@ export default function Modal() {
                         >
                           Email Address
                         </label>
+                        <small></small>
                         <input
                           type="email"
                           id="exampleInputEmail1"
