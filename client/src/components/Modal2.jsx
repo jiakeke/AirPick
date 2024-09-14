@@ -12,10 +12,29 @@ export default function Modal2() {
     balance: "",
   });
 
-  function handleInputChange(event) {
-    const { name, value } = event.target;
+  const [emailValid, setEmailValid] = useState(null);
+  const [passwordStrength, setPasswordStrength] = useState(null);
+
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const validatePassword = (password) => {
+    return password.length >= 8;
+  };
+
+  const handleEmailChange = (e) => {
+    const { name, value } = e.target;
     setUser((user) => ({ ...user, [name]: value }));
-  }
+    setEmailValid(validateEmail(value));
+  };
+
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    setUser((user) => ({ ...user, [name]: value }));
+    setPasswordStrength(validatePassword(value));
+  };
 
   function signUp() {
     console.log("123");
@@ -93,7 +112,15 @@ export default function Modal2() {
                         name="email"
                         placeholder="Email"
                         className="form-control ps-3"
-                        onChange={handleInputChange}
+                        onChange={handleEmailChange}
+                        style={{
+                          borderColor:
+                            emailValid === null
+                              ? ""
+                              : emailValid
+                              ? "green"
+                              : "red",
+                        }}
                       />
                     </div>
                     {/*Form to write password*/}
@@ -112,7 +139,15 @@ export default function Modal2() {
                         className="form-control ps-3"
                         aria-describedby="passwordHelpBlock"
                         autoComplete="off"
-                        onChange={handleInputChange}
+                        onChange={handlePasswordChange}
+                        style={{
+                          borderColor:
+                            passwordStrength === null
+                              ? ""
+                              : passwordStrength
+                              ? "green"
+                              : "red",
+                        }}
                       />
                     </div>
                     {/*Form to write confirm password*/}
@@ -131,7 +166,15 @@ export default function Modal2() {
                         className="form-control ps-3"
                         aria-describedby="passwordHelpBlock"
                         autoComplete="off"
-                        onChange={handleInputChange}
+                        onChange={handlePasswordChange}
+                        style={{
+                          borderColor:
+                            passwordStrength === null
+                              ? ""
+                              : passwordStrength
+                              ? "green"
+                              : "red",
+                        }}
                       />
                     </div>
 

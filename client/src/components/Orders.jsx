@@ -15,16 +15,6 @@ export default function Orders() {
       h3: "",
       h4: "",
     },
-    {
-      img: "",
-      name: "",
-      discription: "",
-      url: "",
-      h1: "",
-      h2: "",
-      h3: "",
-      h4: "",
-    },
   ];
 
   return (

@@ -11,14 +11,36 @@ export default function Modal() {
     balance: "",
   });
 
-  function handleInputChange(event) {
-    const { name, value } = event.target;
-    setUser((user) => ({ ...user, [name]: value }));
-  }
+  const [emailValid, setEmailValid] = useState(null);
+  const [passwordStrength, setPasswordStrength] = useState(null);
 
-  const logIn = () => {
-    console.log(user.password);
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
   };
+
+  const validatePassword = (password) => {
+    return password.length >= 8;
+  };
+
+  const handleEmailChange = (e) => {
+    const { name, value } = e.target;
+    setUser((user) => ({ ...user, [name]: value }));
+    setEmailValid(validateEmail(value));
+  };
+
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    setUser((user) => ({ ...user, [name]: value }));
+    setPasswordStrength(validatePassword(value));
+  };
+
+  const logIn = (e) => {
+    e.preventDefault();
+    validateForm();
+  };
+
+  const validateForm = () => {};
 
   return (
     <>
@@ -88,13 +110,22 @@ export default function Modal() {
                           Email Address
                         </label>
                         <input
-                          type="text"
+                          type="email"
                           id="exampleInputEmail1"
                           name="email"
                           placeholder="Email"
                           className="form-control ps-3"
-                          onChange={handleInputChange}
+                          onChange={handleEmailChange}
+                          style={{
+                            borderColor:
+                              emailValid === null
+                                ? ""
+                                : emailValid
+                                ? "green"
+                                : "red",
+                          }}
                         />
+                        <small className="error-message"></small>
                       </div>
                       {/*Form to write password*/}
                       <div className="form-input col-lg-12 my-4">
@@ -112,7 +143,15 @@ export default function Modal() {
                           className="form-control ps-3"
                           aria-describedby="passwordHelpBlock"
                           autoComplete="off"
-                          onChange={handleInputChange}
+                          onChange={handlePasswordChange}
+                          style={{
+                            borderColor:
+                              passwordStrength === null
+                                ? ""
+                                : passwordStrength
+                                ? "green"
+                                : "red",
+                          }}
                         />
                         <div
                           id="passwordHelpBlock"
@@ -137,7 +176,7 @@ export default function Modal() {
                       </label>
                       <div className="d-grid my-3">
                         <button
-                          type="button"
+                          type="submit"
                           className="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6"
                           onClick={logIn}
                         >
