@@ -10,8 +10,19 @@ const getAllUsers = async (req, res) => {
     }
 };
 
+
+//regist 
+// const userReg=()=>{
+//     todo: createuser
+// }
+
+//login
+
+
+
 // POST /users
 const createUser = async (req, res) => {
+
     try {
         const newUser = await User.create({ ...req.body })
         res.status(201).json(newUser)

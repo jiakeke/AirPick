@@ -85,7 +85,7 @@ const userSchema=new Schema(
         email: { type: String, required: true },
         category: { type: String, required: true },
         phone: { type: String, required: true },
-        balance: { type: String }, 
+        balance: { type: String ,default:0}, 
     },
     {timestamps:true}
 );
