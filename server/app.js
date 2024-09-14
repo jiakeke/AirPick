@@ -1,15 +1,17 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const userRouter=require("./routes/userRouter")
+const userRouter = require("./routes/userRouter");
 
 // Middleware to parse JSON
 app.use(express.json());
 
+let cors = require("cors");
+app.use(cors());
+
 // ==== Set up the routers below ======
-app.use('/users',userRouter);
+app.use("/users", userRouter);
 
 // ==== Set up the routers above ======
-
 
 const port = 4001;
 // Start the server

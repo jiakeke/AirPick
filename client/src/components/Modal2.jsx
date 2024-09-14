@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 
 export default function Modal2() {
   const [user, setUser] = useState({
@@ -39,24 +40,23 @@ export default function Modal2() {
   const signUp = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      fetch("http://localhost:4001/", {
-        method: "POST",
-        mode: "cors",
-        body: JSON.stringify({
-          users: [
-            {
-              first_name: "",
-              last_name: "",
-              password: "",
-              confirmPassword: "",
-              email: "",
-              phone: "",
-              category: "",
-              balance: "",
-            },
-          ],
-        }),
-      });
+      console.log(user.email + "" + user.password);
+      axios
+        .post("http://localhost:4001/users", {
+          first_name: "user_first_name",
+          last_name: "user_last_name",
+          password: user.password,
+          email: user.email,
+          phone: "user_phone",
+          category: "user_categoty",
+          balance: 1,
+        })
+        .then((response) => {
+          console.log("Success:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
       console.log("log in OK");
     } else {
       console.log("log in error");

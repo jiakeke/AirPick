@@ -14,6 +14,7 @@ export default function Modal() {
 
   const [emailValid, setEmailValid] = useState(null);
   const [passwordStrength, setPasswordStrength] = useState(null);
+  const [emailInvalidMessage, setemailInvalidMessage] = useState("");
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -54,6 +55,10 @@ export default function Modal() {
   };
 
   const validateForm = () => {
+    if (user.email === "") {
+      setemailInvalidMessage("Please enter email.");
+      console.log(emailInvalidMessage);
+    }
     validateEmail(user.email);
     validatePassword(user.password);
     if (emailValid === true && passwordStrength === true) {
@@ -132,7 +137,6 @@ export default function Modal() {
                         >
                           Email Address
                         </label>
-                        <small></small>
                         <input
                           type="email"
                           id="exampleInputEmail1"
@@ -149,7 +153,7 @@ export default function Modal() {
                                 : "red",
                           }}
                         />
-                        <small className="error-message"></small>
+                        <small>{emailInvalidMessage}</small>
                       </div>
                       {/*Form to write password*/}
                       <div className="form-input col-lg-12 my-4">
