@@ -12,10 +12,10 @@ router.get('/',getAllOrder)
 
 router.post('/',createOrder)
 
-router.get('/:userId',getOrderById)
+router.get('/:orderId',getOrderById)
 
-router.put('/:userId',updateOrder)
+router.put('/:orderId',updateOrder)
 
-router.delete('/:userId',deleteOrder)
+router.delete('/:orderId',deleteOrder)
 
 module.exports=router;

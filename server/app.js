@@ -9,7 +9,7 @@ app.use(express.json());
 // ==== Set up the routers below ======
 app.use('/users',userRouter);
 
-app.use('/orders',orderRouter);
+app.use('/api/orders', orderRouter);
 // ==== Set up the routers above ======
 
 

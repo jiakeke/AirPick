@@ -34,7 +34,7 @@
 //      }
 
 let orders = [];
-let nextId = [];
+let nextId = 1;
 
 function getAllOrder() {
     return orders;
@@ -52,7 +52,7 @@ function addOneOrder(order) {
     }
 
     const newOrder = {
-        orderId: nextId++,
+        Id: nextId++,
         created: new Date().toISOString(),
         modified: new Date().toISOString(),
         ...order,
@@ -63,7 +63,7 @@ function addOneOrder(order) {
 }
 
 function findOrderById(orderId) {
-    return orders.find(order => order.id == orderId)||false;
+    return orders.find(order => order.Id == orderId)||false;
 }
 
 function updateOrderById(orderId, updatedData) {
