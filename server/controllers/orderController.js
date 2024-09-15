@@ -6,6 +6,7 @@ const getAllOrder=(req,res)=>{
 }
 
 const createOrder=(req,res)=>{
+    console.log("Request Body:", req.body);
     const newOrder =Order.addOneOrder({...req.body});
     if(newOrder){
         res.json(newOrder);

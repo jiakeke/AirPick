@@ -1,21 +1,27 @@
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 
 import "../assets/orders.css";
 
 export default function Orders() {
-  const orderlist = [
-    {
-      img: "",
-      name: "",
-      discription: "",
-      url: "",
-      h1: "",
-      h2: "",
-      h3: "",
-      h4: "",
-    },
-  ];
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:4000/api/orders')
+      .then(response => response.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setOrders(data);
+        } else {
+          setOrders([]);
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching orders:", error);
+        setOrders([]);
+      });
+  }, []);
 
   return (
     <>
@@ -24,41 +30,34 @@ export default function Orders() {
           <div className="single-head">
             {/*Start order list*/}
             {/* Single Job */}
-            {orderlist.map((order, index) => (
+            {orders.map((order, index) => (
               <>
-                <div className="single-job">
+                <div className="single-job" key={order.Id}>
                   <div className="job-image">
-                    <img src="assets/images/jobs/img8.png" alt="#" />
+                    <img src={order.img || "assets/images/jobs/img8.png"} alt="Order" />
                   </div>
                   <div className="job-content">
                     <h4>
-                      <a href="job-details.html">Android Developer</a>
+                      <a href={order.url}>Category: {order.category}</a>
                     </h4>
                     <p>
-                      We are looking for Enrollment Advisors who are looking to
-                      take 30-35 appointments per week. All leads are
-                      pre-scheduled.
+                      From: {order.departure} <br />
+                      To: {order.destination} <br />
+                      Passengers: {order.persons} <br />
+                      Luggages: {order.luggages}
                     </p>
                     <ul>
-                      <li>
-                        <i className="lni lni-website" />
-                        <a href="#"> androidplex.com</a>
-                      </li>
-                      <li>
-                        <i className="lni lni-dollar" /> $20k - $25k
-                      </li>
-                      <li>
-                        <i className="lni lni-map-marker" /> Cupertino, USA
-                      </li>
+                      <li><i className="lni lni-map-marker" /> Status: {order.status}</li>
+                      <li><i className="lni lni-dollar" /> Price: ${order.price}</li>
                     </ul>
                   </div>
                   <div className="job-button">
                     <ul>
                       <li>
-                        <a href="job-details.html">Apply</a>
+                        <a href="#">View Details</a>
                       </li>
                       <li>
-                        <span>Part Time</span>
+                        <span>{order.status}</span>
                       </li>
                     </ul>
                   </div>
