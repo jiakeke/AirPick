@@ -42,7 +42,7 @@ export default function Modal2() {
     if (validateForm()) {
       console.log(user.email + "" + user.password);
       axios
-        .post("http://localhost:4001/users", {
+        .post("http://localhost:4000/api/users", {
           first_name: "user_first_name",
           last_name: "user_last_name",
           password: user.password,

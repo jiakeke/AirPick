@@ -42,7 +42,7 @@ export default function Modal() {
     if (validateForm()) {
       console.log("log in OK");
       axios
-        .get("http://localhost:4001/users")
+        .get("http://localhost:4000/api/users")
         .then((response) => {
           console.log(response.data);
         })
