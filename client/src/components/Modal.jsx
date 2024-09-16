@@ -15,6 +15,7 @@ export default function Modal() {
   const [emailValid, setEmailValid] = useState(null);
   const [passwordStrength, setPasswordStrength] = useState(null);
   const [emailInvalidMessage, setemailInvalidMessage] = useState("");
+  const [passwordInvalidMessage, setPasswordInvalidMessage] = useState("");
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -29,12 +30,14 @@ export default function Modal() {
     const { name, value } = e.target;
     setUser((user) => ({ ...user, [name]: value }));
     setEmailValid(validateEmail(value));
+    setemailInvalidMessage("");
   };
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
     setUser((user) => ({ ...user, [name]: value }));
     setPasswordStrength(validatePassword(value));
+    setPasswordInvalidMessage("");
   };
 
   const logIn = (e) => {
@@ -42,7 +45,7 @@ export default function Modal() {
     if (validateForm()) {
       console.log("log in OK");
       axios
-        .get("http://localhost:4001/users")
+        .get("http://localhost:4000/api/users")
         .then((response) => {
           console.log(response.data);
         })
@@ -57,15 +60,17 @@ export default function Modal() {
   const validateForm = () => {
     if (user.email === "") {
       setemailInvalidMessage("Please enter email.");
-      console.log(emailInvalidMessage);
+    }
+    if (user.password === "") {
+      setPasswordInvalidMessage("Please enter password.");
     }
     validateEmail(user.email);
     validatePassword(user.password);
     if (emailValid === true && passwordStrength === true) {
       console.log("Validate OK");
       return true;
-    } else {
-      console.log("Validate Error");
+    } else if (emailValid === false) {
+      setemailInvalidMessage("Email invalid");
       return false;
     }
   };
@@ -153,7 +158,9 @@ export default function Modal() {
                                 : "red",
                           }}
                         />
-                        <small>{emailInvalidMessage}</small>
+                        <small style={{ color: "red" }}>
+                          {emailInvalidMessage}
+                        </small>
                       </div>
                       {/*Form to write password*/}
                       <div className="form-input col-lg-12 my-4">
@@ -181,6 +188,9 @@ export default function Modal() {
                                 : "red",
                           }}
                         />
+                        <small style={{ color: "red" }}>
+                          {passwordInvalidMessage}
+                        </small>
                         <div
                           id="passwordHelpBlock"
                           className="form-text text-center"
