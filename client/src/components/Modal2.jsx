@@ -15,6 +15,15 @@ export default function Modal2() {
 
   const [emailValid, setEmailValid] = useState(null);
   const [passwordStrength, setPasswordStrength] = useState(null);
+  const [emailInvalidMessage, setemailInvalidMessage] = useState("");
+  const [passwordInvalidMessage, setPasswordInvalidMessage] = useState("");
+  const [confirmPasswordInvalidMessage, setConfirmPasswordInvalidMessage] =
+    useState("");
+  const [firstNameInvalidMessage, setFirstNameInvalidMessage] = useState("");
+  const [lastNasmeInvalidMessage, setLastNasmeInvalidMessage] = useState("");
+
+  const [policyChecked, setPolicyChecked] = useState(false);
+  const [policyUncheckedMassage, setPolicyUncheckedMassage] = useState("");
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -25,16 +34,31 @@ export default function Modal2() {
     return password.length >= 8;
   };
 
+  const handleFirstNameChange = (e) => {
+    const { name, value } = e.target;
+    setUser((user) => ({ ...user, [name]: value }));
+    setFirstNameInvalidMessage("");
+  };
+
+  const handleLastNameChange = (e) => {
+    const { name, value } = e.target;
+    setUser((user) => ({ ...user, [name]: value }));
+    setLastNasmeInvalidMessage("");
+  };
+
   const handleEmailChange = (e) => {
     const { name, value } = e.target;
     setUser((user) => ({ ...user, [name]: value }));
     setEmailValid(validateEmail(value));
+    setemailInvalidMessage("");
   };
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
     setUser((user) => ({ ...user, [name]: value }));
     setPasswordStrength(validatePassword(value));
+    setPasswordInvalidMessage("");
+    setConfirmPasswordInvalidMessage("");
   };
 
   const signUp = (e) => {
@@ -43,8 +67,8 @@ export default function Modal2() {
       console.log(user.email + "" + user.password);
       axios
         .post("http://localhost:4000/api/users", {
-          first_name: "user_first_name",
-          last_name: "user_last_name",
+          first_name: user.first_name,
+          last_name: user.last_name,
           password: user.password,
           email: user.email,
           phone: "user_phone",
@@ -64,12 +88,46 @@ export default function Modal2() {
   };
 
   const validateForm = () => {
+    if (user.email === "") {
+      setemailInvalidMessage("Please enter email.");
+    }
+    if (user.password === "") {
+      setPasswordInvalidMessage("Please enter password.");
+    }
+    if (user.confirmPassword === "") {
+      setConfirmPasswordInvalidMessage("Please enter password again.");
+    }
+    if (user.first_name === "") {
+      setFirstNameInvalidMessage("First name required.");
+    }
+    if (user.last_name === "") {
+      setLastNasmeInvalidMessage("Last name required.");
+    }
+    if (policyChecked === false) {
+      setPolicyUncheckedMassage(
+        <p style={{ margin: "0" }}>
+          Please read and agree to the private policy.
+        </p>
+      );
+    }
     validateEmail(user.email);
     validatePassword(user.password);
+    if (emailValid === false) {
+      setemailInvalidMessage("Email address is invalid.");
+    }
+    if (user.password !== user.confirmPassword) {
+      setPasswordInvalidMessage("Password do not match.");
+      setConfirmPasswordInvalidMessage("Password do not match.");
+    }
+    if (user.password === user.confirmPassword && passwordStrength === false) {
+      setPasswordInvalidMessage("Password is too weak.");
+      setConfirmPasswordInvalidMessage("Password is too weak.");
+    }
     if (
       emailValid === true &&
       passwordStrength === true &&
-      user.password === user.confirmPassword
+      user.password === user.confirmPassword &&
+      policyChecked === true
     ) {
       console.log("Validate OK");
       return true;
@@ -137,28 +195,56 @@ export default function Modal2() {
                   aria-labelledby="nav-register-tab2"
                 >
                   <form id="form4" className="form-group flex-wrap p-3">
-                    <div className="form-label fs-6 text-uppercase fw-bold text-black">
+                    <div className="form-label">
                       <div className="row">
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="input1">First Name</label>
+                            <label
+                              htmlFor="input1"
+                              className="fs-6 text-uppercase fw-bold text-black"
+                            >
+                              First Name
+                            </label>
                             <input
                               type="text"
                               className="form-control"
                               id="input1"
+                              name="first_name"
                               placeholder="first name"
+                              onChange={handleFirstNameChange}
+                              style={{
+                                borderColor:
+                                  user.first_name === "" ? "" : "green",
+                              }}
                             />
+                            <small style={{ color: "red" }}>
+                              {firstNameInvalidMessage}
+                            </small>
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="input2">Last Name</label>
+                            <label
+                              htmlFor="input2"
+                              className="fs-6 text-uppercase fw-bold text-black"
+                            >
+                              Last Name
+                            </label>
                             <input
                               type="text"
                               className="form-control"
                               id="input2"
+                              name="last_name"
                               placeholder="last name"
+                              onChange={handleLastNameChange}
+                              style={{
+                                borderColor:
+                                  user.last_name === "" ? "" : "green",
+                              }}
                             />
+                            <small style={{ color: "red" }}>
+                              {lastNasmeInvalidMessage}
+                            </small>
                           </div>
                         </div>
                       </div>
@@ -173,7 +259,7 @@ export default function Modal2() {
                         Email Address
                       </label>
                       <input
-                        type="text"
+                        type="email"
                         id="exampleInputEmail4"
                         name="email"
                         placeholder="Email"
@@ -188,6 +274,9 @@ export default function Modal2() {
                               : "red",
                         }}
                       />
+                      <small style={{ color: "red" }}>
+                        {emailInvalidMessage}
+                      </small>
                     </div>
                     {/*Form to write password*/}
                     <div className="form-input col-lg-12 my-4">
@@ -215,6 +304,9 @@ export default function Modal2() {
                               : "red",
                         }}
                       />
+                      <small style={{ color: "red" }}>
+                        {passwordInvalidMessage}
+                      </small>
                     </div>
                     {/*Form to write confirm password*/}
                     <div className="form-input col-lg-12 my-4">
@@ -242,6 +334,9 @@ export default function Modal2() {
                               : "red",
                         }}
                       />
+                      <small style={{ color: "red" }}>
+                        {confirmPasswordInvalidMessage}
+                      </small>
                     </div>
 
                     {/*Form to select identity*/}
@@ -279,7 +374,16 @@ export default function Modal2() {
 
                     {/*Policy and other things, should be down to the bottom*/}
                     <label className="py-3">
-                      <input type="checkbox" required="" className="d-inline" />
+                      <input
+                        type="checkbox"
+                        required=""
+                        className="d-inline"
+                        checked={policyChecked}
+                        onChange={() => {
+                          setPolicyChecked(!policyChecked);
+                          setPolicyUncheckedMassage("");
+                        }}
+                      />
                       <span className="label-body text-black">
                         I agree to the
                         <a
@@ -289,6 +393,9 @@ export default function Modal2() {
                           Privacy Policy
                         </a>
                       </span>
+                      <small style={{ color: "red" }}>
+                        {policyUncheckedMassage}
+                      </small>
                     </label>
                     <div className="d-grid my-3">
                       <button
