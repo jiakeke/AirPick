@@ -79,22 +79,14 @@ const Schema=mongoose.Schema;
 
 const userSchema=new Schema(
     {   
-        // username:{type:String,require:true},
-        // first_name:{type:String,require:true},
-        // last_name:{type:String,require:true},
-        // password: { type: String, required: true },
-        // email: { type: String, required: true },
-        // category: { type: String, required: true },
-        // phone: { type: String, required: true },
-        // balance: { type: String ,default:0}, 
-        username:{type:String,require:true},
-        first_name:{type:String},
-        last_name:{type:String},
+        
+        first_name:{type:String,require:true},
+        last_name:{type:String,require:true},
         password: { type: String, required: true },
-        email: { type: String},
-        category: { type: String },
-        phone: { type: String},
-        balance: { type: String ,default:0}, 
+        email: { type: String, required: true },
+        category: { type: String, required: true },
+        phone: { type: String },
+        balance: { type: String ,default:0},  
     },
     {timestamps:true}
 );
