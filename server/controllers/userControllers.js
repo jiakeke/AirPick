@@ -1,4 +1,5 @@
-const User=require("../models/userModel")
+const User = require("../models/userModel")
+const encryption = require("../utils/encryption")
 const mongoose = require("mongoose");
 // GET /users
 const getAllUsers = async (req, res) => {
@@ -11,12 +12,44 @@ const getAllUsers = async (req, res) => {
 };
 
 
-//regist 
-// const userReg=()=>{
-//     todo: createuser
-// }
+// POST /api/users/regist/
+const userRegist = async (req, res) => {
+    const { username, password,category } = req.body;
+    const existUser = await mongoose.models.User.findOne({ username: username });
+    if (existUser) {
+        return res.status(400).json({ message: "Username already exists." });
+    }
+    const hashPassword = await encryption.hashPassword(password);
+    try {
+        const newUser = await User.create({ username: username, password: hashPassword, email: username,category:category })
+        res.status(201).json(newUser)
+    } catch (error) {
+        res.status(400).json({ message: "Failed to regist user", error: error.message });
+    }
 
-//login
+}
+
+// GET /api/user/login
+
+const userLogin = async (req, res) => {
+    const { username, password } = req.body;
+    try {
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid email ' });
+        }
+    
+        const isMatch = await encryption.comparePasswords(password,user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Invalid  password' });
+        }
+        return res.status(200).json({ message: 'Login successful', user });
+    }
+    catch (error) {
+        return res.status(500).json({ message: 'Server error', error: error.message });
+    }
+}
+
 
 
 
@@ -92,10 +125,12 @@ const deleteUser = async (req, res) => {
         res.status(500).json({ message: "Failed to delete user" });
     }
 }
-module.exports={
+module.exports = {
     getAllUsers,
     createUser,
     getUserById,
     updateUser,
     deleteUser,
+    userRegist,
+    userLogin,
 };

@@ -5,12 +5,18 @@ const {
     createUser,
     getUserById,
     updateUser,
-    deleteUser
+    deleteUser,
+    userRegist,
+    userLogin,
 }=require("../controllers/userControllers")
 
 router.get('/',getAllUsers)
 
 router.post('/',createUser)
+
+router.post('/regist',userRegist)
+
+router.get('/login',userLogin)
 
 router.get('/:userId',getUserById)
 
