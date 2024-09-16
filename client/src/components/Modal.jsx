@@ -29,6 +29,7 @@ export default function Modal() {
     const { name, value } = e.target;
     setUser((user) => ({ ...user, [name]: value }));
     setEmailValid(validateEmail(value));
+    setemailInvalidMessage("");
   };
 
   const handlePasswordChange = (e) => {
@@ -153,7 +154,9 @@ export default function Modal() {
                                 : "red",
                           }}
                         />
-                        <small>{emailInvalidMessage}</small>
+                        <small style={{ color: "red" }}>
+                          {emailInvalidMessage}
+                        </small>
                       </div>
                       {/*Form to write password*/}
                       <div className="form-input col-lg-12 my-4">

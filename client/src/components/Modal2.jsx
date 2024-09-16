@@ -137,6 +137,33 @@ export default function Modal2() {
                   aria-labelledby="nav-register-tab2"
                 >
                   <form id="form4" className="form-group flex-wrap p-3">
+                    <div className="form-label fs-6 text-uppercase fw-bold text-black">
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="input1">First Name</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="input1"
+                              placeholder="first name"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="input2">Last Name</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="input2"
+                              placeholder="last name"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                     {/*Form to write email*/}
                     <div className="form-input col-lg-12 my-4">
                       <label
