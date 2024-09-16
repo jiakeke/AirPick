@@ -4,8 +4,8 @@ import Carousel from "./components/Carousel";
 import Orders from "./components/Orders";
 import Map from "./components/Map";
 
-import loginPage from "./components/loginPage.jsx";
-import sighupPage from "./components/signUpPage.jsx";
+import LoginPage from "./components/LoginPage.jsx";
+import SignupPage from "./components/signupPage.jsx";
 
 function App() {
   return (
@@ -21,8 +21,8 @@ function App() {
             </>
           }
         />
-        <Route path="/loginOK" element={<loginPage />} />
-        <Route path="/signupOK" element={<sighupPage />} />
+        <Route path="/loginok" element={<LoginPage />} />
+        <Route path="/signupok" element={<SignupPage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import PrivacyPolicy from "./PrivacyPolicy";
-import { Navigate, Router } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Modal2() {
   const [user, setUser] = useState({
@@ -63,8 +63,11 @@ export default function Modal2() {
     setConfirmPasswordInvalidMessage("");
   };
 
+  let navigateTo = useNavigate();
+
   const signUp = (e) => {
     e.preventDefault();
+
     if (validateForm()) {
       console.log(user.email + "" + user.password);
       axios
@@ -83,9 +86,10 @@ export default function Modal2() {
         .catch((error) => {
           console.error("Error:", error);
         });
-      console.log("log in OK");
+      console.log("sign in OK");
+      navigateTo("/signupok");
     } else {
-      console.log("log in error");
+      console.log("sign in error");
     }
   };
 
