@@ -14,14 +14,14 @@ const getAllUsers = async (req, res) => {
 
 // POST /api/users/regist/
 const userRegist = async (req, res) => {
-    const { username, password,category } = req.body;
-    const existUser = await mongoose.models.User.findOne({ username: username });
+    const { first_name,last_name, email,password,category } = req.body;
+    const existUser = await mongoose.models.User.findOne({ email: email });
     if (existUser) {
         return res.status(400).json({ message: "Username already exists." });
     }
     const hashPassword = await encryption.hashPassword(password);
     try {
-        const newUser = await User.create({ username: username, password: hashPassword, email: username,category:category })
+        const newUser = await User.create({ first_name: first_name,last_name:last_name, password: hashPassword, email: email,category:category })
         res.status(201).json(newUser)
     } catch (error) {
         res.status(400).json({ message: "Failed to regist user", error: error.message });
@@ -32,9 +32,9 @@ const userRegist = async (req, res) => {
 // GET /api/user/login
 
 const userLogin = async (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
     try {
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({ message: 'Invalid email ' });
         }
