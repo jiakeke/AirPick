@@ -1,3 +1,3 @@
 export default function SignupPage() {
-  return <>123123123123123</>;
+  return <h1>Signup Succeed</h1>;
 }

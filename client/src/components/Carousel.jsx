@@ -1,6 +1,11 @@
 {
   /* 幻灯片滑动效果 */
 }
+import React from "react";
+import propaganda1 from "../assets/imgs/image1.jpg";
+import propaganda2 from "../assets/imgs/image2.jpg";
+import propaganda3 from "../assets/imgs/image3.jpg";
+
 export default function Carousel() {
   return (
     <>
@@ -33,25 +38,13 @@ export default function Carousel() {
         </div>
         <div className="carousel-inner">
           <div className="carousel-item active">
-            <img
-              src="http://temp.im/800x300"
-              className="d-block w-100"
-              alt="..."
-            />
+            <img src={propaganda1} className="d-block w-100" alt="..." />
           </div>
           <div className="carousel-item">
-            <img
-              src="http://temp.im/800x300"
-              className="d-block w-100"
-              alt="..."
-            />
+            <img src={propaganda2} className="d-block w-100" alt="..." />
           </div>
           <div className="carousel-item">
-            <img
-              src="http://temp.im/800x300"
-              className="d-block w-100"
-              alt="..."
-            />
+            <img src={propaganda3} className="d-block w-100" alt="..." />
           </div>
         </div>
         <button
