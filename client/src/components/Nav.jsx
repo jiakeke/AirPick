@@ -2,12 +2,15 @@ import "bootstrap/js/src/collapse.js";
 import "../assets/nav.scss";
 import classNames from "classnames";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Modal from "./Modal";
 import Modal2 from "./Modal2";
 
 export default function Nav() {
   const [isActive, setIsActive] = useState(false);
+
+  let navigateTo = useNavigate();
 
   return (
     <>
@@ -30,28 +33,23 @@ export default function Nav() {
           >
             <ul className="navbar-nav me-auto text-center fs-4">
               <li className="nav-item">
-                <a className="nav-link px-3" href="#">
+                <a className="nav-link px-3" href="/about">
                   About
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link px-3" href="#">
+                <a className="nav-link px-3" href="/service">
                   Service
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link px-3" href="#">
+                <a className="nav-link px-3" href="/news">
                   News
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link px-3" href="#">
+                <a className="nav-link px-3" href="/contact">
                   Contact
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link px-3" href="#">
-                  Router
                 </a>
               </li>
             </ul>
