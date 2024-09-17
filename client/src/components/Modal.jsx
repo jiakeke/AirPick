@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import userService from "../services/userService";
+import { useNavigate } from "react-router-dom";
 
 export default function Modal() {
   const [user, setUser] = useState({
@@ -41,11 +42,14 @@ export default function Modal() {
     setPasswordInvalidMessage("");
   };
 
+  let navigateTo = useNavigate();
+
   const logIn = (e) => {
     e.preventDefault();
     if (validateForm()) {
       console.log("log in OK");
       console.log(userService.getAllUsers());
+      navigateTo("/loginok");
     } else {
       console.log("log in error");
     }
