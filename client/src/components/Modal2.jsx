@@ -56,6 +56,11 @@ export default function Modal2() {
     setemailInvalidMessage("");
   };
 
+  const handleCategoryChange = (e) => {
+    const { name, value } = e.target;
+    setUser((user) => ({ ...user, [name]: value }));
+  }
+
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
     setUser((user) => ({ ...user, [name]: value }));
@@ -75,7 +80,7 @@ export default function Modal2() {
         password: user.password,
         email: user.email,
         phone: "user_phone",
-        category: "user_categoty",
+        category: user.category,
         balance: 1,
       });
       console.log("sign in OK");
@@ -343,8 +348,10 @@ export default function Modal2() {
                         <input
                           className="form-check-input"
                           type="radio"
-                          name="flexRadioDefault"
+                          name="category"
                           id="flexRadioDefault1"
+                          value="passenger"
+                          onChange={handleCategoryChange}
                         />
                         <label
                           className="form-check-label"
@@ -357,9 +364,11 @@ export default function Modal2() {
                         <input
                           className="form-check-input"
                           type="radio"
-                          name="flexRadioDefault"
+                          name="category"
                           id="flexRadioDefault2"
                           defaultChecked=""
+                          value="driver"
+                          onChange={handleCategoryChange}
                         />
                         <label
                           className="form-check-label"
