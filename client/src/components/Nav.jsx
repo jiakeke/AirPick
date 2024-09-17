@@ -16,7 +16,7 @@ export default function Nav() {
     <>
       <header className="navbar navbar-expand-lg bg-dark navbar-dark">
         <nav className="container">
-          <a className="navbar-brand fs-3" href="#">
+          <a className="navbar-brand fs-3" href="/">
             AirPick
           </a>
           <button

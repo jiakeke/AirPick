@@ -3,12 +3,6 @@ export default function () {
     <>
       {/* hero section start  */}
       <section id="hero" className=" position-relative overflow-hidden">
-        <div className="pattern-overlay pattern-right position-absolute">
-          <img src="" alt="pattern" />
-        </div>
-        <div className="pattern-overlay pattern-left position-absolute">
-          <img src="" alt="pattern" />
-        </div>
         <div className="container text-center py-5 mt-5">
           <div className="row my-5">
             <div className="d-flex flex-wrap flex-column justify-content-center align-items-center">
@@ -104,9 +98,6 @@ export default function () {
       </section>
       {/* testimonial section start  */}
       <section id="testimonial" className=" position-relative">
-        <div className="pattern-overlay pattern-left position-absolute">
-          <img src="" alt="pattern" />
-        </div>
         <div className="container my-5 py-5">
           <div className="swiper testimonial-swiper">
             <div className="swiper-wrapper">
@@ -290,9 +281,6 @@ export default function () {
       </section>
       {/* call-to-action section start  */}
       <section id="action" className="position-relative">
-        <div className="pattern-overlay pattern-right position-absolute">
-          <img src="" alt="pattern" />
-        </div>
         <div className="container  py-5 my-5">
           <div className="row py-5 ">
             <div className=" col-10 col-sm-8 col-lg-6">

@@ -15,12 +15,12 @@ import SignupPage from "./components/signupPage.jsx";
 function App() {
   return (
     <BrowserRouter>
+      <Nav />
       <Routes>
         <Route
           path="/"
           element={
             <>
-              <Nav />
               <Carousel />
               <Orders />
               <NewOrder />

@@ -13,12 +13,6 @@ export default function () {
     <>
       {/* hero section start  */}
       <section id="hero" className=" position-relative overflow-hidden">
-        <div className="pattern-overlay pattern-right position-absolute">
-          <img src="" alt="pattern" />
-        </div>
-        <div className="pattern-overlay pattern-left position-absolute">
-          <img src="" alt="pattern" />
-        </div>
         <div className="container text-center py-5 mt-5">
           <div className="row my-5">
             <div className="d-flex flex-wrap flex-column justify-content-center align-items-center">
