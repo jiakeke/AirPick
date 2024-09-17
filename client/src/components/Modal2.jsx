@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import PrivacyPolicy from "./PrivacyPolicy";
 import { useNavigate } from "react-router-dom";
+import userService from "../services/userService";
 
 export default function Modal2() {
   const [user, setUser] = useState({
@@ -66,26 +67,17 @@ export default function Modal2() {
   let navigateTo = useNavigate();
 
   const signUp = (e) => {
-    e.preventDefault();
-
     if (validateForm()) {
       console.log(user.email + "" + user.password);
-      axios
-        .post("http://localhost:4000/api/users", {
-          first_name: user.first_name,
-          last_name: user.last_name,
-          password: user.password,
-          email: user.email,
-          phone: "user_phone",
-          category: "user_categoty",
-          balance: 1,
-        })
-        .then((response) => {
-          console.log("Success:", response.data);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+      userService.createUser({
+        first_name: user.first_name,
+        last_name: user.last_name,
+        password: user.password,
+        email: user.email,
+        phone: "user_phone",
+        category: "user_categoty",
+        balance: 1,
+      });
       console.log("sign in OK");
       navigateTo("/signupok");
     } else {

@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Nav from "./components/Nav.jsx";
 import Carousel from "./components/Carousel";
 import Orders from "./components/Orders";
+import NewOrder from "./components/NewOrder.jsx";
 import Map from "./components/Map";
 
 import LoginPage from "./components/LoginPage.jsx";
@@ -18,6 +19,7 @@ function App() {
               <Nav />
               <Carousel />
               <Orders />
+              <NewOrder />
             </>
           }
         />
