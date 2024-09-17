@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import userService from "../services/userService";
 
 export default function Modal() {
   const [user, setUser] = useState({
@@ -44,14 +45,7 @@ export default function Modal() {
     e.preventDefault();
     if (validateForm()) {
       console.log("log in OK");
-      axios
-        .get("http://localhost:4000/api/users")
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.error("There was an error!", error);
-        });
+      console.log(userService.getAllUsers());
     } else {
       console.log("log in error");
     }
