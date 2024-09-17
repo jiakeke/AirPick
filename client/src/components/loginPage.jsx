@@ -1,3 +1,3 @@
 export default function LoginPage() {
-  return <>123123123123123</>;
+  return <h1>Login Succeed</h1>;
 }
