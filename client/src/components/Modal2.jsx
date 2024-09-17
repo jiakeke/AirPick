@@ -350,6 +350,7 @@ export default function Modal2() {
                           type="radio"
                           name="category"
                           id="flexRadioDefault1"
+                          defaultChecked="checked"
                           value="passenger"
                           onChange={handleCategoryChange}
                         />
@@ -366,7 +367,6 @@ export default function Modal2() {
                           type="radio"
                           name="category"
                           id="flexRadioDefault2"
-                          defaultChecked=""
                           value="driver"
                           onChange={handleCategoryChange}
                         />
