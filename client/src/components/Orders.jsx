@@ -31,8 +31,7 @@ export default function Orders() {
             {/*Start order list*/}
             {/* Single Job */}
             {orders.map((order, index) => (
-              <>
-                <div className="single-job" key={order.Id}>
+                <div className="single-job" key={index}>
                   <div className="job-image">
                     <img src={order.img || "assets/images/jobs/img8.png"} alt="Order" />
                   </div>
@@ -62,8 +61,6 @@ export default function Orders() {
                     </ul>
                   </div>
                 </div>
-                {/* End Single Job */}
-              </>
             ))}
           </div>
         </div>
