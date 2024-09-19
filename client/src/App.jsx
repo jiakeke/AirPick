@@ -11,7 +11,7 @@ import Map from "./components/Map";
 
 import LoginPage from "./components/LoginPage.jsx";
 import SignupPage from "./components/signupPage.jsx";
-import UserForm from "./components/UserList.jsx";
+import UserForm from "./components/UserForm.jsx";
 
 function App() {
   return (
@@ -25,7 +25,7 @@ function App() {
               <Carousel />
               <Orders />
               <NewOrder />
-              {/* <UserForm/> */}
+              <UserForm />
             </>
           }
         />
