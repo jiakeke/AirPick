@@ -1,10 +1,11 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const orderRouter = require("./routes/orderRouter");
 const userRouter = require("./routes/userRouter");
 const connectDB = require("./config/db");
 const {requestLogger,unknownEndpoint,errorHandler} = require("./middleware/customMiddleware");
-
+const authenticateToken=require("./middleware/authenticateToken");
 connectDB();
 
 
@@ -14,6 +15,7 @@ app.use(requestLogger);
 
 let cors = require("cors");
 app.use(cors());
+// app.use(authenticateToken);
 
 // ==== Set up the routers below ======
 app.use('/api/users',userRouter);

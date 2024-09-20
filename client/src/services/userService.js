@@ -1,8 +1,39 @@
 // src/services/userService.js
-import axios from 'axios';
+// const axios =require('axios') ;
+import axios from "axios";
+
 
 const BASE_URL = 'http://localhost:4000/api/users';
 // const userId="66e939d2b5d08ae24758029d";
+
+
+// login
+
+const userLogin=async(email,password)=>{
+      try {
+        const res=await axios.post(`${BASE_URL}/login`,{email,password});
+        const {user,token}=res.data;
+        localStorage.setItem('token',token);
+        console.log('Login successful');
+      } catch (error) {
+        console.error('Login failed',error.res?.data?.message||error.message)
+      }
+
+}
+
+// userRegist
+
+const userRegist=async (first_name,last_name,email,password,category)=>{
+ try {
+   const res=await axios.post(`${BASE_URL}/regist`,{first_name,last_name,email,password,category});
+   return {status:res.status,data:res.data};
+ } catch (error) {
+  console.error('Error regist users:', error);
+    throw error;  
+ }
+
+
+}
 
 // 获取所有用户
  const getAllUsers = async () => {
@@ -28,9 +59,14 @@ const BASE_URL = 'http://localhost:4000/api/users';
 
 // GET /:userId
 
-const getUserById=async (userId)=>{
+const getUser=async ()=>{
+      const token=localStorage.getItem('token')
     try {
-        const response=await axios.get(`${BASE_URL}/${userId}`);
+        const response=await axios.get(BASE_URL,{
+          headers:{
+            Authorization: `Bearer ${token}`
+          }
+        });
         return {status:response.status,data:response.data};
     } catch (error) {
         return res.status(500).json({ message: 'Server error', error: error.message });
@@ -39,9 +75,14 @@ const getUserById=async (userId)=>{
 
 
 // 更新用户
- const updateUser = async (userId, userData) => {
+ const updateUser = async (userData) => {
+    const token=localStorage.getItem('token')
   try {
-    const response = await axios.put(`${BASE_URL}/${userId}`, userData);
+    const response = await axios.put(BASE_URL, userData,{
+      headers:{
+        Authorization: `Bearer ${token}`
+      }
+    });
     return {status:response.status,data:response.data};
   } catch (error) {
     console.error('Error updating user:', error);
@@ -51,8 +92,13 @@ const getUserById=async (userId)=>{
 
 // 删除用户
  const deleteUser = async (userId) => {
+  const token=localStorage.getItem('token')
   try {
-    const response = await axios.delete(`${BASE_URL}/${userId}`);
+    const response = await axios.delete(`${BASE_URL}/${userId}`,{
+      headers:{
+        Authorization: `Bearer ${token}`
+      }
+    });
     return {status:response.status,data:response.data};
   } catch (error) {
     console.error('Error deleting user:', error);
@@ -62,9 +108,19 @@ const getUserById=async (userId)=>{
 
 
 export default {
-    getAllUsers,
-    createUser,
+    // getAllUsers,
+    // createUser,
     updateUser,
-    deleteUser,
-    getUserById,
+    // deleteUser,
+    getUser,
+    userLogin,
+    userRegist,
   };
+
+
+  // module.exports = {
+  //   updateUser,
+  //   getUser,
+  //   userLogin,
+  //   userRegist,
+  // };
