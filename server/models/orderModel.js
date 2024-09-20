@@ -83,6 +83,16 @@ const orderSchema = new Schema(
         type: String,
         enum: ['new', 'ongoing', 'completed', 'cancelled'],
         default: 'new'
+    },
+
+    driverCompleted: {
+        type: Boolean,
+        default: false
+    },
+
+      passengerCompleted: {
+        type: Boolean,
+        default: false
     }
   },
   { timestamps: true }
