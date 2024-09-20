@@ -90,7 +90,7 @@ const orderSchema = new Schema(
         default: false
     },
 
-      passengerCompleted: {
+    passengerCompleted: {
         type: Boolean,
         default: false
     }
