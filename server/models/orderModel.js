@@ -81,7 +81,7 @@ const orderSchema = new Schema(
 
     status: {
         type: String,
-        enum: ['new', 'ongoing', 'completed', 'cancelled'],
+        enum: ['new', 'pending', 'ongoing', 'completed', 'cancelled'],
         default: 'new'
     },
 
