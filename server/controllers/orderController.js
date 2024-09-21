@@ -69,10 +69,156 @@ const deleteOrder = async (req, res) => {
   }
 };
 
+// Order status workflow
+// Driver accepts order -> status from "new" to "pending"
+const acceptOrder = async (req, res) => {
+  const { orderId } = req.params;
+  const userId = req.user.id;
+  const userCategory = req.user.category;
+
+  if (userCategory !== 'driver') {
+    return res.status(403).json({ message: 'Only drivers can accept orders' });
+  }
+
+  try {
+    const order = await Order.findById(orderId);
+
+    if (!order || order.status !== 'new') {
+      return res.status(400).json({ message: 'Order cannot be accepted' });
+    }
+
+    order.status = 'pending';
+    order.driver = userId;
+
+    await order.save();
+    res.json({ message: 'Order accepted', order });
+  } catch (error) {
+    res.status(500).json({ message: 'Error accepting order', error });
+  }
+};
+
+// Driver cancel order
+const cancelOrderByDriver = async (req, res) => {
+const { orderId } = req.params;
+const userCategory = req.user.category;
+if (userCategory == 'driver') {
+  const driverId = req.user.id;
+
+  try {
+      const order = await Order.findOneAndUpdate(
+      { _id: orderId, driverId: driverId, status: 'pending' },
+      { driverId: null, status: 'new' },
+      { new: true }
+      );
+
+      if (!order) {
+      return res.status(400).json({ message: 'Order cannot be cancelled' });
+      }
+
+      res.json({ message: 'Order is now available again', order });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error cancelling order' });
+  }
+}
+};
+
+// Passenger cancel order
+const cancelOrderByPassenger = async (req, res) => {
+const { orderId } = req.params;
+const passengerId = req.user.id;
+
+try {
+  const order = await Order.findOneAndUpdate(
+    { _id: orderId, passengerId: passengerId, status: { $in: ['new', 'ongoing'] } },
+    { driverId: null, status: 'cancelled', updatedAt: Date.now() },
+    { new: true }
+  );
+
+  if (!order) {
+    return res.status(400).json({ message: 'Order cannot be cancelled' });
+  }
+
+  if (order.driverId) {
+    sendNotificationToDriver(order.driverId, { message: 'Passenger cancelled the order' });
+  }
+
+  res.json({ message: 'Order cancelled successfully', order });
+} catch (error) {
+  console.error(error);
+  res.status(500).json({ message: 'Error cancelling order' });
+}
+};
+
+// Driver starts order -> status from "pending" to "ongoing"
+const startOrder = async (req, res) => {
+  const { orderId } = req.params;
+  const userId = req.user.id; 
+  const userRole = req.user.role; 
+
+  if (userRole !== 'driver') {
+    return res.status(403).json({ message: 'Only drivers can start orders' });
+  }
+
+  try {
+    const order = await Order.findById(orderId);
+
+    if (!order || order.status !== 'pending' || order.driverId.toString() !== userId) {
+      return res.status(400).json({ message: 'Order cannot be started' });
+    }
+
+    order.status = 'ongoing';
+    order.updatedAt = Date.now();
+
+    await order.save();
+    res.json({ message: 'Order started', order });
+  } catch (error) {
+    res.status(500).json({ message: 'Error starting order', error });
+  }
+};
+
+// Driver completes or stops order
+const completeOrStopOrder = async (req, res) => {
+  const { orderId } = req.params;
+  const { action } = req.body; // action: 'complete' or 'stop'
+  const userId = req.user.id; 
+  const userRole = req.user.role; 
+
+  if (userRole !== 'driver') {
+    return res.status(403).json({ message: 'Only drivers can complete or stop orders' });
+  }
+
+  try {
+    const order = await Order.findById(orderId);
+
+    if (!order || order.status !== 'ongoing' || order.driverId.toString() !== userId) {
+      return res.status(400).json({ message: 'Action cannot be performed' });
+    }
+
+    if (action === 'complete') {
+      order.status = 'completed';
+    } else if (action === 'stop') {
+      order.status = 'pending';
+    }
+
+    order.updatedAt = Date.now();
+    await order.save();
+
+    res.json({ message: `Order ${action}d`, order });
+  } catch (error) {
+    res.status(500).json({ message: `Error ${action}ing order`, error });
+  }
+};
+
 module.exports = {
   getAllOrder,
   createOrder,
   getOrderById,
   updateOrder,
   deleteOrder,
+  acceptOrder,
+  cancelOrderByDriver,
+  cancelOrderByPassenger,
+  startOrder,
+  completeOrStopOrder
 };
