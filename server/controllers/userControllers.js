@@ -1,6 +1,9 @@
 const User = require("../models/userModel")
+require("dotenv").config();
 const encryption = require("../utils/encryption")
+const jwt = require('jsonwebtoken');
 const mongoose = require("mongoose");
+const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
 // GET /users
 const getAllUsers = async (req, res) => {
     try {
@@ -22,7 +25,7 @@ const userRegist = async (req, res) => {
     const hashPassword = await encryption.hashPassword(password);
     try {
         const newUser = await User.create({ first_name: first_name,last_name:last_name, password: hashPassword, email: email,category:category })
-        res.status(201).json(newUser)
+        res.status(201).json({user:newUser})
     } catch (error) {
         res.status(400).json({ message: "Failed to regist user", error: error.message });
     }
@@ -43,7 +46,10 @@ const userLogin = async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid  password' });
         }
-        return res.status(200).json({ message: 'Login successful', user });
+
+        const token=jwt.sign({userId:user._id,email:user.email},JWT_SECRET,{expiresIn:'1h'})
+
+        return res.status(200).json({ message: 'Login successful', user,token });
     }
     catch (error) {
         return res.status(500).json({ message: 'Server error', error: error.message });
@@ -65,8 +71,8 @@ const createUser = async (req, res) => {
 }
 //GET /users/:userId
 
-const getUserById = async (req, res) => {
-    const { userId } = req.params;
+const getUser = async (req, res) => {
+    const { userId } = req.user;
     if (!mongoose.Types.ObjectId.isValid(userId)) {
         return res.status(400).json({ message: "Invalid user ID" });
     }
@@ -86,7 +92,7 @@ const getUserById = async (req, res) => {
 //POST /users/:userId
 
 const updateUser = async (req, res) => {
-    const { userId } = req.params;
+    const { userId } = req.user;
     if (!mongoose.Types.ObjectId.isValid(userId)) {
         return res.status(400).json({ message: "Invalid user ID" });
     }
@@ -126,11 +132,11 @@ const deleteUser = async (req, res) => {
     }
 }
 module.exports = {
-    getAllUsers,
-    createUser,
-    getUserById,
+    // getAllUsers,
+    // createUser,
+    getUser,
     updateUser,
-    deleteUser,
+    // deleteUser,
     userRegist,
     userLogin,
 };
