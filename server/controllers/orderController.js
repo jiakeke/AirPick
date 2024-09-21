@@ -77,7 +77,7 @@ const acceptOrder = async (req, res) => {
   const userCategory = req.user.category;
 
   if (userCategory !== 'driver') {
-    return res.status(403).json({ message: 'Only drivers can accept orders' });
+    return res.status(403).json({ message: 'Invalid user type' });
   }
 
   try {
@@ -99,55 +99,55 @@ const acceptOrder = async (req, res) => {
 
 // Driver cancel order
 const cancelOrderByDriver = async (req, res) => {
-const { orderId } = req.params;
-const userCategory = req.user.category;
-if (userCategory == 'driver') {
-  const driverId = req.user.id;
+  const { orderId } = req.params;
+  const userCategory = req.user.category;
+  if (userCategory !== 'driver') {
+    return res.status(403).json({ message: 'Invalid user type' });
+  }
 
   try {
-      const order = await Order.findOneAndUpdate(
-      { _id: orderId, driverId: driverId, status: 'pending' },
-      { driverId: null, status: 'new' },
-      { new: true }
-      );
+    const order = await Order.findOneAndUpdate(
+    { _id: orderId, driverId: driverId, status: 'pending' },
+    { driverId: null, status: 'new' },
+    { new: true }
+    );
 
-      if (!order) {
+    if (!order) {
       return res.status(400).json({ message: 'Order cannot be cancelled' });
-      }
+    }
 
-      res.json({ message: 'Order is now available again', order });
+    res.json({ message: 'Order is now available again', order });
   } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Error cancelling order' });
   }
-}
 };
 
 // Passenger cancel order
 const cancelOrderByPassenger = async (req, res) => {
-const { orderId } = req.params;
-const passengerId = req.user.id;
+  const { orderId } = req.params;
+  const passengerId = req.user.id;
 
-try {
-  const order = await Order.findOneAndUpdate(
-    { _id: orderId, passengerId: passengerId, status: { $in: ['new', 'ongoing'] } },
-    { driverId: null, status: 'cancelled', updatedAt: Date.now() },
-    { new: true }
-  );
+  try {
+    const order = await Order.findOneAndUpdate(
+      { _id: orderId, passengerId: passengerId, status: { $in: ['new', 'pending'] } },
+      { driverId: null, status: 'cancelled', updatedAt: Date.now() },
+      { new: true }
+    );
 
-  if (!order) {
-    return res.status(400).json({ message: 'Order cannot be cancelled' });
+    if (!order) {
+      return res.status(400).json({ message: 'Order cannot be cancelled' });
+    }
+
+    if (order.driverId) {
+      sendNotificationToDriver(order.driverId, { message: 'Passenger cancelled the order' });
+    }
+
+    res.json({ message: 'Order cancelled successfully', order });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error cancelling order' });
   }
-
-  if (order.driverId) {
-    sendNotificationToDriver(order.driverId, { message: 'Passenger cancelled the order' });
-  }
-
-  res.json({ message: 'Order cancelled successfully', order });
-} catch (error) {
-  console.error(error);
-  res.status(500).json({ message: 'Error cancelling order' });
-}
 };
 
 // Driver starts order -> status from "pending" to "ongoing"
