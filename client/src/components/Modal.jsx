@@ -48,7 +48,7 @@ export default function Modal() {
     e.preventDefault();
     if (validateForm()) {
       console.log("log in OK");
-      console.log(userService.getAllUsers());
+      console.log(userService.userLogin(user.email, user.password));
       navigateTo("/loginok");
     } else {
       console.log("log in error");

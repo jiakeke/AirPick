@@ -59,7 +59,7 @@ export default function Modal2() {
   const handleCategoryChange = (e) => {
     const { name, value } = e.target;
     setUser((user) => ({ ...user, [name]: value }));
-  }
+  };
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
@@ -74,15 +74,13 @@ export default function Modal2() {
   const signUp = (e) => {
     if (validateForm()) {
       console.log(user.email + "" + user.password);
-      userService.createUser({
-        first_name: user.first_name,
-        last_name: user.last_name,
-        password: user.password,
-        email: user.email,
-        phone: "user_phone",
-        category: user.category,
-        balance: 1,
-      });
+      userService.userRegist(
+        user.first_name,
+        user.last_name,
+        user.email,
+        user.password,
+        user.category
+      );
       console.log("sign in OK");
       navigateTo("/signupok");
     } else {
