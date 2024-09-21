@@ -73,7 +73,7 @@ const deleteOrder = async (req, res) => {
 // Driver accepts order -> status from "new" to "pending"
 const acceptOrder = async (req, res) => {
   const { orderId } = req.params;
-  const userId = req.user.id;
+  const userId = req.user.userId;
   const userCategory = req.user.category;
 
   if (userCategory !== 'driver') {
@@ -101,14 +101,15 @@ const acceptOrder = async (req, res) => {
 const cancelOrderByDriver = async (req, res) => {
   const { orderId } = req.params;
   const userCategory = req.user.category;
+  const driverId = req.user.userId;
   if (userCategory !== 'driver') {
     return res.status(403).json({ message: 'Invalid user type' });
   }
 
   try {
     const order = await Order.findOneAndUpdate(
-    { _id: orderId, driverId: driverId, status: 'pending' },
-    { driverId: null, status: 'new' },
+    { _id: orderId, driver: driverId, status: 'pending' },
+    { driver: null, status: 'new' },
     { new: true }
     );
 
@@ -126,11 +127,15 @@ const cancelOrderByDriver = async (req, res) => {
 // Passenger cancel order
 const cancelOrderByPassenger = async (req, res) => {
   const { orderId } = req.params;
-  const passengerId = req.user.id;
+  const userCategory = req.user.category;
+  const passengerId = req.user.userId;
+  if (userCategory !== 'passenger') {
+    return res.status(403).json({ message: 'Invalid user type' });
+  }
 
   try {
     const order = await Order.findOneAndUpdate(
-      { _id: orderId, passengerId: passengerId, status: { $in: ['new', 'pending'] } },
+      { _id: orderId, passenger: passengerId, status: { $in: ['new', 'pending'] } },
       { driverId: null, status: 'cancelled', updatedAt: Date.now() },
       { new: true }
     );
@@ -153,17 +158,17 @@ const cancelOrderByPassenger = async (req, res) => {
 // Driver starts order -> status from "pending" to "ongoing"
 const startOrder = async (req, res) => {
   const { orderId } = req.params;
-  const userId = req.user.id; 
-  const userRole = req.user.role; 
+  const userId = req.user.userId; 
+  const userCategory = req.user.category; 
 
-  if (userRole !== 'driver') {
+  if (userCategory !== 'driver') {
     return res.status(403).json({ message: 'Only drivers can start orders' });
   }
 
   try {
     const order = await Order.findById(orderId);
 
-    if (!order || order.status !== 'pending' || order.driverId.toString() !== userId) {
+    if (!order || order.status !== 'pending' || order.driver.toString() !== userId) {
       return res.status(400).json({ message: 'Order cannot be started' });
     }
 
@@ -173,7 +178,7 @@ const startOrder = async (req, res) => {
     await order.save();
     res.json({ message: 'Order started', order });
   } catch (error) {
-    res.status(500).json({ message: 'Error starting order', error });
+    res.status(500).json({ message: 'Error starting order', error: error.message });
   }
 };
 
@@ -181,17 +186,17 @@ const startOrder = async (req, res) => {
 const completeOrStopOrder = async (req, res) => {
   const { orderId } = req.params;
   const { action } = req.body; // action: 'complete' or 'stop'
-  const userId = req.user.id; 
-  const userRole = req.user.role; 
+  const userId = req.user.userId; 
+  const userCategory = req.user.category;  
 
-  if (userRole !== 'driver') {
+  if (userCategory !== 'driver') {
     return res.status(403).json({ message: 'Only drivers can complete or stop orders' });
   }
 
   try {
     const order = await Order.findById(orderId);
 
-    if (!order || order.status !== 'ongoing' || order.driverId.toString() !== userId) {
+    if (!order || order.status !== 'ongoing' || order.driver.toString() !== userId) {
       return res.status(400).json({ message: 'Action cannot be performed' });
     }
 

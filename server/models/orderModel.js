@@ -67,7 +67,7 @@ const orderSchema = new Schema(
     driver: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: null
+        default: null
     },
 
     comments: {
