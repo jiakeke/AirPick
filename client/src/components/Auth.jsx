@@ -16,7 +16,7 @@ export default function Auth({token, setToken}) {
                     className="nav-link px-3"
                     href="#"
                     data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
+                    data-bs-target="#loginModal"
                   >
                     Login
                   </a>
@@ -26,7 +26,7 @@ export default function Auth({token, setToken}) {
                 type="button"
                 className="btn btn-outline-primary nav-button mx-3 text-white bg-dark text-nowrap"
                 data-bs-toggle="modal"
-                data-bs-target="#exampleModal2"
+                data-bs-target="#registerModal"
               >
                 Sign up
               </button>

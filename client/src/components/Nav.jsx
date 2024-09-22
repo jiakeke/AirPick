@@ -5,8 +5,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Auth from "./Auth.jsx";
 
-import Modal from "./Modal";
-import Modal2 from "./Modal2";
+import Login from "./Login";
+import Register from "./Register";
 
 
 export default function Nav({token, setToken}) {
@@ -57,8 +57,8 @@ export default function Nav({token, setToken}) {
             <Auth token={token} setToken={setToken} />
           </section>
         </nav>
-        <Modal setToken={setToken} />
-        <Modal2 setToken={setToken} />
+        <Login setToken={setToken} />
+        <Register setToken={setToken} />
       </header>
     </>
   );

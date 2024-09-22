@@ -4,7 +4,7 @@ import axios from "axios";
 import userService from "../services/userService";
 import { useNavigate } from "react-router-dom";
 
-export default function Modal({setToken}) {
+export default function Login({setToken}) {
   const closeRef = useRef();
   const [user, setUser] = useState({
     first_name: "",
@@ -47,7 +47,7 @@ export default function Modal({setToken}) {
 
   let navigateTo = useNavigate();
 
-  const logIn = (e) => {
+  const loginHandler = (e) => {
     e.preventDefault();
     if (validateForm()) {
       userService.userLogin({
@@ -90,7 +90,7 @@ export default function Modal({setToken}) {
     <>
       <div
         className="modal fade"
-        id="exampleModal"
+        id="loginModal"
         tabIndex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
@@ -119,7 +119,7 @@ export default function Modal({setToken}) {
                       className="btn btn-outline-primary text-uppercase me-3 active"
                       id="nav-sign-in-tab"
                       data-bs-toggle="modal"
-                      data-bs-target="#exampleModal"
+                      data-bs-target="#loginModal"
                       type="button"
                     >
                       Log In
@@ -128,7 +128,7 @@ export default function Modal({setToken}) {
                       className="btn btn-outline-primary text-uppercase"
                       id="nav-register-tab"
                       data-bs-toggle="modal"
-                      data-bs-target="#exampleModal2"
+                      data-bs-target="#registerModal"
                       type="button"
                     >
                       Sign Up
@@ -224,7 +224,7 @@ export default function Modal({setToken}) {
                           type="checkbox"
                           required=""
                           className="d-inline"
-                        />
+                        />&nbsp;
                         <span className="label-body text-black">
                           Remember Me
                         </span>
@@ -233,7 +233,7 @@ export default function Modal({setToken}) {
                         <button
                           type="submit"
                           className="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6"
-                          onClick={logIn}
+                          onClick={loginHandler}
                         >
                           Log In
                         </button>

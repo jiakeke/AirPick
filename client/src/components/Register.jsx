@@ -5,7 +5,7 @@ import PrivacyPolicy from "./PrivacyPolicy";
 import { useNavigate } from "react-router-dom";
 import userService from "../services/userService";
 
-export default function Modal2({setToken}) {
+export default function Register({setToken}) {
   const closeRef = useRef();
   const [user, setUser] = useState({
     first_name: "",
@@ -74,7 +74,7 @@ export default function Modal2({setToken}) {
 
   let navigateTo = useNavigate();
 
-  const signUp = (e) => {
+  const registerHandler = (e) => {
     if (validateForm()) {
       userService.userRegist({
         first_name: user.first_name,
@@ -156,7 +156,7 @@ export default function Modal2({setToken}) {
     <>
       <div
         className="modal fade"
-        id="exampleModal2"
+        id="registerModal"
         tabIndex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
@@ -185,7 +185,7 @@ export default function Modal2({setToken}) {
                       className="btn btn-outline-primary text-uppercase me-3"
                       id="nav-sign-in-tab"
                       data-bs-toggle="modal"
-                      data-bs-target="#exampleModal"
+                      data-bs-target="#loginModal"
                       type="button"
                     >
                       Log In
@@ -194,7 +194,7 @@ export default function Modal2({setToken}) {
                       className="btn btn-outline-primary text-uppercase active"
                       id="nav-register-tab"
                       data-bs-toggle="modal"
-                      data-bs-target="#exampleModal2"
+                      data-bs-target="#registerModal"
                       type="button"
                     >
                       Sign Up
@@ -429,7 +429,7 @@ export default function Modal2({setToken}) {
                       <button
                         type="button"
                         className="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6"
-                        onClick={signUp}
+                        onClick={registerHandler}
                       >
                         Sign Up
                       </button>
