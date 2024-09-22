@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useRef } from 'react';
 import axios from "axios";
 import PrivacyPolicy from "./PrivacyPolicy";
 import { useNavigate } from "react-router-dom";
 import userService from "../services/userService";
 
 export default function Modal2() {
+  const closeRef = useRef();
   const [user, setUser] = useState({
     first_name: "",
     last_name: "",
@@ -12,10 +14,11 @@ export default function Modal2() {
     confirmPassword: "",
     email: "",
     phone: "",
-    category: "",
+    category: "passenger",
     balance: "",
   });
 
+  const [APIErrorMessage, setAPIErrorMessage] = useState("");
   const [emailValid, setEmailValid] = useState(null);
   const [passwordStrength, setPasswordStrength] = useState(null);
   const [emailInvalidMessage, setemailInvalidMessage] = useState("");
@@ -73,18 +76,21 @@ export default function Modal2() {
 
   const signUp = (e) => {
     if (validateForm()) {
-      console.log(user.email + "" + user.password);
-      userService.createUser({
+      userService.userRegist({
         first_name: user.first_name,
         last_name: user.last_name,
         password: user.password,
         email: user.email,
-        phone: "user_phone",
         category: user.category,
-        balance: 1,
+      }).then( (response) => {
+          if (response.status != 201){
+              setAPIErrorMessage(response.data);
+          } else {
+              setAPIErrorMessage("Successful registration!");
+              closeRef.current.click();
+              navigateTo("/signupok");
+          }
       });
-      console.log("sign in OK");
-      navigateTo("/signupok");
     } else {
       console.log("sign in error");
     }
@@ -157,6 +163,7 @@ export default function Modal2() {
                 className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
+                ref={closeRef}
               ></button>
             </div>
             <div className="modal-body">
@@ -198,6 +205,11 @@ export default function Modal2() {
                   aria-labelledby="nav-register-tab2"
                 >
                   <form id="form4" className="form-group flex-wrap p-3">
+                    <div className="form-label">
+                        <small style={{ color: "red" }}>
+                          {APIErrorMessage}
+                        </small>
+                    </div>
                     <div className="form-label">
                       <div className="row">
                         <div className="col-md-6">
@@ -393,7 +405,7 @@ export default function Modal2() {
                       />
                       <span className="label-body text-black">
                         I agree to the
-                        <a
+                        &nbsp;<a
                           href="#"
                           className="text-black password border-bottom"
                           data-bs-toggle="modal"
