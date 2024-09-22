@@ -53,6 +53,14 @@ The project aims to develop an Airport Pickup Service Platform that allows custo
 - [Sprint 1 (04.09.2024)](./docs/AirPick-Presentation-1st.pptx)
 - [Sprint 2 (18.09.2024)](./docs/AirPick-Presentation-2nd.pptx)
 
+
+## DOTENV
+- Copy the `.env.example` to `.env` and set the variables inside.
+- Never put the `.env` into repository.
+
+## Database
+- Set the mongoDB connection link in .env first.
+
 ## Directory Structure
 
 - AirPick
