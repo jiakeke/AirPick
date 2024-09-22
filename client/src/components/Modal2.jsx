@@ -5,7 +5,7 @@ import PrivacyPolicy from "./PrivacyPolicy";
 import { useNavigate } from "react-router-dom";
 import userService from "../services/userService";
 
-export default function Modal2() {
+export default function Modal2({setToken}) {
   const closeRef = useRef();
   const [user, setUser] = useState({
     first_name: "",
@@ -86,13 +86,19 @@ export default function Modal2() {
           if (response.status != 201){
               setAPIErrorMessage(response.data);
           } else {
-              setAPIErrorMessage("Successful registration!");
+              setAPIErrorMessage("");
+
+              userService.userLogin({
+                email: user.email,
+                password: user.password,
+                setToken: setToken,
+              });
               closeRef.current.click();
-              navigateTo("/signupok");
+              navigateTo("/");
           }
       });
     } else {
-      console.log("sign in error");
+      console.log("Sign up error");
     }
   };
 

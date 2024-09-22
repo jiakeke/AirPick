@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useRef } from 'react';
 import axios from "axios";
 import userService from "../services/userService";
 import { useNavigate } from "react-router-dom";
 
-export default function Modal() {
+export default function Modal({setToken}) {
+  const closeRef = useRef();
   const [user, setUser] = useState({
     first_name: "",
     last_name: "",
@@ -14,6 +16,7 @@ export default function Modal() {
     balance: "",
   });
 
+  const [APIErrorMessage, setAPIErrorMessage] = useState("");
   const [emailValid, setEmailValid] = useState(null);
   const [passwordStrength, setPasswordStrength] = useState(null);
   const [emailInvalidMessage, setemailInvalidMessage] = useState("");
@@ -47,9 +50,19 @@ export default function Modal() {
   const logIn = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("log in OK");
-      console.log(userService.getAllUsers());
-      navigateTo("/loginok");
+      userService.userLogin({
+        email: user.email,
+        password: user.password,
+        setToken: setToken,
+      }).then( (response) => {
+          if (response.status != 200){
+              setAPIErrorMessage(response.data);
+          } else {
+              setAPIErrorMessage("");
+              closeRef.current.click();
+              navigateTo("/");
+          }
+      });
     } else {
       console.log("log in error");
     }
@@ -90,6 +103,7 @@ export default function Modal() {
                 className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
+                ref={closeRef}
               ></button>
             </div>
             <div className="modal-body">
@@ -133,6 +147,11 @@ export default function Modal() {
                   >
                     <form id="form1" className="form-group flex-wrap p-3">
                       {/*Form to write email*/}
+                      <div className="form-label">
+                          <small style={{ color: "red" }}>
+                            {APIErrorMessage}
+                          </small>
+                      </div>
                       <div className="form-input col-lg-12 my-4">
                         <label
                           htmlFor="exampleInputEmail1"

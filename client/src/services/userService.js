@@ -9,14 +9,17 @@ const BASE_URL = 'http://localhost:4000/api/users';
 
 // login
 
-const userLogin=async(email,password)=>{
+const userLogin=async({email,password, setToken})=>{
       try {
         const res=await axios.post(`${BASE_URL}/login`,{email,password});
-        const {user,token}=res.data;
+        const {user, token}=res.data;
         localStorage.setItem('token',token);
+        setToken(token);
         console.log('Login successful');
+        return {status:res.status, data:res.data.message};
       } catch (error) {
-        console.error('Login failed',error.res?.data?.message||error.message)
+          return {status:error.response.status, data:error.response.data.message};
+        //console.error('Login failed',error.res?.data?.message||error.message)
       }
 
 }

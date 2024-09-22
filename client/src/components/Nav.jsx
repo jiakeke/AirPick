@@ -3,13 +3,14 @@ import "../assets/nav.scss";
 import classNames from "classnames";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Auth from "./Auth.jsx";
 
 import Modal from "./Modal";
 import Modal2 from "./Modal2";
 
-export default function Nav() {
-  const [isActive, setIsActive] = useState(false);
 
+export default function Nav({token, setToken}) {
+  const [isActive, setIsActive] = useState(false);
   let navigateTo = useNavigate();
 
   return (
@@ -53,32 +54,11 @@ export default function Nav() {
                 </a>
               </li>
             </ul>
-            <div className="d-flex mt-5 mt-lg-0 ps-xl-5 align-items-center justify-content-center">
-              <ul className="navbar-nav justify-content-end align-items-center">
-                <li className="nav-item">
-                  <a
-                    className="nav-link px-3"
-                    href="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
-                  >
-                    Login
-                  </a>
-                </li>
-              </ul>
-              <button
-                type="button"
-                className="btn btn-outline-primary nav-button mx-3 text-white bg-dark text-nowrap"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal2"
-              >
-                Sign up
-              </button>
-            </div>
+            <Auth token={token} setToken={setToken} />
           </section>
         </nav>
-        <Modal />
-        <Modal2 />
+        <Modal setToken={setToken} />
+        <Modal2 setToken={setToken} />
       </header>
     </>
   );
