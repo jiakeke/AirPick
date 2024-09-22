@@ -23,13 +23,13 @@ const userLogin=async(email,password)=>{
 
 // userRegist
 
-const userRegist=async (first_name,last_name,email,password,category)=>{
+const userRegist=async ({first_name,last_name,email,password,category})=>{
  try {
    const res=await axios.post(`${BASE_URL}/regist`,{first_name,last_name,email,password,category});
-   return {status:res.status,data:res.data};
+   return {status:res.status, data:res.data};
  } catch (error) {
-  console.error('Error regist users:', error);
-    throw error;  
+     return {status:error.response.status, data:error.response.data.message};
+    //throw error;  
  }
 
 

@@ -132,7 +132,7 @@ const deleteUser = async (req, res) => {
     }
 }
 module.exports = {
-    // getAllUsers,
+    //getAllUsers,
     // createUser,
     getUser,
     updateUser,
