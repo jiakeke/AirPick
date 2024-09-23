@@ -13,10 +13,12 @@ import Map from "./components/Map";
 import UserForm from "./components/UserList.jsx";
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [isAuthed, setIsAuthed] = useState(
+    JSON.parse(localStorage.getItem("user"))  || false);
+    //console.log(isAuthed.category);
   return (
     <BrowserRouter>
-      <Nav token={token} setToken={setToken}/>
+      <Nav isAuthed={isAuthed} setIsAuthed={setIsAuthed}/>
       <Routes>
         <Route
           path="/"

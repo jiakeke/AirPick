@@ -9,12 +9,12 @@ const BASE_URL = 'http://localhost:4000/api/users';
 
 // login
 
-const userLogin=async({email,password, setToken})=>{
+const userLogin=async({email,password, setIsAuthed})=>{
       try {
         const res=await axios.post(`${BASE_URL}/login`,{email,password});
-        const {user, token}=res.data;
-        localStorage.setItem('token',token);
-        setToken(token);
+        const {user}=res.data;
+        localStorage.setItem('user', JSON.stringify(user));
+        setIsAuthed(true);
         console.log('Login successful');
         return {status:res.status, data:res.data.message};
       } catch (error) {
@@ -63,11 +63,11 @@ const userRegist=async ({first_name,last_name,email,password,category})=>{
 // GET /:userId
 
 const getUser=async ()=>{
-      const token=localStorage.getItem('token')
+      const user=localStorage.getItem('user')
     try {
         const response=await axios.get(BASE_URL,{
           headers:{
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${user.token}`
           }
         });
         return {status:response.status,data:response.data};
@@ -79,11 +79,11 @@ const getUser=async ()=>{
 
 // 更新用户
  const updateUser = async (userData) => {
-    const token=localStorage.getItem('token')
+    const user=localStorage.getItem('user')
   try {
     const response = await axios.put(BASE_URL, userData,{
       headers:{
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${user.token}`
       }
     });
     return {status:response.status,data:response.data};
@@ -95,11 +95,11 @@ const getUser=async ()=>{
 
 // 删除用户
  const deleteUser = async (userId) => {
-  const token=localStorage.getItem('token')
+  const user=localStorage.getItem('user')
   try {
     const response = await axios.delete(`${BASE_URL}/${userId}`,{
       headers:{
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${user.token}`
       }
     });
     return {status:response.status,data:response.data};
