@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import userService from "../services/userService";
 import "bootstrap/dist/css/bootstrap.css";
 
-const userId = "66f04457ff98d2887d0c6722";
 const UserForm = ({ userId }) => {
   const [user, setUser] = useState();
   const [isLoading, setIsLoading] = useState(true);
