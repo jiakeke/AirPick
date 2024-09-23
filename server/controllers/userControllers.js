@@ -20,7 +20,7 @@ const userRegist = async (req, res) => {
     const { first_name,last_name, email,password,category } = req.body;
     const existUser = await mongoose.models.User.findOne({ email: email });
     if (existUser) {
-        return res.status(400).json({ message: "Username already exists." });
+        return res.status(400).json({ message: "Email already exists." });
     }
     const hashPassword = await encryption.hashPassword(password);
     try {
@@ -35,16 +35,18 @@ const userRegist = async (req, res) => {
 // GET /api/user/login
 
 const userLogin = async (req, res) => {
+    console.log("user logging in");
+    console.log(req.body);
     const { email, password } = req.body;
     try {
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({ message: 'Invalid email ' });
+            return res.status(400).json({ message: 'Invalid Email or Password.' });
         }
     
         const isMatch = await encryption.comparePasswords(password,user.password);
         if (!isMatch) {
-            return res.status(400).json({ message: 'Invalid  password' });
+            return res.status(400).json({ message: 'Invalid  Email or Password' });
         }
 
         const token=jwt.sign({userId:user._id,email:user.email,category: user.category},JWT_SECRET,{expiresIn:'1h'})
@@ -132,7 +134,7 @@ const deleteUser = async (req, res) => {
     }
 }
 module.exports = {
-    // getAllUsers,
+    //getAllUsers,
     // createUser,
     getUser,
     updateUser,

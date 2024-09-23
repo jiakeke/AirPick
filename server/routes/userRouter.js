@@ -17,7 +17,7 @@ const {
 
 router.post('/regist',userRegist)
 
-router.get('/login',userLogin)
+router.post('/login',userLogin)
 
 router.get('/',authenticateToken,getUser)
 
