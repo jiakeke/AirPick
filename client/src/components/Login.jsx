@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useRef } from "react";
 import axios from "axios";
 import userService from "../services/userService";
 import { useNavigate } from "react-router-dom";
 
-export default function Modal() {
+export default function Login({ setToken }) {
+  const closeRef = useRef();
   const [user, setUser] = useState({
     first_name: "",
     last_name: "",
@@ -14,6 +16,7 @@ export default function Modal() {
     balance: "",
   });
 
+  const [APIErrorMessage, setAPIErrorMessage] = useState("");
   const [emailValid, setEmailValid] = useState(null);
   const [passwordStrength, setPasswordStrength] = useState(null);
   const [emailInvalidMessage, setemailInvalidMessage] = useState("");
@@ -44,12 +47,24 @@ export default function Modal() {
 
   let navigateTo = useNavigate();
 
-  const logIn = (e) => {
+  const loginHandler = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("log in OK");
-      console.log(userService.userLogin(user.email, user.password));
-      navigateTo("/loginok");
+      userService
+        .userLogin({
+          email: user.email,
+          password: user.password,
+          setToken: setToken,
+        })
+        .then((response) => {
+          if (response.status != 200) {
+            setAPIErrorMessage(response.data);
+          } else {
+            setAPIErrorMessage("");
+            closeRef.current.click();
+            navigateTo("/");
+          }
+        });
     } else {
       console.log("log in error");
     }
@@ -77,7 +92,7 @@ export default function Modal() {
     <>
       <div
         className="modal fade"
-        id="exampleModal"
+        id="loginModal"
         tabIndex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
@@ -90,6 +105,7 @@ export default function Modal() {
                 className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
+                ref={closeRef}
               ></button>
             </div>
             <div className="modal-body">
@@ -105,7 +121,7 @@ export default function Modal() {
                       className="btn btn-outline-primary text-uppercase me-3 active"
                       id="nav-sign-in-tab"
                       data-bs-toggle="modal"
-                      data-bs-target="#exampleModal"
+                      data-bs-target="#loginModal"
                       type="button"
                     >
                       Log In
@@ -114,7 +130,7 @@ export default function Modal() {
                       className="btn btn-outline-primary text-uppercase"
                       id="nav-register-tab"
                       data-bs-toggle="modal"
-                      data-bs-target="#exampleModal2"
+                      data-bs-target="#registerModal"
                       type="button"
                     >
                       Sign Up
@@ -133,6 +149,11 @@ export default function Modal() {
                   >
                     <form id="form1" className="form-group flex-wrap p-3">
                       {/*Form to write email*/}
+                      <div className="form-label">
+                        <small style={{ color: "red" }}>
+                          {APIErrorMessage}
+                        </small>
+                      </div>
                       <div className="form-input col-lg-12 my-4">
                         <label
                           htmlFor="exampleInputEmail1"
@@ -206,6 +227,7 @@ export default function Modal() {
                           required=""
                           className="d-inline"
                         />
+                        &nbsp;
                         <span className="label-body text-black">
                           Remember Me
                         </span>
@@ -214,7 +236,7 @@ export default function Modal() {
                         <button
                           type="submit"
                           className="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6"
-                          onClick={logIn}
+                          onClick={loginHandler}
                         >
                           Log In
                         </button>

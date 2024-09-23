@@ -5,7 +5,7 @@ import PrivacyPolicy from "./PrivacyPolicy";
 import { useNavigate } from "react-router-dom";
 import userService from "../services/userService";
 
-export default function Modal2() {
+export default function Register({ setToken }) {
   const closeRef = useRef();
   const [user, setUser] = useState({
     first_name: "",
@@ -74,7 +74,7 @@ export default function Modal2() {
 
   let navigateTo = useNavigate();
 
-  const signUp = (e) => {
+  const registerHandler = (e) => {
     if (validateForm()) {
       userService
         .userRegist({
@@ -88,13 +88,19 @@ export default function Modal2() {
           if (response.status != 201) {
             setAPIErrorMessage(response.data);
           } else {
-            setAPIErrorMessage("Successful registration!");
+            setAPIErrorMessage("");
+
+            userService.userLogin({
+              email: user.email,
+              password: user.password,
+              setToken: setToken,
+            });
             closeRef.current.click();
-            navigateTo("/signupok");
+            navigateTo("/");
           }
         });
     } else {
-      console.log("sign in error");
+      console.log("Sign up error");
     }
   };
 
@@ -152,7 +158,7 @@ export default function Modal2() {
     <>
       <div
         className="modal fade"
-        id="exampleModal2"
+        id="registerModal"
         tabIndex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
@@ -181,7 +187,7 @@ export default function Modal2() {
                       className="btn btn-outline-primary text-uppercase me-3"
                       id="nav-sign-in-tab"
                       data-bs-toggle="modal"
-                      data-bs-target="#exampleModal"
+                      data-bs-target="#loginModal"
                       type="button"
                     >
                       Log In
@@ -190,7 +196,7 @@ export default function Modal2() {
                       className="btn btn-outline-primary text-uppercase active"
                       id="nav-register-tab"
                       data-bs-toggle="modal"
-                      data-bs-target="#exampleModal2"
+                      data-bs-target="#registerModal"
                       type="button"
                     >
                       Sign Up
@@ -423,7 +429,7 @@ export default function Modal2() {
                       <button
                         type="button"
                         className="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6"
-                        onClick={signUp}
+                        onClick={registerHandler}
                       >
                         Sign Up
                       </button>
