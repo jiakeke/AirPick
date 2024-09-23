@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useRef } from 'react';
+import { useRef } from "react";
 import axios from "axios";
 import userService from "../services/userService";
 import { useNavigate } from "react-router-dom";
 
-export default function Login({setIsAuthed}) {
+export default function Login({ setIsAuthed }) {
   const closeRef = useRef();
   const [user, setUser] = useState({
     first_name: "",
@@ -50,19 +50,21 @@ export default function Login({setIsAuthed}) {
   const loginHandler = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      userService.userLogin({
-        email: user.email,
-        password: user.password,
-        setIsAuthed: setIsAuthed,
-      }).then( (response) => {
-          if (response.status != 200){
-              setAPIErrorMessage(response.data);
+      userService
+        .userLogin({
+          email: user.email,
+          password: user.password,
+          setIsAuthed: setIsAuthed,
+        })
+        .then((response) => {
+          if (response.status != 200) {
+            setAPIErrorMessage(response.data);
           } else {
-              setAPIErrorMessage("");
-              closeRef.current.click();
-              navigateTo("/");
+            setAPIErrorMessage("");
+            closeRef.current.click();
+            navigateTo("/");
           }
-      });
+        });
     } else {
       console.log("log in error");
     }
@@ -148,9 +150,9 @@ export default function Login({setIsAuthed}) {
                     <form id="form1" className="form-group flex-wrap p-3">
                       {/*Form to write email*/}
                       <div className="form-label">
-                          <small style={{ color: "red" }}>
-                            {APIErrorMessage}
-                          </small>
+                        <small style={{ color: "red" }}>
+                          {APIErrorMessage}
+                        </small>
                       </div>
                       <div className="form-input col-lg-12 my-4">
                         <label
@@ -224,7 +226,8 @@ export default function Login({setIsAuthed}) {
                           type="checkbox"
                           required=""
                           className="d-inline"
-                        />&nbsp;
+                        />
+                        &nbsp;
                         <span className="label-body text-black">
                           Remember Me
                         </span>

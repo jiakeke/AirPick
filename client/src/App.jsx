@@ -10,15 +10,16 @@ import News from "./components/News.jsx";
 import Contact from "./components/Contact.jsx";
 import Map from "./components/Map";
 
-import UserForm from "./components/UserList.jsx";
+import UserForm from "./components/UserForm.jsx";
 
 function App() {
   const [isAuthed, setIsAuthed] = useState(
-    JSON.parse(localStorage.getItem("user"))  || false);
-    //console.log(isAuthed.category);
+    JSON.parse(localStorage.getItem("user")) || false
+  );
+  //console.log(isAuthed.category);
   return (
     <BrowserRouter>
-      <Nav isAuthed={isAuthed} setIsAuthed={setIsAuthed}/>
+      <Nav isAuthed={isAuthed} setIsAuthed={setIsAuthed} />
       <Routes>
         <Route
           path="/"
@@ -27,7 +28,7 @@ function App() {
               <Carousel />
               <Orders />
               <NewOrder />
-              {/* <UserForm/> */}
+              <UserForm />
             </>
           }
         />
