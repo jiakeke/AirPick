@@ -12,7 +12,7 @@ const UserForm = ({ userId }) => {
 
   const fetchUserById = async () => {
     try {
-      const res = await userService.getUserById(userId);
+      const res = await userService.getUser();
       if (res.status === 200) {
         setUser(res.data);
         setIsLoading(false);
@@ -39,8 +39,9 @@ const UserForm = ({ userId }) => {
 
   const saveUser = async () => {
     setIsSaving(true);
+    console.log(user);
     try {
-      const response = await userService.updateUser(userId, user); // 假设 updateUser 是更新用户数据的API
+      const response = await userService.updateUser(user); // 假设 updateUser 是更新用户数据的API
       if (response.status === 200) {
         alert("User updated successfully");
       } else {
