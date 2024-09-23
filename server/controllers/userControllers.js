@@ -42,26 +42,26 @@ const userRegist = async (req, res) => {
 
 const userLogin = async (req, res) => {
   console.log("user logging in");
-  console.log(req.body);
   const { email, password } = req.body;
   try {
-    const user = await User.findOne({ email });
-    if (!user) {
+    const user_ = await User.findOne({ email });
+    if (!user_) {
       return res.status(400).json({ message: "Invalid Email or Password." });
     }
 
-    const isMatch = await encryption.comparePasswords(password, user.password);
+    const isMatch = await encryption.comparePasswords(password, user_.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid  Email or Password" });
     }
 
     const token = jwt.sign(
-      { userId: user._id, email: user.email },
+      { userId: user_._id, email: user_.email },
       JWT_SECRET,
       { expiresIn: "1h" }
     );
+    const user = { email: user_.email, category: user_.category, token: token };
 
-    return res.status(200).json({ message: "Login successful", user, token });
+    return res.status(200).json({ message: "Login successful", user });
   } catch (error) {
     return res
       .status(500)
