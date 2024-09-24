@@ -28,7 +28,6 @@ function App() {
               <Carousel />
               <Orders />
               <NewOrder />
-              <UserForm />
             </>
           }
         />
@@ -36,6 +35,7 @@ function App() {
         <Route path="/service" element={<Service />} />
         <Route path="/news" element={<News />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/profile" element={<UserForm />} />
       </Routes>
     </BrowserRouter>
   );
