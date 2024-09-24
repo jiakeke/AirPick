@@ -5,7 +5,7 @@ import PrivacyPolicy from "./PrivacyPolicy";
 import { useNavigate } from "react-router-dom";
 import userService from "../services/userService";
 
-export default function Register({setToken}) {
+export default function Register({setIsAuthed}) {
   const closeRef = useRef();
   const [user, setUser] = useState({
     first_name: "",
@@ -91,7 +91,7 @@ export default function Register({setToken}) {
               userService.userLogin({
                 email: user.email,
                 password: user.password,
-                setToken: setToken,
+                setIsAuthed: setIsAuthed,
               });
               closeRef.current.click();
               navigateTo("/");

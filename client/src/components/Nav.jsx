@@ -9,7 +9,7 @@ import Login from "./Login";
 import Register from "./Register";
 
 
-export default function Nav({token, setToken}) {
+export default function Nav({isAuthed, setIsAuthed}) {
   const [isActive, setIsActive] = useState(false);
   let navigateTo = useNavigate();
 
@@ -54,11 +54,11 @@ export default function Nav({token, setToken}) {
                 </a>
               </li>
             </ul>
-            <Auth token={token} setToken={setToken} />
+            <Auth isAuthed={isAuthed} setIsAuthed={setIsAuthed}/>
           </section>
         </nav>
-        <Login setToken={setToken} />
-        <Register setToken={setToken} />
+        <Login setIsAuthed={setIsAuthed} />
+        <Register setIsAuthed={setIsAuthed} />
       </header>
     </>
   );

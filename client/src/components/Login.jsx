@@ -4,7 +4,7 @@ import axios from "axios";
 import userService from "../services/userService";
 import { useNavigate } from "react-router-dom";
 
-export default function Login({setToken}) {
+export default function Login({setIsAuthed}) {
   const closeRef = useRef();
   const [user, setUser] = useState({
     first_name: "",
@@ -53,7 +53,7 @@ export default function Login({setToken}) {
       userService.userLogin({
         email: user.email,
         password: user.password,
-        setToken: setToken,
+        setIsAuthed: setIsAuthed,
       }).then( (response) => {
           if (response.status != 200){
               setAPIErrorMessage(response.data);
