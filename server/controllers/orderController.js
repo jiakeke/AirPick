@@ -12,8 +12,20 @@ const getAllOrder = async (req, res) => {
 
 // Create new order
 const createOrder = async (req, res) => {
+  const userId = req.user.userId;
+  const userCategory = req.user.category;
+
+  if (userCategory !== 'passenger') {
+    return res.status(403).json({ message: 'Only passengers can create orders' });
+  }
+
   try {
-    const newOrder = new Order(req.body);
+    const newOrder = new Order({
+      ...req.body,
+      passenger: userId,
+      status: 'new',
+    });
+
     const savedOrder = await newOrder.save();
     res.status(201).json(savedOrder);
   } catch (error) {
@@ -70,6 +82,44 @@ const deleteOrder = async (req, res) => {
 };
 
 // Order status workflow
+// Passenger updates own order
+const updateOrderByPassenger = async (req, res) => {
+  const { orderId } = req.params;
+  const userCategory = req.user.category;
+  const passengerId = req.user.userId;
+
+  if (userCategory !== 'passenger') {
+    return res.status(403).json({ message: 'Invalid user type' });
+  }
+
+  try {
+    const order = await Order.findOne({ _id: orderId, passenger: passengerId });
+
+    if (!order || order.status !== 'new') {
+      return res.status(400).json({ message: 'Order cannot be modified' });
+    }
+
+    const updatedFields = {
+      departure: req.body.departure,
+      destination: req.body.destination,
+      persons: req.body.persons,
+      luggages: req.body.luggages,
+      comments: req.body.comments,
+      updatedAt: Date.now()
+    };
+
+    const updatedOrder = await Order.findByIdAndUpdate(orderId, updatedFields, { new: true, runValidators: true });
+
+    if (updatedOrder) {
+      res.json({ message: 'Order updated successfully', order: updatedOrder });
+    } else {
+      res.status(404).json({ message: 'Order not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating order', error });
+  }
+};
+
 // Driver accepts order -> status from "new" to "pending"
 const acceptOrder = async (req, res) => {
   const { orderId } = req.params;
@@ -221,6 +271,7 @@ module.exports = {
   getOrderById,
   updateOrder,
   deleteOrder,
+  updateOrderByPassenger,
   acceptOrder,
   cancelOrderByDriver,
   cancelOrderByPassenger,

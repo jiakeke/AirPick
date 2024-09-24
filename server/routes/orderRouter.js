@@ -7,6 +7,7 @@ const {
     getOrderById,
     updateOrder,
     deleteOrder,
+    updateOrderByPassenger,
     acceptOrder,
     cancelOrderByDriver,
     cancelOrderByPassenger,
@@ -14,11 +15,12 @@ const {
     completeOrStopOrder,
 }=require("../controllers/orderController")
 
-router.get('/', getAllOrder);
-router.post('/', createOrder);
+router.get('/', getAllOrder);//
+router.post('/:userId', authenticateToken, createOrder);
 router.get('/:orderId', getOrderById);
 router.put('/:orderId', updateOrder);
-router.delete('/:orderId', deleteOrder);
+router.delete('/:orderId', deleteOrder);//
+router.put('/update/:orderId', authenticateToken, updateOrderByPassenger);
 router.put('/accept/:orderId', authenticateToken, acceptOrder);
 router.put('/cancel/driver/:orderId', authenticateToken, cancelOrderByDriver);
 router.put('/cancel/passenger/:orderId', authenticateToken, cancelOrderByPassenger);
