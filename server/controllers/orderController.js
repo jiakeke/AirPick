@@ -10,6 +10,57 @@ const getAllOrder = async (req, res) => {
   }
 };
 
+// Get all new ordera
+const getAvailableOrders = async (req, res) => {
+  const userCategory = req.user.category;
+
+  if (userCategory !== 'driver') {
+    return res.status(403).json({ message: 'Only drivers can view available orders' });
+  }
+
+  try {
+    const availableOrders = await Order.find({ status: 'new' });
+
+    if (availableOrders.length === 0) {
+      return res.status(404).json({ message: 'No available orders found' });
+    }
+
+    res.json(availableOrders);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to retrieve available orders', error });
+  }
+};
+
+// Get user orders
+const getOrdersByUser = async (req, res) => {
+  const userId = req.user.userId;
+  const userCategory = req.user.category;
+
+  try {
+    let orders;
+    
+    if (userCategory === 'passenger') {
+      orders = await Order.find({ passenger: userId });
+    } else if (userCategory === 'driver') {
+      orders = await Order.find({ driver: userId });
+    } else {
+      return res.status(403).json({ message: 'Invalid user type' });
+    }
+
+    const categorizedOrders = {
+      new: orders.filter(order => order.status === 'new'),
+      pending: orders.filter(order => order.status === 'pending'),
+      ongoing: orders.filter(order => order.status === 'ongoing'),
+      completed: orders.filter(order => order.status === 'completed'),
+      cancelled: orders.filter(order => order.status === 'cancelled'),
+    };
+
+    res.json(categorizedOrders);
+  } catch (error) {
+    res.status(500).json({ message: 'Error retrieving orders', error });
+  }
+};
+
 // Create new order
 const createOrder = async (req, res) => {
   const userId = req.user.userId;
@@ -271,6 +322,8 @@ module.exports = {
   getOrderById,
   updateOrder,
   deleteOrder,
+  getAvailableOrders,
+  getOrdersByUser,
   updateOrderByPassenger,
   acceptOrder,
   cancelOrderByDriver,

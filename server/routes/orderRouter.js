@@ -7,6 +7,8 @@ const {
     getOrderById,
     updateOrder,
     deleteOrder,
+    getAvailableOrders,
+    getOrdersByUser,
     updateOrderByPassenger,
     acceptOrder,
     cancelOrderByDriver,
@@ -16,6 +18,8 @@ const {
 }=require("../controllers/orderController")
 
 router.get('/', getAllOrder);//
+router.get('/orderlist', authenticateToken, getAvailableOrders);
+router.get('/myorder', authenticateToken, getOrdersByUser);
 router.post('/:userId', authenticateToken, createOrder);
 router.get('/:orderId', getOrderById);
 router.put('/:orderId', updateOrder);
