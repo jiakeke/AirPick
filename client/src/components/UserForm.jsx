@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import userService from "../services/userService";
 import "bootstrap/dist/css/bootstrap.css";
 
-const userId = "66f04457ff98d2887d0c6722";
 const UserForm = ({ userId }) => {
   const [user, setUser] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -57,7 +56,9 @@ const UserForm = ({ userId }) => {
   if (error) return <div>{error}</div>;
   return (
     <div className="container mt-5">
-      <h2 className="">Edit User</h2>
+      <div className="d-flex flex-wrap flex-column justify-content-center align-items-center">
+        <h1 className="page-title display-3 mt-5">Edit User</h1>
+      </div>
       <div className="mb-3 row">
         <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
           Email
