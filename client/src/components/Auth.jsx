@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
 
-export default function Auth({token, setToken}) {
+export default function Auth({isAuthed, setIsAuthed}) {
   let navigateTo = useNavigate();
   const logOut = () => {
-      localStorage.removeItem('token');
-      setToken();
+      localStorage.removeItem('user');
+      setIsAuthed();
   }
-  if (!token) {
+  if (!isAuthed) {
       return (
         <>
             <div className="d-flex mt-5 mt-lg-0 ps-xl-5 align-items-center justify-content-center">
