@@ -14,7 +14,7 @@ const userLogin=async({email,password, setIsAuthed})=>{
         const res=await axios.post(`${BASE_URL}/login`,{email,password});
         const {user}=res.data;
         localStorage.setItem('user', JSON.stringify(user));
-        setIsAuthed(true);
+        setIsAuthed(user);
         console.log('Login successful');
         return {status:res.status, data:res.data.message};
       } catch (error) {

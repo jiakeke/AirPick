@@ -4,25 +4,28 @@ import "../assets/newOrder.css";
 
 export default function NewOrderPage() {
   const [newOrder, setNewOrder] = useState({
-    category: 'pick', // default pick
+    category: 'pick',
     departure: '',
     destination: '',
     persons: 0,
     luggages: 0,
     flight: '',
     date: '',
-    passenger: '1',
-    driver: '2',
     comments: '',
     price: 0,
-    status: 'new',
   });
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user.token;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:4000/api/orders', newOrder);
-      // Optionally reset form fields after submission
+      const response = await axios.post(`http://localhost:4000/api/orders/`, newOrder, {
+        headers: {
+          Authorization: `token: ${token}`
+        }
+      });
       setNewOrder({
         category: 'pick',
         departure: '',
@@ -31,12 +34,10 @@ export default function NewOrderPage() {
         luggages: 0,
         flight: '',
         date: '',
-        passenger: '1',
-        driver: '2',
         comments: '',
         price: 0,
-        status: 'new',
       });
+      console.log("Order created:", response.data);
     } catch (error) {
       console.error("Error creating order:", error);
     }
@@ -63,53 +64,50 @@ export default function NewOrderPage() {
     <div className="new-order-form">
       <h2 className="section-title">Create a New Order</h2>
 
-      {/* Form to create a new order */}
       <form onSubmit={handleSubmit}>
-        {/* Radio buttons for type (pick/drop) */}
-        
         <label htmlFor="category">Category</label>
-            <div className="radio-group">
-            <label>
-                <input
-                type="radio"
-                name="category"
-                value="pick"
-                checked={newOrder.category === 'pick'}
-                onChange={handleTypeChange}
-                />
-                Pick
-            </label>
-            <label>
-                <input
-                type="radio"
-                name="category"
-                value="drop"
-                checked={newOrder.category === 'drop'}
-                onChange={handleTypeChange}
-                />
-                Drop
-            </label>
-            </div>
-        
+        <div className="radio-group">
+          <label>
+            <input
+              type="radio"
+              name="category"
+              value="pick"
+              checked={newOrder.category === 'pick'}
+              onChange={handleTypeChange}
+            />
+            Pick
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="category"
+              value="drop"
+              checked={newOrder.category === 'drop'}
+              onChange={handleTypeChange}
+            />
+            Drop
+          </label>
+        </div>
+
         <label htmlFor="departure">Departure</label>
         <input
           type="text"
           name="departure"
           placeholder="Departure"
-          value={newOrder.type === 'pick' ? 'Lentäjäntie 3, 01530 Vantaa' : newOrder.departure}
+          value={newOrder.category === 'pick' ? 'Lentäjäntie 3, 01530 Vantaa' : newOrder.departure}
           onChange={handleChange}
-          disabled={newOrder.type === 'pick'}
+          disabled={newOrder.category === 'pick'}
           required
         />
-        
+
         <label htmlFor="destination">Destination</label>
         <input
           type="text"
           name="destination"
           placeholder="Destination"
-          value={newOrder.type === 'drop' ? 'Lentäjäntie 3, 01530 Vantaa' : newOrder.destination}
+          value={newOrder.category === 'drop' ? 'Lentäjäntie 3, 01530 Vantaa' : newOrder.destination}
           onChange={handleChange}
-          disabled={newOrder.type === 'drop'}
+          disabled={newOrder.category === 'drop'}
           required
         />
 
