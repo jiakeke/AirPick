@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 const DriverOrdersPage = () => {
-  const [newOrders, setNewOrders] = useState([]);
+  const [newOrders, setNewOrders] = useState([{}]);
   const [myOrders, setMyOrders] = useState({
     pending: [],
     ongoing: [],
@@ -175,19 +175,21 @@ const DriverOrdersPage = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-
   return (
     <div>
       <h1>Driver Orders</h1>
       
       <div>
         <h2>Available Orders</h2>
-        {newOrders.map(order => (
-          <div key={order._id}>
-            <p>{order.departure} -{'>'} {order.destination}</p>
-            <button onClick={() => handleAcceptOrder(order._id)}>Accept</button>
-          </div>
-        ))}
+        {newOrders.length > 0 ? (
+          newOrders.map(order => (
+            <div key={order._id}>
+              <p>{order.departure} -{'>'} {order.destination}</p>
+              <button onClick={() => handleAcceptOrder(order._id)}>Accept</button>
+            </div>
+        ))) : (
+          <p>No available orders.</p>
+        )}
       </div>
 
       <div>

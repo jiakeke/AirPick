@@ -54,11 +54,6 @@ const PassengerOrdersPage = () => {
     }
   };
 
-  const handleUpdateOrder = (order) => {
-    setCurrentOrder(order);
-    setIsModalOpen(true);
-  }
-
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -68,21 +63,26 @@ const PassengerOrdersPage = () => {
       <h1 className="section-title">Your Orders</h1>
       <div className="order-list">
         <h2>New Orders</h2>
-        {orders.new.map(order => (
+        {orders.new.map((order, index) => (
           <div key={order._id}>
             <p>{order.departure} -{'>'} {order.destination}</p>
             <button onClick={() => handleCancelOrder(order._id)}>Cancel</button>
-            <button onClick={() => handleUpdateOrder(order)}>Update</button>
+            <button
+                type="button"
+                className="btn btn-outline-primary nav-button mx-3 text-white bg-dark text-nowrap"
+                data-bs-toggle="modal"
+                data-bs-target={`#updateorder${index}`} 
+              >
+                Update
+            </button>
+            <UpdateOrder
+              order={order}
+              index={index}
+              onClose={() => document.getElementById(`updateorder${index}`).classList.remove('show')}
+            />
           </div>
         ))}
       </div>
-
-      {isModalOpen && (
-        <UpdateOrder
-          order={currentOrder} 
-          onClose={() => setIsModalOpen(false)}
-        />
-      )}
 
       <div>
         <h2>Pending Orders</h2>

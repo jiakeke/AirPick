@@ -39,12 +39,12 @@ const orderSchema = new Schema(
     },
 
     persons: {
-        type: Number,
+        type: String,
         required: true
     },
 
     luggages: {
-        type: Number,
+        type: String,
         required: true
     },
 
@@ -75,7 +75,7 @@ const orderSchema = new Schema(
     },
 
     price: {
-        type: Number,
+        type: String,
         required: true
     },
 

@@ -5,7 +5,7 @@ import "../assets/newOrder.css";
 export default function NewOrderPage() {
   const [newOrder, setNewOrder] = useState({
     category: 'pick',
-    departure: '',
+    departure: 'Lentäjäntie 3, 01530 Vantaa',
     destination: '',
     persons: 0,
     luggages: 0,
@@ -96,7 +96,7 @@ export default function NewOrderPage() {
           placeholder="Departure"
           value={newOrder.category === 'pick' ? 'Lentäjäntie 3, 01530 Vantaa' : newOrder.departure}
           onChange={handleChange}
-          disabled={newOrder.category === 'pick'}
+          readOnly={newOrder.category === 'pick'}
           required
         />
 
@@ -107,7 +107,7 @@ export default function NewOrderPage() {
           placeholder="Destination"
           value={newOrder.category === 'drop' ? 'Lentäjäntie 3, 01530 Vantaa' : newOrder.destination}
           onChange={handleChange}
-          disabled={newOrder.category === 'drop'}
+          readOnly={newOrder.category === 'drop'}
           required
         />
 
