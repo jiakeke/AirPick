@@ -69,6 +69,93 @@ const userLogin = async (req, res) => {
   }
 };
 
+
+// POST /api/user/deposit
+
+const  deposit = async (req, res) => {
+  const { userId } = req.user;
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({ message: "Invalid user ID" });
+  }
+  try {
+    const user = await User.findById(userId);
+    if (user && user.category === "passenger") {
+      let preBalance = user.balance;
+      let balance = Number(req.body.balance);
+      if (isNaN(balance)) {
+        return res.status(400).json({ message: 'Invalid balance value' });
+      }
+      if ( balance < 0) {
+        return res.status(400).json({ message: " The recharge amount cannot be less than 0!! " });
+    }
+      const newBalance =parseFloat((preBalance + balance).toFixed(2));
+      const updatedUser = await User.findByIdAndUpdate(
+        { _id: userId },
+        { balance: newBalance },
+        { new: true, overwrite: true }
+      );
+      if (updatedUser) {
+        res.status(200).json({ message: "Deposit successful!" });
+      } else {
+        res.status(404).json({ message: "User not found" });
+      }
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Failed to deposit", error: error.message });
+  }
+}; 
+
+// POST /api/user/withDrawal
+
+const withDrawal = async (req, res) => {
+  const { userId } = req.user;
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: "Invalid user ID" });
+  }
+  try {
+      const user = await User.findById(userId);
+      if (user&& user.category === "driver") {
+          let preBalance = await user.balance;
+
+          let  balance  = Number(req.body.balance)
+          if (isNaN(balance)) {
+            // Handle the error, e.g., return a response indicating invalid input
+            return res.status(400).json({ message: 'Invalid balance value' });
+          }
+          if ( balance < 0) {
+            return res.status(400).json({ message: " The withdrawal amount cannot be less than 0!! " });
+        }
+          if (preBalance < balance) {
+              return res.status(400).json({ message: " Withdrawals cannot exceed the balance!! " });
+          }
+
+          const newBalance = parseFloat((preBalance - balance).toFixed(2));
+
+          const updatedUser = await User.findByIdAndUpdate(
+              { _id: userId },
+              { balance: newBalance },
+              { new: true, overwrite: true }
+          );
+          if (updatedUser) {
+              res.status(200).json({ message: "WithDrawal successfully!" })
+          } else {
+              res.status(404).json({ message: "User not found" });
+          }
+      } else {
+          res.status(404).json({ message: "User not found" });
+      }
+
+
+
+  } catch (error) {
+      res.status(500).json({ message: "Failed to WithDrawal" , error: error.message});
+  }
+}
+
+
+
 // POST /users
 const createUser = async (req, res) => {
   try {
@@ -148,4 +235,7 @@ module.exports = {
   // deleteUser,
   userRegist,
   userLogin,
+  deposit,
+  withDrawal,
 };
+

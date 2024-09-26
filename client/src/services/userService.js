@@ -2,6 +2,7 @@
 import api from '../axios';
 
 // User Login
+// User Login
 
 const userLogin = async ({ email, password, setIsAuthed }) => {
   try {
@@ -13,7 +14,6 @@ const userLogin = async ({ email, password, setIsAuthed }) => {
     return { status: res.status, data: res.data.message };
   } catch (error) {
     return { status: error.response.status, data: error.response.data.message };
-    //console.error('Login failed',error.res?.data?.message||error.message)
   }
 };
 
@@ -41,6 +41,30 @@ const userRegist = async ({
   }
 };
 
+
+// user/deposit
+
+const deposit = async (balance) => {
+  try {
+    const response = await api.put("/api/users/deposit", { balance });
+    return { status: response.status, data: response.data };
+  } catch (error) {
+    return { status: error.response.status, data: error.response.data };
+  }
+}
+
+
+// user/withDrawal
+const withDrawal = async (balance) => {
+  try {
+    const response = await api.put("/api/users/withDrawal", { balance });
+    return { status: response.status, data: response.data };
+  } catch (error) {
+    return { status: error.response.status, data: error.response.data };
+  }
+}
+
+
 // Get the currently logged in user information
 
 const getUser = async () => {
@@ -48,6 +72,9 @@ const getUser = async () => {
     const response = await api.get("/api/users");
     return { status: response.status, data: response.data };
   } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
     return res
       .status(500)
       .json({ message: "Server error", error: error.message });
@@ -71,5 +98,6 @@ export default {
   getUser,
   userLogin,
   userRegist,
+  deposit,
+  withDrawal,
 };
-

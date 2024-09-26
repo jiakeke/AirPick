@@ -11,6 +11,8 @@ import Contact from "./components/Contact.jsx";
 import Map from "./components/Map";
 
 import UserForm from "./components/UserForm.jsx";
+import DepositForm from "./components/DepositForm.jsx";
+import WithDrawalForm from "./components/WithDrawalForm.jsx";
 
 function App() {
   const [isAuthed, setIsAuthed] = useState(
@@ -36,6 +38,8 @@ function App() {
         <Route path="/news" element={<News />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/profile" element={<UserForm />} />
+        <Route path="/deposit" element={<DepositForm />} />
+        <Route path="/withDrawal" element={<WithDrawalForm />} />
       </Routes>
     </BrowserRouter>
   );
