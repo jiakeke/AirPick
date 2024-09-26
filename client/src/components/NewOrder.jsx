@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import api from '../axios';
 import "../assets/newOrder.css";
 
 export default function NewOrderPage() {
@@ -21,7 +21,7 @@ export default function NewOrderPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:4000/api/orders', newOrder);
+      await api.post("/api/orders", newOrder);
       // Optionally reset form fields after submission
       setNewOrder({
         category: 'pick',
