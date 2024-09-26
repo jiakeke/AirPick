@@ -75,7 +75,7 @@ const UserForm = ({ userId }) => {
       </div>
 
       <div className="mb-3 row">
-        <label className="col-sm-2 col-form-label">first_name:</label>
+        <label className="col-sm-2 col-form-label">First name:</label>
         <div className="col-sm-10">
           <input
             type="text"
@@ -88,7 +88,7 @@ const UserForm = ({ userId }) => {
       </div>
 
       <div className="mb-3 row">
-        <label className="col-sm-2 col-form-label">last_name:</label>
+        <label className="col-sm-2 col-form-label">Last name:</label>
         <div className="col-sm-10">
           <input
             type="text"
@@ -101,7 +101,7 @@ const UserForm = ({ userId }) => {
       </div>
 
       <div className="mb-3 row">
-        <label className="col-sm-2 col-form-label">phone:</label>
+        <label className="col-sm-2 col-form-label">Phone:</label>
         <div className="col-sm-10">
           <input
             type="text"
@@ -109,21 +109,6 @@ const UserForm = ({ userId }) => {
             className="form-control"
             value={user.phone}
             onChange={handleChange}
-          />
-        </div>
-      </div>
-
-      <div className="mb-3 row">
-        <label htmlFor="staticCategory" className="col-sm-2 col-form-label">
-          category:
-        </label>
-        <div className="col-sm-10">
-          <input
-            type="text"
-            readOnly=""
-            className="form-control-plaintext"
-            id="staticCategory"
-            defaultValue={user.category}
           />
         </div>
       </div>
