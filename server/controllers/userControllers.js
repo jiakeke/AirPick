@@ -53,6 +53,18 @@ const userLogin = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid  Email or Password" });
     }
+  console.log("user logging in");
+  const { email, password } = req.body;
+  try {
+    const user_ = await User.findOne({ email });
+    if (!user_) {
+      return res.status(400).json({ message: "Invalid Email or Password." });
+    }
+
+    const isMatch = await encryption.comparePasswords(password, user_.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid  Email or Password" });
+    }
 
     const token = jwt.sign(
       { userId: user_._id, email: user_.email },
@@ -238,3 +250,4 @@ module.exports = {
   deposit,
   withDrawal,
 };
+

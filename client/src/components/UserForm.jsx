@@ -40,7 +40,7 @@ const UserForm = ({ userId }) => {
     setIsSaving(true);
     console.log(user);
     try {
-      const response = await userService.updateUser(user);
+      const response = await userService.updateUser(user); // 假设 updateUser 是更新用户数据的API
       if (response.status === 200) {
         alert("User updated successfully");
       } else {
@@ -56,7 +56,9 @@ const UserForm = ({ userId }) => {
   if (error) return <div>{error}</div>;
   return (
     <div className="container mt-5">
-      <h1 className="page-title display-3 mt-5">Edit User</h1>
+      <div className="d-flex flex-wrap flex-column justify-content-center align-items-center">
+        <h1 className="page-title display-3 mt-5">Edit User</h1>
+      </div>
       <div className="mb-3 row">
         <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
           Email
@@ -73,7 +75,7 @@ const UserForm = ({ userId }) => {
       </div>
 
       <div className="mb-3 row">
-        <label className="col-sm-2 col-form-label">first_name:</label>
+        <label className="col-sm-2 col-form-label">First name:</label>
         <div className="col-sm-10">
           <input
             type="text"
@@ -86,7 +88,7 @@ const UserForm = ({ userId }) => {
       </div>
 
       <div className="mb-3 row">
-        <label className="col-sm-2 col-form-label">last_name:</label>
+        <label className="col-sm-2 col-form-label">Last name:</label>
         <div className="col-sm-10">
           <input
             type="text"
@@ -99,39 +101,13 @@ const UserForm = ({ userId }) => {
       </div>
 
       <div className="mb-3 row">
-        <label className="col-sm-2 col-form-label">email:</label>
-        <div className="col-sm-10">
-          <input
-            type="text"
-            name="email"
-            className="form-control"
-            value={user.email}
-            onChange={handleChange}
-          />
-        </div>
-      </div>
-
-      <div className="mb-3 row">
-        <label className="col-sm-2 col-form-label">phone:</label>
+        <label className="col-sm-2 col-form-label">Phone:</label>
         <div className="col-sm-10">
           <input
             type="text"
             name="phone"
             className="form-control"
             value={user.phone}
-            onChange={handleChange}
-          />
-        </div>
-      </div>
-
-      <div className="mb-3 row">
-        <label className="col-sm-2 col-form-label">category:</label>
-        <div className="col-sm-10">
-          <input
-            type="text"
-            name="category"
-            className="form-control"
-            value={user.category}
             onChange={handleChange}
           />
         </div>
