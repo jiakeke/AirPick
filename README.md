@@ -58,7 +58,7 @@ The project aims to develop an Airport Pickup Service Platform that allows custo
 We encapsulate the axios instance, called api, and put it in client/src/axios.js. It can automatically add the user token to the request header. The usage is as follows:
 
  - `import api from '../axios'` //Pay attention to the reference path here
- - `const res = await api.get("/api/users")
+ - `const res = await api.get("/api/users")`
 
 ## DOTENV
 - Copy the `.env.example` to `.env` and set the variables inside.
