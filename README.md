@@ -50,7 +50,22 @@ The project aims to develop an Airport Pickup Service Platform that allows custo
 
 ## Presentation
 
-- [First(04.09.2024)](./docs/AirPick-Presentation-1st.pptx)
+- [Sprint 1 (04.09.2024)](./docs/AirPick-Presentation-1st.pptx)
+- [Sprint 2 (18.09.2024)](./docs/AirPick-Presentation-2nd.pptx)
+
+
+## API Call
+We encapsulate the axios instance, called api, and put it in client/src/axios.js. It can automatically add the user token to the request header. The usage is as follows:
+
+ - `import api from '../axios'` //Pay attention to the reference path here
+ - `const res = await api.get("/api/users")`
+
+## DOTENV
+- Copy the `.env.example` to `.env` and set the variables inside.
+- Never put the `.env` into repository.
+
+## Database
+- Set the mongoDB connection link in .env first.
 
 ## Directory Structure
 

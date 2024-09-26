@@ -19,7 +19,9 @@ const {
 
 router.post('/regist',userRegist)
 
-router.get('/login',userLogin)
+router.post('/login',userLogin)
+
+
 router.put('/deposit',authenticateToken,deposit)
 
 router.put('/withDrawal',authenticateToken,withDrawal)

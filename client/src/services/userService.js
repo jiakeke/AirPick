@@ -1,158 +1,99 @@
 // src/services/userService.js
-// const axios =require('axios') ;
-import axios from "axios";
+import api from '../axios';
 
+// User Login
 
+const userLogin = async ({ email, password, setIsAuthed }) => {
+  try {
+    const res = await api.post("/api/users/login", { email, password });
+    const { user } = res.data;
+    localStorage.setItem("user", JSON.stringify(user));
+    setIsAuthed(true);
+    console.log("Login successful");
+    return { status: res.status, data: res.data.message };
+  } catch (error) {
+    return { status: error.response.status, data: error.response.data.message };
+  }
+};
 
-const BASE_URL = 'http://localhost:4000/api/users';
-// const userId="66e939d2b5d08ae24758029d";
+// User Regist
 
+const userRegist = async ({
+  first_name,
+  last_name,
+  email,
+  password,
+  category,
+}) => {
+  try {
+    const res = await api.post("/api/users/regist", {
+      first_name,
+      last_name,
+      email,
+      password,
+      category,
+    });
+    return { status: res.status, data: res.data };
+  } catch (error) {
+    return { status: error.response.status, data: error.response.data.message };
+    //throw error;
+  }
+};
 
-// login
-
-const userLogin=async(email,password)=>{
-      try {
-        const res=await axios.post(`${BASE_URL}/login`,{email,password});
-        const {user,token}=res.data;
-        localStorage.setItem('token',token);
-        console.log('Login successful');
-      } catch (error) {
-        console.error('Login failed',error.res?.data?.message||error.message)
-      }
-
-}
-
-// userRegist
-
-const userRegist=async (first_name,last_name,email,password,category)=>{
- try {
-   const res=await axios.post(`${BASE_URL}/regist`,{first_name,last_name,email,password,category});
-   return {status:res.status,data:res.data};
- } catch (error) {
-  console.error('Error regist users:', error);
-    throw error;  
- }
-
-
-}
 
 // user/deposit
 
-const deposit=async (balance)=>{
-  const token=localStorage.getItem('token');
-  if (!token) {
-    return { status: 401, message: 'No token provided' };
+const deposit = async (balance) => {
+  try {
+    const response = await api.put("/api/users/deposit", { balance });
+    return { status: response.status, data: response.data };
+  } catch (error) {
+    return { status: error.response.status, data: error.response.data };
   }
-try {
-    const response=await axios.put(`${BASE_URL}/deposit`,{balance},{
-      headers:{
-        Authorization: `Bearer ${token}`
-      }
-    });
-    return {status:response.status,data:response.data};
-} catch (error) {
-    return res.status(500).json({ message: 'Server error', error: error.message });
-}
 }
 
 
-// 获取所有用户
- const getAllUsers = async () => {
+// user/withDrawal
+const withDrawal = async (balance) => {
   try {
-    const response = await axios.get(BASE_URL);
-    return {status:response.status,data:response.data};
+    const response = await api.put("/api/users/withDrawal", { balance });
+    return { status: response.status, data: response.data };
   } catch (error) {
-    console.error('Error fetching users:', error);
-    throw error;  
+    return { status: error.response.status, data: error.response.data };
   }
-};
-
-// 创建新用户
- const createUser = async (userData) => {
-  try {
-    const response = await axios.post(BASE_URL, userData);
-    return {status:response.status,data:response.data};
-  } catch (error) {
-    console.error('Error creating user:', error);
-    throw error;
-  }
-};
-
-// GET /:userId
-
-const getUser=async ()=>{
-      const token=localStorage.getItem('token');
-      if (!token) {
-        return { status: 401, message: 'No token provided' };
-      }
-    try {
-        const response=await axios.get(BASE_URL,{
-          headers:{
-            Authorization: `Bearer ${token}`
-          }
-        });
-        return {status:response.status,data:response.data};
-    } catch (error) {
-        return { status: 500, message: 'Server error', error: error.message };
-    }
 }
 
 
-// 更新用户
- const updateUser = async (userData) => {
-    const token=localStorage.getItem('token');
-    if (!token) {
-      return { status: 401, message: 'No token provided' };
-    }
+// Get the currently logged in user information
+
+const getUser = async () => {
   try {
-    const response = await axios.put(BASE_URL, userData,{
-      headers:{
-        Authorization: `Bearer ${token}`
-      }
-    });
-    return {status:response.status,data:response.data};
+    const response = await api.get("/api/users");
+    return { status: response.status, data: response.data };
   } catch (error) {
-    console.error('Error updating user:', error);
-    throw error;
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
   }
 };
 
-// 删除用户
- const deleteUser = async (userId) => {
-  const token=localStorage.getItem('token');
-  if (!token) {
-    return { status: 401, message: 'No token provided' };
-  }
+// Update the currently logged in user information
+const updateUser = async (userData) => {
   try {
-    const response = await axios.delete(`${BASE_URL}/${userId}`,{
-      headers:{
-        Authorization: `Bearer ${token}`
-      }
-    });
-    return {status:response.status,data:response.data};
+    const response = await api.put("/api/users", userData);
+    return { status: response.status, data: response.data };
   } catch (error) {
-    console.error('Error deleting user:', error);
+    console.error("Error updating user:", error);
     throw error;
   }
 };
 
 
 export default {
-    // getAllUsers,
-    // createUser,
-    updateUser,
-    // deleteUser,
-    getUser,
-    userLogin,
-    userRegist,
-    deposit,
-    // withDrawal,
-  };
-
-
-  // module.exports = {
-  //   updateUser,
-  //   getUser,
-  //   userLogin,
-  //   userRegist,
-  // };
+  updateUser,
+  getUser,
+  userLogin,
+  userRegist,
+  deposit,
+  withDrawal,
+};

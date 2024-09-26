@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useState } from "react";
 import Nav from "./components/Nav.jsx";
 import Carousel from "./components/Carousel";
 import Orders from "./components/Orders";
@@ -11,13 +12,20 @@ import Map from "./components/Map";
 
 import LoginPage from "./components/LoginPage.jsx";
 import SignupPage from "./components/signupPage.jsx";
-import UserForm from "./components/UserList.jsx";
+
 import Test from "./components/Test.jsx";
+import UserForm from "./components/UserForm.jsx";
+import DepositForm from "./components/DepositForm.jsx";
+import WithDrawalForm from "./components/WithDrawalForm.jsx";
 
 function App() {
+  const [isAuthed, setIsAuthed] = useState(
+    JSON.parse(localStorage.getItem("user")) || false
+  );
+  //console.log(isAuthed.category);
   return (
     <BrowserRouter>
-      <Nav />
+      <Nav isAuthed={isAuthed} setIsAuthed={setIsAuthed} />
       <Routes>
         <Route
           path="/"
@@ -26,17 +34,16 @@ function App() {
               <Carousel />
               <Orders />
               <NewOrder />
-              {/* <UserForm/> */}
-              <Test/>
             </>
           }
         />
-        <Route path="/loginok" element={<LoginPage />} />
-        <Route path="/signupok" element={<SignupPage />} />
         <Route path="/about" element={<About />} />
         <Route path="/service" element={<Service />} />
         <Route path="/news" element={<News />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/profile" element={<UserForm />} />
+        <Route path="/deposit" element={<DepositForm />} />
+        <Route path="/withDrawal" element={<WithDrawalForm />} />
       </Routes>
     </BrowserRouter>
   );
