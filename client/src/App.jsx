@@ -10,10 +10,6 @@ import News from "./components/News.jsx";
 import Contact from "./components/Contact.jsx";
 import Map from "./components/Map";
 
-import LoginPage from "./components/LoginPage.jsx";
-import SignupPage from "./components/signupPage.jsx";
-
-import Test from "./components/Test.jsx";
 import UserForm from "./components/UserForm.jsx";
 import DepositForm from "./components/DepositForm.jsx";
 import WithDrawalForm from "./components/WithDrawalForm.jsx";
