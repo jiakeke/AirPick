@@ -56,7 +56,9 @@ const UserForm = ({ userId }) => {
   if (error) return <div>{error}</div>;
   return (
     <div className="container mt-5">
-      <h1 className="page-title display-3 mt-5">Edit User</h1>
+      <div className="d-flex flex-wrap flex-column justify-content-center align-items-center">
+        <h1 className="page-title display-3 mt-5">Edit User</h1>
+      </div>
       <div className="mb-3 row">
         <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
           Email
@@ -99,19 +101,6 @@ const UserForm = ({ userId }) => {
       </div>
 
       <div className="mb-3 row">
-        <label className="col-sm-2 col-form-label">email:</label>
-        <div className="col-sm-10">
-          <input
-            type="text"
-            name="email"
-            className="form-control"
-            value={user.email}
-            onChange={handleChange}
-          />
-        </div>
-      </div>
-
-      <div className="mb-3 row">
         <label className="col-sm-2 col-form-label">phone:</label>
         <div className="col-sm-10">
           <input
@@ -125,14 +114,16 @@ const UserForm = ({ userId }) => {
       </div>
 
       <div className="mb-3 row">
-        <label className="col-sm-2 col-form-label">category:</label>
+        <label htmlFor="staticCategory" className="col-sm-2 col-form-label">
+          category:
+        </label>
         <div className="col-sm-10">
           <input
             type="text"
-            name="category"
-            className="form-control"
-            value={user.category}
-            onChange={handleChange}
+            readOnly=""
+            className="form-control-plaintext"
+            id="staticCategory"
+            defaultValue={user.category}
           />
         </div>
       </div>
