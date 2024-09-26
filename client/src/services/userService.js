@@ -3,6 +3,7 @@
 import axios from "axios";
 
 
+
 const BASE_URL = 'http://localhost:4000/api/users';
 // const userId="66e939d2b5d08ae24758029d";
 
@@ -35,6 +36,26 @@ const userRegist=async (first_name,last_name,email,password,category)=>{
 
 }
 
+// user/deposit
+
+const deposit=async (balance)=>{
+  const token=localStorage.getItem('token');
+  if (!token) {
+    return { status: 401, message: 'No token provided' };
+  }
+try {
+    const response=await axios.put(`${BASE_URL}/deposit`,{balance},{
+      headers:{
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return {status:response.status,data:response.data};
+} catch (error) {
+    return res.status(500).json({ message: 'Server error', error: error.message });
+}
+}
+
+
 // 获取所有用户
  const getAllUsers = async () => {
   try {
@@ -60,7 +81,10 @@ const userRegist=async (first_name,last_name,email,password,category)=>{
 // GET /:userId
 
 const getUser=async ()=>{
-      const token=localStorage.getItem('token')
+      const token=localStorage.getItem('token');
+      if (!token) {
+        return { status: 401, message: 'No token provided' };
+      }
     try {
         const response=await axios.get(BASE_URL,{
           headers:{
@@ -69,14 +93,17 @@ const getUser=async ()=>{
         });
         return {status:response.status,data:response.data};
     } catch (error) {
-        return res.status(500).json({ message: 'Server error', error: error.message });
+        return { status: 500, message: 'Server error', error: error.message };
     }
 }
 
 
 // 更新用户
  const updateUser = async (userData) => {
-    const token=localStorage.getItem('token')
+    const token=localStorage.getItem('token');
+    if (!token) {
+      return { status: 401, message: 'No token provided' };
+    }
   try {
     const response = await axios.put(BASE_URL, userData,{
       headers:{
@@ -92,7 +119,10 @@ const getUser=async ()=>{
 
 // 删除用户
  const deleteUser = async (userId) => {
-  const token=localStorage.getItem('token')
+  const token=localStorage.getItem('token');
+  if (!token) {
+    return { status: 401, message: 'No token provided' };
+  }
   try {
     const response = await axios.delete(`${BASE_URL}/${userId}`,{
       headers:{
@@ -115,6 +145,8 @@ export default {
     getUser,
     userLogin,
     userRegist,
+    deposit,
+    // withDrawal,
   };
 
 

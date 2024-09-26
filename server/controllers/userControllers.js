@@ -17,15 +17,15 @@ const getAllUsers = async (req, res) => {
 
 // POST /api/users/regist/
 const userRegist = async (req, res) => {
-    const { first_name,last_name, email,password,category } = req.body;
+    const { first_name, last_name, email, password, category } = req.body;
     const existUser = await mongoose.models.User.findOne({ email: email });
     if (existUser) {
         return res.status(400).json({ message: "Username already exists." });
     }
     const hashPassword = await encryption.hashPassword(password);
     try {
-        const newUser = await User.create({ first_name: first_name,last_name:last_name, password: hashPassword, email: email,category:category })
-        res.status(201).json({user:newUser})
+        const newUser = await User.create({ first_name: first_name, last_name: last_name, password: hashPassword, email: email, category: category })
+        res.status(201).json({ user: newUser })
     } catch (error) {
         res.status(400).json({ message: "Failed to regist user", error: error.message });
     }
@@ -41,21 +41,98 @@ const userLogin = async (req, res) => {
         if (!user) {
             return res.status(400).json({ message: 'Invalid email ' });
         }
-    
-        const isMatch = await encryption.comparePasswords(password,user.password);
+
+        const isMatch = await encryption.comparePasswords(password, user.password);
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid  password' });
         }
 
-        const token=jwt.sign({userId:user._id,email:user.email},JWT_SECRET,{expiresIn:'1h'})
+        const token = jwt.sign({ userId: user._id, email: user.email }, JWT_SECRET, { expiresIn: '1h' })
 
-        return res.status(200).json({ message: 'Login successful', user,token });
+        return res.status(200).json({ message: 'Login successful', user, token });
     }
     catch (error) {
         return res.status(500).json({ message: 'Server error', error: error.message });
     }
 }
 
+// POST /api/user/deposit
+
+const deposit = async (req, res) => {
+    console.log("wonadaole", req.user);
+    const { userId } = req.user;
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ message: "Invalid user ID" });
+    }
+    try {
+        const user = await User.findById(userId);
+        if (user) {
+            let preBalance = await user.balance;
+            let { balance } = req.body
+            console.log("prebalance", preBalance)
+            console.log("req.body", req.body);
+            const newBalance = preBalance + balance;
+            console.log("newBalance", newBalance)
+            const updatedUser = await User.findByIdAndUpdate(
+                { _id: userId },
+                { balance: newBalance },
+                { new: true, overwrite: true }
+            );
+            if (updatedUser) {
+                res.status(200).json(updatedUser)
+            } else {
+                res.status(404).json({ message: "User not found" });
+            }
+
+        } else {
+            res.status(404).json({ message: "User not found" });
+        }
+
+    } catch (error) {
+        res.status(500).json({ message: "Failed to deposit" });
+    }
+}
+
+
+// POST /api/user/withDrawal
+
+const withDrawal = async (req, res) => {
+    const { userId } = req.user;
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ message: "Invalid user ID" });
+    }
+    try {
+        const user = await User.findById(userId);
+        if (user) {
+            let preBalance = await user.balance;
+
+            let { balance } = req.body
+            if (preBalance < balance) {
+                return res.status(400).json({ message: " Withdrawals cannot exceed the balance!! " });
+            }
+
+            const newBalance = preBalance - balance;
+
+            const updatedUser = await User.findByIdAndUpdate(
+                { _id: userId },
+                { balance: newBalance },
+                { new: true, overwrite: true }
+            );
+            if (updatedUser) {
+                res.status(200).json(updatedUser)
+            } else {
+                res.status(404).json({ message: "User not found" });
+            }
+        } else {
+            res.status(404).json({ message: "User not found" });
+        }
+
+
+
+    } catch (error) {
+        res.status(500).json({ message: "Failed to deposit" });
+    }
+}
 
 
 
@@ -139,4 +216,6 @@ module.exports = {
     // deleteUser,
     userRegist,
     userLogin,
+    deposit,
+    withDrawal,
 };
