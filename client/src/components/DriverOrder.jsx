@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import "../assets/orders.css";
 
 const DriverOrdersPage = () => {
   const [newOrders, setNewOrders] = useState([{}]);
@@ -37,7 +38,7 @@ const DriverOrdersPage = () => {
     };
     
     fetchOrders();
-  }, [token]); // Only run this effect when the token changes
+  }, [token]);
 
   const handleAcceptOrder = async (orderId) => {
     try {
@@ -107,10 +108,17 @@ const DriverOrdersPage = () => {
           pending: prevOrders.pending.filter(order => order._id !== orderId),
         }));
         
-        setNewOrders((prevNewOrders) => [
-          ...prevNewOrders,
-          cancelledOrder,
-        ]);
+        let prevNewOrders = [];
+        if (prevNewOrders.length > 0) {
+          setNewOrders((prevNewOrders) => [
+            ...prevNewOrders,
+            cancelledOrder,
+          ])
+        } else {
+          setNewOrders(() => [
+            cancelledOrder,
+          ])
+        };
       } else {
         console.error('Failed to cancel order');
       }
@@ -176,51 +184,171 @@ const DriverOrdersPage = () => {
     return <div>Loading...</div>;
   }
   return (
-    <div>
-      <h1>Driver Orders</h1>
-      
+    <div className="container mt-5">
+      <div className="d-flex flex-wrap flex-column justify-content-center align-items-center">
+        <h1 className="page-title display-3 mt-5">Driver Orders</h1>
+      </div>
       <div>
         <h2>Available Orders</h2>
-        {newOrders.length > 0 ? (
-          newOrders.map(order => (
-            <div key={order._id}>
-              <p>{order.departure} -{'>'} {order.destination}</p>
-              <button onClick={() => handleAcceptOrder(order._id)}>Accept</button>
+        <section className="find-job job-list section">
+          <div className="container">
+            <div className="single-head">
+              {newOrders.length > 0 ? (
+                newOrders.map(order => (
+                  <div className="single-job" key={order._id}>
+                    <div className="job-content">
+                      <h4>
+                        <a href={order.url}>Category: {order.category}</a>
+                      </h4>
+                      <p>
+                        From: {order.departure} <br />
+                        To: {order.destination} <br />
+                        Passengers: {order.persons} <br />
+                        Luggages: {order.luggages}
+                      </p>
+                      <ul>
+                        <li><i className="lni lni-dollar" /> Price: ${order.price}</li>
+                      </ul>
+                      <div className="job-button">
+                        <ul>
+                          <li>
+                            <span>{order.status}</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <button onClick={() => handleAcceptOrder(order._id)} 
+                      className="btn btn-outline-primary text-uppercase me-3">
+                        Accept
+                    </button>
+                  </div>
+              ))) : (
+                <p>No available orders.</p>
+              )}
             </div>
-        ))) : (
-          <p>No available orders.</p>
-        )}
+          </div>
+        </section>
       </div>
 
       <div>
         <h2>Pending Orders</h2>
-        {myOrders.pending.map(order => (
-          <div key={order._id}>
-            <p>{order.departure} -{'>'} {order.destination}</p>
-            <button onClick={() => handleStartOrder(order._id)}>Start</button>
-            <button onClick={() => handleCancelOrder(order._id)}>Cancel</button>
+        <section className="find-job job-list section">
+          <div className="container">
+            <div className="single-head">
+              {myOrders.pending.map(order => (
+                <div className="single-job" key={order._id}>
+                  <div className="job-content">
+                    <h4>
+                      <a href={order.url}>Category: {order.category}</a>
+                    </h4>
+                    <p>
+                      From: {order.departure} <br />
+                      To: {order.destination} <br />
+                      Passengers: {order.persons} <br />
+                      Luggages: {order.luggages}
+                    </p>
+                    <ul>
+                      <li><i className="lni lni-dollar" /> Price: ${order.price}</li>
+                    </ul>
+                    <div className="job-button">
+                      <ul>
+                        <li>
+                          <span>{order.status}</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <button onClick={() => handleStartOrder(order._id)}
+                    className="btn btn-outline-primary text-uppercase me-3">
+                      Start
+                  </button>
+                  <button onClick={() => handleCancelOrder(order._id)}
+                    className="btn btn-outline-primary text-uppercase me-3">
+                      Cancel
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
+        </section>
       </div>
 
       <div>
         <h2>Ongoing Orders</h2>
-        {myOrders.ongoing.map(order => (
-          <div key={order._id}>
-            <p>{order.departure} -{'>'} {order.destination}</p>
-            <button onClick={() => handleStopOrder(order._id)}>Stop</button>
-            <button onClick={() => handleCompleteOrder(order._id)}>Complete</button>
+        <section className="find-job job-list section">
+          <div className="container">
+            <div className="single-head">
+              {myOrders.ongoing.map(order => (
+                <div className="single-job" key={order._id}>
+                  <div className="job-content">
+                    <h4>
+                      <a href={order.url}>Category: {order.category}</a>
+                    </h4>
+                    <p>
+                      From: {order.departure} <br />
+                      To: {order.destination} <br />
+                      Passengers: {order.persons} <br />
+                      Luggages: {order.luggages}
+                    </p>
+                    <ul>
+                      <li><i className="lni lni-dollar" /> Price: ${order.price}</li>
+                    </ul>
+                    <div className="job-button">
+                      <ul>
+                        <li>
+                          <span>{order.status}</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <button onClick={() => handleStopOrder(order._id)} 
+                    className="btn btn-outline-primary text-uppercase me-3">
+                      Stop
+                  </button>
+                  <button onClick={() => handleCompleteOrder(order._id)}
+                    className="btn btn-outline-primary text-uppercase me-3">
+                      Complete
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
+        </section>
       </div>
 
       <div>
         <h2>Completed Orders</h2>
-        {myOrders.completed.map(order => (
-          <div key={order._id}>
-            <p>{order.departure} -{'>'} {order.destination}</p>
+        <section className="find-job job-list section">
+          <div className="container">
+            <div className="single-head">
+              {myOrders.completed.map(order => (
+                <div className="single-job" key={order._id}>
+                  <div className="job-content">
+                    <h4>
+                      <a href={order.url}>Category: {order.category}</a>
+                    </h4>
+                    <p>
+                      From: {order.departure} <br />
+                      To: {order.destination} <br />
+                      Passengers: {order.persons} <br />
+                      Luggages: {order.luggages}
+                    </p>
+                    <ul>
+                      <li><i className="lni lni-dollar" /> Price: ${order.price}</li>
+                    </ul>
+                    <div className="job-button">
+                      <ul>
+                        <li>
+                          <span>{order.status}</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
+        </section>
       </div>
     </div>
   );

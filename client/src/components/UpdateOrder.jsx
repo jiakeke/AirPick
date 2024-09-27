@@ -44,87 +44,98 @@ export default function UpdateOrder({ order, onClose, index }) {
             ></button>
           </div>
           <div className="modal-body">
-            <form onSubmit={handleSubmit}>
-              <label htmlFor="category">Category</label>
+            <form onSubmit={handleSubmit} className="form-group flex-wrap p-3">
+              <label htmlFor="category" className="fs-6 text-uppercase fw-bold text-black">Category</label>
               <input
                 type="text"
                 name="category"
                 value={updatedOrder.category}
                 onChange={handleChange}
+                className="form-control"
                 required
               />
 
-              <label htmlFor="departure">Departure</label>
+              <label htmlFor="departure" className="fs-6 text-uppercase fw-bold text-black">Departure</label>
               <input
                 type="text"
                 name="departure"
                 value={updatedOrder.departure}
                 onChange={handleChange}
+                className="form-control"
                 required
               />
 
-              <label htmlFor="destination">Destination</label>
+              <label htmlFor="destination" className="fs-6 text-uppercase fw-bold text-black">Destination</label>
               <input
                 type="text"
                 name="destination"
                 value={updatedOrder.destination}
                 onChange={handleChange}
+                className="form-control"
                 required
               />
 
-              <label htmlFor="persons">Persons</label>
+              <label htmlFor="persons" className="fs-6 text-uppercase fw-bold text-black">Persons</label>
               <input
                 type="number"
                 name="persons"
                 value={updatedOrder.persons}
                 onChange={handleChange}
+                className="form-control"
                 required
               />
 
-              <label htmlFor="luggages">Luggages</label>
+              <label htmlFor="luggages" className="fs-6 text-uppercase fw-bold text-black">Luggages</label>
               <input
                 type="number"
                 name="luggages"
                 value={updatedOrder.luggages}
                 onChange={handleChange}
+                className="form-control"
                 required
               />
 
-              <label htmlFor="flight">Flight</label>
+              <label htmlFor="flight" className="fs-6 text-uppercase fw-bold text-black">Flight</label>
               <input
                 type="text"
                 name="flight"
                 value={updatedOrder.flight}
                 onChange={handleChange}
+                className="form-control"
                 required
               />
 
-              <label htmlFor="date">Date</label>
+              <label htmlFor="date" className="fs-6 text-uppercase fw-bold text-black">Date</label>
               <input
                 type="date"
                 name="date"
                 value={updatedOrder.date}
                 onChange={handleChange}
+                className="form-control"
                 required
               />
 
-              <label htmlFor="comments">Comments</label>
+              <label htmlFor="comments" className="fs-6 text-uppercase fw-bold text-black">Comments</label>
               <textarea
                 name="comments"
                 value={updatedOrder.comments}
                 onChange={handleChange}
+                className="form-control"
               />
 
-              <label htmlFor="price">Price</label>
+              <label htmlFor="price" className="fs-6 text-uppercase fw-bold text-black">Price</label>
               <input
                 type="number"
                 name="price"
                 value={updatedOrder.price}
                 onChange={handleChange}
+                className="form-control"
                 required
               />
 
-              <button type="submit">Update</button>
+              <div className="d-grid my-3">
+                <button type="submit" className="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6">Update</button>
+              </div>
             </form>
           </div>
         </div>
