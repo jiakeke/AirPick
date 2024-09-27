@@ -20,6 +20,7 @@ export default function Login({ setIsAuthed }) {
   const [passwordStrength, setPasswordStrength] = useState(null);
   const [emailInvalidMessage, setemailInvalidMessage] = useState("");
   const [passwordInvalidMessage, setPasswordInvalidMessage] = useState("");
+  const [rememberMeState, setRememberMeState] = useState(false);
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -33,6 +34,13 @@ export default function Login({ setIsAuthed }) {
   const handleEmailChange = (e) => {
     const { name, value } = e.target;
     setUser((user) => ({ ...user, [name]: value }));
+    console.log(rememberMeState);
+    if (rememberMeState) {
+      localStorage.setItem("userEmail", JSON.stringify(user.email));
+    } else {
+      localStorage.removeItem("userEmail", JSON.stringify(user.email));
+    }
+
     setEmailValid(validateEmail(value));
     setemailInvalidMessage("");
   };
@@ -85,6 +93,11 @@ export default function Login({ setIsAuthed }) {
       setemailInvalidMessage("Email invalid");
       return false;
     }
+  };
+
+  const handleRememberMe = () => {
+    setRememberMeState(!rememberMeState);
+    console.log(rememberMeState);
   };
 
   return (
@@ -167,6 +180,9 @@ export default function Login({ setIsAuthed }) {
                           placeholder="Email"
                           className="form-control ps-3"
                           onChange={handleEmailChange}
+                          defaultValue={JSON.parse(
+                            localStorage.getItem("userEmail")
+                          )}
                           style={{
                             borderColor:
                               emailValid === null
@@ -225,6 +241,7 @@ export default function Login({ setIsAuthed }) {
                           type="checkbox"
                           required=""
                           className="d-inline"
+                          onChange={handleRememberMe}
                         />
                         &nbsp;
                         <span className="label-body text-black">

@@ -1,5 +1,5 @@
 // src/services/userService.js
-import api from '../axios';
+import api from "../axios";
 
 // User Login
 
@@ -7,7 +7,7 @@ const userLogin = async ({ email, password, setIsAuthed }) => {
   try {
     const res = await api.post("/api/users/login", { email, password });
     const { user } = res.data;
-    localStorage.setItem("user", JSON.stringify(user));
+    sessionStorage.setItem("user", JSON.stringify(user));
     setIsAuthed(true);
     console.log("Login successful");
     return { status: res.status, data: res.data.message };
@@ -65,11 +65,9 @@ const updateUser = async (userData) => {
   }
 };
 
-
 export default {
   updateUser,
   getUser,
   userLogin,
   userRegist,
 };
-
