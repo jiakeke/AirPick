@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import api from '../axios';
 import "../assets/newOrder.css";
 
 export default function NewOrderPage() {
@@ -26,6 +26,7 @@ export default function NewOrderPage() {
           Authorization: `token: ${token}`
         }
       });
+
       setNewOrder({
         category: 'pick',
         departure: '',

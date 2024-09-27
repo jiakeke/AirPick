@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { useRef } from 'react';
-import axios from "axios";
+import { useRef } from "react";
 import PrivacyPolicy from "./PrivacyPolicy";
 import { useNavigate } from "react-router-dom";
 import userService from "../services/userService";
 
-export default function Register({setIsAuthed}) {
+export default function Register({ setIsAuthed }) {
   const closeRef = useRef();
   const [user, setUser] = useState({
     first_name: "",
@@ -62,7 +61,7 @@ export default function Register({setIsAuthed}) {
   const handleCategoryChange = (e) => {
     const { name, value } = e.target;
     setUser((user) => ({ ...user, [name]: value }));
-  }
+  };
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
@@ -76,27 +75,29 @@ export default function Register({setIsAuthed}) {
 
   const registerHandler = (e) => {
     if (validateForm()) {
-      userService.userRegist({
-        first_name: user.first_name,
-        last_name: user.last_name,
-        password: user.password,
-        email: user.email,
-        category: user.category,
-      }).then( (response) => {
-          if (response.status != 201){
-              setAPIErrorMessage(response.data);
+      userService
+        .userRegist({
+          first_name: user.first_name,
+          last_name: user.last_name,
+          password: user.password,
+          email: user.email,
+          category: user.category,
+        })
+        .then((response) => {
+          if (response.status != 201) {
+            setAPIErrorMessage(response.data);
           } else {
-              setAPIErrorMessage("");
+            setAPIErrorMessage("");
 
-              userService.userLogin({
-                email: user.email,
-                password: user.password,
-                setIsAuthed: setIsAuthed,
-              });
-              closeRef.current.click();
-              navigateTo("/");
+            userService.userLogin({
+              email: user.email,
+              password: user.password,
+              setIsAuthed: setIsAuthed,
+            });
+            closeRef.current.click();
+            navigateTo("/");
           }
-      });
+        });
     } else {
       console.log("Sign up error");
     }
@@ -212,9 +213,7 @@ export default function Register({setIsAuthed}) {
                 >
                   <form id="form4" className="form-group flex-wrap p-3">
                     <div className="form-label">
-                        <small style={{ color: "red" }}>
-                          {APIErrorMessage}
-                        </small>
+                      <small style={{ color: "red" }}>{APIErrorMessage}</small>
                     </div>
                     <div className="form-label">
                       <div className="row">
@@ -410,8 +409,8 @@ export default function Register({setIsAuthed}) {
                         }}
                       />
                       <span className="label-body text-black">
-                        I agree to the
-                        &nbsp;<a
+                        I agree to the &nbsp;
+                        <a
                           href="#"
                           className="text-black password border-bottom"
                           data-bs-toggle="modal"

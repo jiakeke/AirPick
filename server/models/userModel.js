@@ -44,7 +44,7 @@ const userSchema=new Schema(
         },
 
         balance: {
-            type: String,
+            type: Number,
             default:0
         },  
     },

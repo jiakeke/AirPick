@@ -8,14 +8,13 @@ import Auth from "./Auth.jsx";
 import Login from "./Login";
 import Register from "./Register";
 
-
-export default function Nav({isAuthed, setIsAuthed}) {
+export default function Nav({ isAuthed, setIsAuthed }) {
   const [isActive, setIsActive] = useState(false);
   let navigateTo = useNavigate();
 
   return (
     <>
-      <header className="navbar navbar-expand-lg bg-dark navbar-dark">
+      <header className="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
         <nav className="container">
           <a className="navbar-brand fs-3" href="/">
             AirPick
@@ -54,12 +53,12 @@ export default function Nav({isAuthed, setIsAuthed}) {
                 </a>
               </li>
             </ul>
-            <Auth isAuthed={isAuthed} setIsAuthed={setIsAuthed}/>
+            <Auth isAuthed={isAuthed} setIsAuthed={setIsAuthed} />
           </section>
         </nav>
-        <Login setIsAuthed={setIsAuthed} />
-        <Register setIsAuthed={setIsAuthed} />
       </header>
+      <Login setIsAuthed={setIsAuthed} />
+      <Register setIsAuthed={setIsAuthed} />
     </>
   );
 }
