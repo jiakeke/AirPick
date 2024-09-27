@@ -1,12 +1,9 @@
-import { useNavigate } from "react-router-dom";
+import { useAuth } from '../hooks/useAuth';
 
-export default function Auth({ isAuthed, setIsAuthed }) {
-  let navigateTo = useNavigate();
-  const logOut = () => {
-    localStorage.removeItem("user");
-    setIsAuthed();
-  };
-  if (!isAuthed) {
+export default function Auth() {
+  const { auth, logout } = useAuth();
+
+  if (!auth.isLoggedIn) {
 
     return (
       <>
@@ -35,7 +32,6 @@ export default function Auth({ isAuthed, setIsAuthed }) {
       </>
     );
   } else {
-    console.log(isAuthed.category);
     return (
       <>
         <ul className="navbar-nav justify-content-end align-items-center fs-4">
@@ -46,14 +42,14 @@ export default function Auth({ isAuthed, setIsAuthed }) {
           </li>
         </ul>
 
-        {isAuthed.category === "passenger" && (<ul className="navbar-nav justify-content-end align-items-center fs-4">
+        {auth.category === "passenger" && (<ul className="navbar-nav justify-content-end align-items-center fs-4">
           <li className="nav-item">
             <a className="nav-link px-3" href="/deposit">
               Deposit
             </a>
           </li>
         </ul>)}
-        {isAuthed.category === "driver" && (<ul className="navbar-nav justify-content-end align-items-center fs-4">
+        {auth.category === "driver" && (<ul className="navbar-nav justify-content-end align-items-center fs-4">
           <li className="nav-item">
             <a className="nav-link px-3" href="/withDrawal">
               WithDrawal
@@ -64,7 +60,7 @@ export default function Auth({ isAuthed, setIsAuthed }) {
         <div className="navbar-nav justify-content-end align-items-center">
           <button
             type="button"
-            onClick={logOut}
+            onClick={logout}
             className="btn btn-outline-primary nav-button mx-3 text-white bg-dark text-nowrap"
           >
             Log out

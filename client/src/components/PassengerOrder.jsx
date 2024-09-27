@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import UpdateOrder from './UpdateOrder';
+import api from '../axios';
 import "../assets/orders.css";
 
 const PassengerOrdersPage = () => {
@@ -19,12 +20,8 @@ const PassengerOrdersPage = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/orders/myorder', {
-          headers: {
-            Authorization: `token: ${token}`,
-          },
-        });
-        const data = await response.json();
+        const response = await api.get('/api/orders/myorder');
+        const data = await response.data;
         setOrders(data);
       } catch (error) {
         console.error('Failed to fetch orders', error);

@@ -1,14 +1,15 @@
 // src/services/userService.js
 import api from '../axios';
+import { useAuth } from '../hooks/useAuth';
 
 // User Login
 
-const userLogin = async ({ email, password, setIsAuthed }) => {
+const userLogin = async ({ email, password }) => {
+  const  login  = useAuth();
   try {
     const res = await api.post("/api/users/login", { email, password });
     const { user } = res.data;
-    localStorage.setItem("user", JSON.stringify(user));
-    setIsAuthed(true);
+    login(user);
     console.log("Login successful");
     return { status: res.status, data: res.data.message };
   } catch (error) {

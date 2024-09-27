@@ -21,11 +21,7 @@ export default function NewOrderPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`http://localhost:4000/api/orders/`, newOrder, {
-        headers: {
-          Authorization: `token: ${token}`
-        }
-      });
+      const response = await api.post(`/api/orders/`, newOrder);
 
       setNewOrder({
         category: 'pick',

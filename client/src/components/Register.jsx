@@ -3,8 +3,10 @@ import { useRef } from "react";
 import PrivacyPolicy from "./PrivacyPolicy";
 import { useNavigate } from "react-router-dom";
 import userService from "../services/userService";
+import { useAuth } from '../hooks/useAuth';
 
-export default function Register({ setIsAuthed }) {
+export default function Register() {
+  const { login } = useAuth();
   const closeRef = useRef();
   const [user, setUser] = useState({
     first_name: "",
@@ -89,10 +91,9 @@ export default function Register({ setIsAuthed }) {
           } else {
             setAPIErrorMessage("");
 
-            userService.userLogin({
+            login({
               email: user.email,
               password: user.password,
-              setIsAuthed: setIsAuthed,
             });
             closeRef.current.click();
             navigateTo("/");
