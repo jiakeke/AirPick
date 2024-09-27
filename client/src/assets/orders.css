@@ -1,5 +1,5 @@
 .find-job {
-  background-color: #f6f9fc;
+  background-color: #ffffff;
 }
 
 .find-job .section-title {
@@ -7,7 +7,8 @@
 }
 
 .find-job.job-list {
-  padding-top: 70px;
+  padding-top: 1px;
+  padding-bottom: 20px;
 }
 
 .find-job .single-job {
@@ -25,16 +26,6 @@
 .find-job .single-job:hover {
   -webkit-box-shadow: 0 1rem 3rem rgba(35, 38, 45, 0.15) !important;
   box-shadow: 0 1rem 3rem rgba(35, 38, 45, 0.15) !important;
-}
-
-.find-job .single-job .job-image {
-  position: absolute;
-  left: 40px;
-  top: 50%;
-  height: 50px;
-  width: 50px;
-  line-height: 50px;
-  margin-top: -25px;
 }
 
 .find-job .single-job .job-content {
@@ -73,7 +64,7 @@
   margin-bottom: 5px;
   margin-right: 3px;
   position: relative;
-  background: #2042e314;
+  background: #ffffff;
   color: #2042e3;
   padding: 5px 10px;
   border-radius: 3px;

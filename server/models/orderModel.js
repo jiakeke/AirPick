@@ -12,7 +12,7 @@
       "driver": "222",
       "comments": "Child seat required ",
       "price": 888,
-      "status": "new || accepted || completed || closed",
+      "status": "new || ongoing || completed || cancelled",
       "created": "02.03.2024",
       "modified": "02.03.2024",
       "completed": "02.03.2024",
@@ -39,12 +39,12 @@ const orderSchema = new Schema(
     },
 
     persons: {
-        type: Number,
+        type: String,
         required: true
     },
 
     luggages: {
-        type: Number,
+        type: String,
         required: true
     },
 
@@ -59,13 +59,15 @@ const orderSchema = new Schema(
     },
 
     passenger: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
 
     driver: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        default: null
     },
 
     comments: {
@@ -73,13 +75,13 @@ const orderSchema = new Schema(
     },
 
     price: {
-        type: Number,
+        type: String,
         required: true
     },
 
     status: {
         type: String,
-        enum: ['new', 'accepted', 'completed', 'closed'],
+        enum: ['new', 'pending', 'ongoing', 'completed', 'cancelled'],
         default: 'new'
     }
   },

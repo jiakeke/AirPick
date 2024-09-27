@@ -10,10 +10,73 @@ const getAllOrder = async (req, res) => {
   }
 };
 
+// Get all new ordera
+const getAvailableOrders = async (req, res) => {
+  const userCategory = req.user.category;
+
+  if (userCategory !== 'driver') {
+    return res.status(403).json({ message: 'Only drivers can view available orders' });
+  }
+
+  try {
+    const availableOrders = await Order.find({ status: 'new' });
+
+    if (availableOrders.length === 0) {
+      return res.status(404).json({ message: 'No available orders found' });
+    }
+
+    res.json(availableOrders);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to retrieve available orders', error });
+  }
+};
+
+// Get user orders
+const getOrdersByUser = async (req, res) => {
+  const userId = req.user.userId;
+  const userCategory = req.user.category;
+
+  try {
+    let orders;
+    
+    if (userCategory === 'passenger') {
+      orders = await Order.find({ passenger: userId });
+    } else if (userCategory === 'driver') {
+      orders = await Order.find({ driver: userId });
+    } else {
+      return res.status(403).json({ message: 'Invalid user type' });
+    }
+
+    const categorizedOrders = {
+      new: orders.filter(order => order.status === 'new'),
+      pending: orders.filter(order => order.status === 'pending'),
+      ongoing: orders.filter(order => order.status === 'ongoing'),
+      completed: orders.filter(order => order.status === 'completed'),
+      cancelled: orders.filter(order => order.status === 'cancelled'),
+    };
+
+    res.json(categorizedOrders);
+  } catch (error) {
+    res.status(500).json({ message: 'Error retrieving orders', error });
+  }
+};
+
 // Create new order
 const createOrder = async (req, res) => {
+  const userId = req.user.userId;
+  const userCategory = req.user.category;
+
+  if (userCategory !== 'passenger') {
+    return res.status(403).json({ message: 'Only passengers can create orders' });
+  }
+
   try {
-    const newOrder = new Order(req.body);
+    const newOrder = new Order({
+      ...req.body,
+      passenger: userId,
+      status: 'new',
+    });
+
     const savedOrder = await newOrder.save();
     res.status(201).json(savedOrder);
   } catch (error) {
@@ -69,10 +132,202 @@ const deleteOrder = async (req, res) => {
   }
 };
 
+// Order status workflow
+// Passenger updates own order
+const updateOrderByPassenger = async (req, res) => {
+  const { orderId } = req.params;
+  const userCategory = req.user.category;
+  const passengerId = req.user.userId;
+
+  if (userCategory !== 'passenger') {
+    return res.status(403).json({ message: 'Invalid user type' });
+  }
+
+  try {
+    const order = await Order.findOne({ _id: orderId, passenger: passengerId });
+
+    if (!order || order.status !== 'new') {
+      return res.status(400).json({ message: 'Order cannot be modified' });
+    }
+
+    const updatedFields = {
+      departure: req.body.departure,
+      destination: req.body.destination,
+      persons: req.body.persons,
+      luggages: req.body.luggages,
+      comments: req.body.comments,
+      updatedAt: Date.now()
+    };
+
+    const updatedOrder = await Order.findByIdAndUpdate(orderId, updatedFields, { new: true, runValidators: true });
+
+    if (updatedOrder) {
+      res.json({ message: 'Order updated successfully', order: updatedOrder });
+    } else {
+      res.status(404).json({ message: 'Order not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating order', error });
+  }
+};
+
+// Driver accepts order -> status from "new" to "pending"
+const acceptOrder = async (req, res) => {
+  const { orderId } = req.params;
+  const userId = req.user.userId;
+  const userCategory = req.user.category;
+
+  if (userCategory !== 'driver') {
+    return res.status(403).json({ message: 'Invalid user type' });
+  }
+
+  try {
+    const order = await Order.findById(orderId);
+
+    if (!order || order.status !== 'new') {
+      return res.status(400).json({ message: 'Order cannot be accepted' });
+    }
+
+    order.status = 'pending';
+    order.driver = userId;
+
+    await order.save();
+    res.json({ message: 'Order accepted', order });
+  } catch (error) {
+    res.status(500).json({ message: 'Error accepting order', error });
+  }
+};
+
+// Driver cancel order
+const cancelOrderByDriver = async (req, res) => {
+  const { orderId } = req.params;
+  const userCategory = req.user.category;
+  const driverId = req.user.userId;
+  if (userCategory !== 'driver') {
+    return res.status(403).json({ message: 'Invalid user type' });
+  }
+
+  try {
+    const order = await Order.findOneAndUpdate(
+    { _id: orderId, driver: driverId, status: 'pending' },
+    { driver: null, status: 'new' },
+    { new: true }
+    );
+
+    if (!order) {
+      return res.status(400).json({ message: 'Order cannot be cancelled' });
+    }
+
+    res.json({ message: 'Order is now available again', order });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error cancelling order' });
+  }
+};
+
+// Passenger cancel order
+const cancelOrderByPassenger = async (req, res) => {
+  const { orderId } = req.params;
+  const userCategory = req.user.category;
+  const passengerId = req.user.userId;
+  if (userCategory !== 'passenger') {
+    return res.status(403).json({ message: 'Invalid user type' });
+  }
+
+  try {
+    const order = await Order.findOneAndUpdate(
+      { _id: orderId, passenger: passengerId, status: { $in: ['new', 'pending'] } },
+      { driverId: null, status: 'cancelled', updatedAt: Date.now() },
+      { new: true }
+    );
+
+    if (!order) {
+      return res.status(400).json({ message: 'Order cannot be cancelled' });
+    }
+
+    if (order.driverId) {
+      sendNotificationToDriver(order.driverId, { message: 'Passenger cancelled the order' });
+    }
+
+    res.json({ message: 'Order cancelled successfully', order });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error cancelling order' });
+  }
+};
+
+// Driver starts order -> status from "pending" to "ongoing"
+const startOrder = async (req, res) => {
+  const { orderId } = req.params;
+  const userId = req.user.userId; 
+  const userCategory = req.user.category; 
+
+  if (userCategory !== 'driver') {
+    return res.status(403).json({ message: 'Only drivers can start orders' });
+  }
+
+  try {
+    const order = await Order.findById(orderId);
+
+    if (!order || order.status !== 'pending' || order.driver.toString() !== userId) {
+      return res.status(400).json({ message: 'Order cannot be started' });
+    }
+
+    order.status = 'ongoing';
+    order.updatedAt = Date.now();
+
+    await order.save();
+    res.json({ message: 'Order started', order });
+  } catch (error) {
+    res.status(500).json({ message: 'Error starting order', error: error.message });
+  }
+};
+
+// Driver completes or stops order
+const completeOrStopOrder = async (req, res) => {
+  const { orderId } = req.params;
+  const { action } = req.body; // action: 'complete' or 'stop'
+  const userId = req.user.userId; 
+  const userCategory = req.user.category;  
+
+  if (userCategory !== 'driver') {
+    return res.status(403).json({ message: 'Only drivers can complete or stop orders' });
+  }
+
+  try {
+    const order = await Order.findById(orderId);
+
+    if (!order || order.status !== 'ongoing' || order.driver.toString() !== userId) {
+      return res.status(400).json({ message: 'Action cannot be performed' });
+    }
+
+    if (action === 'complete') {
+      order.status = 'completed';
+    } else if (action === 'stop') {
+      order.status = 'pending';
+    }
+
+    order.updatedAt = Date.now();
+    await order.save();
+
+    res.json({ message: `Order ${action}d`, order });
+  } catch (error) {
+    res.status(500).json({ message: `Error ${action}ing order`, error });
+  }
+};
+
 module.exports = {
   getAllOrder,
   createOrder,
   getOrderById,
   updateOrder,
   deleteOrder,
+  getAvailableOrders,
+  getOrdersByUser,
+  updateOrderByPassenger,
+  acceptOrder,
+  cancelOrderByDriver,
+  cancelOrderByPassenger,
+  startOrder,
+  completeOrStopOrder
 };

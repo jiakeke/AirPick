@@ -2,7 +2,6 @@
 import api from '../axios';
 
 // User Login
-// User Login
 
 const userLogin = async ({ email, password, setIsAuthed }) => {
   try {

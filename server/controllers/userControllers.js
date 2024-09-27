@@ -55,7 +55,7 @@ const userLogin = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { userId: user_._id, email: user_.email },
+      { userId: user_._id, email: user_.email, category: user_.category },
       JWT_SECRET,
       { expiresIn: "1h" }
     );
@@ -68,7 +68,6 @@ const userLogin = async (req, res) => {
       .json({ message: "Server error", error: error.message });
   }
 };
-
 
 // POST /api/user/deposit
 
