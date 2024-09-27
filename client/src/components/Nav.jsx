@@ -3,18 +3,18 @@ import "../assets/nav.scss";
 import classNames from "classnames";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Auth from "./Auth.jsx";
 
-import Modal from "./Modal";
-import Modal2 from "./Modal2";
+import Login from "./Login";
+import Register from "./Register";
 
-export default function Nav() {
+export default function Nav({ isAuthed, setIsAuthed }) {
   const [isActive, setIsActive] = useState(false);
-
   let navigateTo = useNavigate();
 
   return (
     <>
-      <header className="navbar navbar-expand-lg bg-dark navbar-dark">
+      <header className="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
         <nav className="container">
           <a className="navbar-brand fs-3" href="/">
             AirPick
@@ -53,33 +53,12 @@ export default function Nav() {
                 </a>
               </li>
             </ul>
-            <div className="d-flex mt-5 mt-lg-0 ps-xl-5 align-items-center justify-content-center">
-              <ul className="navbar-nav justify-content-end align-items-center">
-                <li className="nav-item">
-                  <a
-                    className="nav-link px-3"
-                    href="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
-                  >
-                    Login
-                  </a>
-                </li>
-              </ul>
-              <button
-                type="button"
-                className="btn btn-outline-primary nav-button mx-3 text-white bg-dark text-nowrap"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal2"
-              >
-                Sign up
-              </button>
-            </div>
+            <Auth isAuthed={isAuthed} setIsAuthed={setIsAuthed} />
           </section>
         </nav>
-        <Modal />
-        <Modal2 />
       </header>
+      <Login setIsAuthed={setIsAuthed} />
+      <Register setIsAuthed={setIsAuthed} />
     </>
   );
 }
