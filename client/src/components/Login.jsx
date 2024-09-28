@@ -9,7 +9,7 @@ export default function Login({ setIsAuthed }) {
     first_name: "",
     last_name: "",
     password: "",
-    email: "",
+    email: JSON.parse(localStorage.getItem("userEmail")),
     phone: "",
     category: "",
     balance: "",
@@ -34,13 +34,6 @@ export default function Login({ setIsAuthed }) {
   const handleEmailChange = (e) => {
     const { name, value } = e.target;
     setUser((user) => ({ ...user, [name]: value }));
-    console.log(rememberMeState);
-    if (rememberMeState) {
-      localStorage.setItem("userEmail", JSON.stringify(user.email));
-    } else {
-      localStorage.removeItem("userEmail", JSON.stringify(user.email));
-    }
-
     setEmailValid(validateEmail(value));
     setemailInvalidMessage("");
   };
@@ -55,8 +48,14 @@ export default function Login({ setIsAuthed }) {
   let navigateTo = useNavigate();
 
   const loginHandler = (e) => {
+    console.log(user.email);
     e.preventDefault();
     if (validateForm()) {
+      if (rememberMeState) {
+        localStorage.setItem("userEmail", JSON.stringify(user.email));
+      } else {
+        localStorage.removeItem("userEmail", JSON.stringify(user.email));
+      }
       userService
         .userLogin({
           email: user.email,
@@ -72,6 +71,8 @@ export default function Login({ setIsAuthed }) {
             navigateTo("/");
           }
         });
+
+      return { user, setUser };
     } else {
       console.log("log in error");
     }
@@ -84,20 +85,23 @@ export default function Login({ setIsAuthed }) {
     if (user.password === "") {
       setPasswordInvalidMessage("Please enter password.");
     }
-    validateEmail(user.email);
-    validatePassword(user.password);
+    setEmailValid(validateEmail(user.email));
+    setPasswordStrength(validatePassword(user.password));
     if (emailValid === true && passwordStrength === true) {
       console.log("Validate OK");
       return true;
     } else if (emailValid === false) {
       setemailInvalidMessage("Email invalid");
       return false;
+    } else {
+      console.log("email validation" + emailValid);
+      console.log("password validation" + passwordStrength);
+      console.log("Validation Error");
     }
   };
 
   const handleRememberMe = () => {
     setRememberMeState(!rememberMeState);
-    console.log(rememberMeState);
   };
 
   return (
