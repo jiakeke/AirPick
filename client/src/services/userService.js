@@ -64,7 +64,6 @@ const withDrawal = async (balance) => {
   }
 }
 
-
 // Get the currently logged in user information
 
 const getUser = async () => {
@@ -72,9 +71,6 @@ const getUser = async () => {
     const response = await api.get("/api/users");
     return { status: response.status, data: response.data };
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Server error", error: error.message });
     return res
       .status(500)
       .json({ message: "Server error", error: error.message });

@@ -3,6 +3,12 @@ import { useAuth } from '../hooks/useAuth';
 export default function Auth() {
   const { auth, logout } = useAuth();
 
+  const handleLogout = () => {
+    // auth={ isLoggedIn: false, category: null };
+    localStorage.removeItem('user');
+    window.location.replace('/');
+  }
+
   if (!auth.isLoggedIn) {
 
     return (
@@ -60,7 +66,7 @@ export default function Auth() {
         <div className="navbar-nav justify-content-end align-items-center">
           <button
             type="button"
-            onClick={logout}
+            onClick={handleLogout}
             className="btn btn-outline-primary nav-button mx-3 text-white bg-dark text-nowrap"
           >
             Log out
