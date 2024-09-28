@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import userService from '../services/userService';
 
 const WithDrawalForm = () => {
@@ -6,7 +6,8 @@ const WithDrawalForm = () => {
     const [loading, setLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-
+    const[preAmount, setPreAmount] = useState(0);
+   
     const handleWithdraw = async () => {
         setLoading(true);
         try {
@@ -25,13 +26,25 @@ const WithDrawalForm = () => {
             setLoading(false);
         }
     };
-
+    useEffect(() => {
+        const fetchBalance = async () => {
+          try {
+            const balance = (await userService.getBalance()).data;
+            setPreAmount(balance);
+          } catch (error) {
+            setErrorMessage("Failed to fetch balance");
+          }
+        };
+    
+        fetchBalance();
+      }, [handleWithdraw]);
     return (
         <div className="Form-container">
             <div className="Form-modal-dialog">
                 <div className="Form-modal-content">
                     <div className="Form-modal-body">
-                        <h1 className="page-title">Withdrawal Form</h1>
+                        <h2 className="page-title">Withdrawal Form</h2>
+                        <p className="balance-display">Current Balance: €{preAmount.toFixed(2)}</p>
                         <input
                             type="number"
                             value={amount}

@@ -92,6 +92,14 @@ const updateUser = async (userData) => {
   }
 };
 
+const getBalance = async () => {
+  try {
+    const response = await api.get("/api/users/balance");
+    return { status: response.status, data: response.data };
+  } catch (error) {
+    return { status: error.response.status, data: error.response.data };
+  }
+};
 
 export default {
   updateUser,
@@ -100,4 +108,5 @@ export default {
   userRegist,
   deposit,
   withDrawal,
+  getBalance,
 };
