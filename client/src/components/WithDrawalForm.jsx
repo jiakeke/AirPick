@@ -31,7 +31,7 @@ const WithDrawalForm = () => {
     useEffect(() => {
         const fetchBalance = async () => {
           try {
-            const balance = (await userService.getBalance()).data;
+            const balance = (await api.get("/api/users/balance")).data;
             setPreAmount(balance);
           } catch (error) {
             setErrorMessage("Failed to fetch balance");
