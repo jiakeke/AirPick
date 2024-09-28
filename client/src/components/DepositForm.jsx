@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import userService from '../services/userService';
+import useAxios from '../axios';
 import './Form.css';
 
 const DepositForm = () => {
+    const api = useAxios();
     const [amount, setAmount] = useState(0);
     const [loading, setLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
@@ -11,7 +12,7 @@ const DepositForm = () => {
     const handleDeposit = async () => {
         setLoading(true);
         try {
-            const response = await userService.deposit(amount);
+            const response = await api.put("/api/users/deposit", {balance: amount});
             if (response.status === 200) {
                 setSuccessMessage(response.data.message);
                 setErrorMessage('');

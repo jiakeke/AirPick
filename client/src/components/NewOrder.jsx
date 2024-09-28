@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import api from '../axios';
+import useAxios from '../axios';
 import "../assets/newOrder.css";
 
 export default function NewOrderPage() {
+  const api = useAxios();
   const [newOrder, setNewOrder] = useState({
     category: 'pick',
     departure: 'Lentäjäntie 3, 01530 Vantaa',

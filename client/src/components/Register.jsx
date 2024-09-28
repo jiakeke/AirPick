@@ -2,11 +2,12 @@ import { useState } from "react";
 import { useRef } from "react";
 import PrivacyPolicy from "./PrivacyPolicy";
 import { useNavigate } from "react-router-dom";
-import userService from "../services/userService";
 import { useAuth } from '../hooks/useAuth';
+import useAxios from '../axios';
 
 export default function Register() {
   const { login } = useAuth();
+  const api = useAxios();
   const closeRef = useRef();
   const [user, setUser] = useState({
     first_name: "",
@@ -77,8 +78,7 @@ export default function Register() {
 
   const registerHandler = (e) => {
     if (validateForm()) {
-      userService
-        .userRegist({
+        api.post("/api/users/regist", {
           first_name: user.first_name,
           last_name: user.last_name,
           password: user.password,
@@ -94,6 +94,7 @@ export default function Register() {
             login({
               email: user.email,
               password: user.password,
+              api
             });
             closeRef.current.click();
             navigateTo("/");

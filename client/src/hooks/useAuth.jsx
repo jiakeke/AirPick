@@ -1,11 +1,12 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import api from '../axios';
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
 // Define AuthProvider to manage and provide the authentication status
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({ isLoggedIn: false, category: null });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -14,7 +15,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = async({email, password}) => {
+  const login = async({email, password, api}) => {
     try {
       const res = await api.post("/api/users/login", { email, password });
       const { user } = res.data;
@@ -31,6 +32,8 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setAuth({ isLoggedIn: false, category: null });
     localStorage.removeItem('user');
+    navigate('/');
+
   };
 
   return (

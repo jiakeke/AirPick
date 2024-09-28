@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useRef } from "react";
-import userService from "../services/userService";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../hooks/useAuth';
+import useAxios from '../axios';
 
 
 export default function Login() {
   const { login } = useAuth();
+  const api = useAxios();
   const navigateTo = useNavigate();
   const closeRef = useRef();
   const [user, setUser] = useState({
@@ -55,6 +56,7 @@ export default function Login() {
         login({
           email: user.email,
           password: user.password,
+          api,
         }).then((response) => {
           if (response.status != 200) {
             setAPIErrorMessage(response.data);

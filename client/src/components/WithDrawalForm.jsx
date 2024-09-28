@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import userService from '../services/userService';
+import useAxios from '../axios';
 
 const WithDrawalForm = () => {
+    const api = useAxios();
     const [amount, setAmount] = useState(0);
     const [loading, setLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
@@ -10,7 +11,7 @@ const WithDrawalForm = () => {
     const handleWithdraw = async () => {
         setLoading(true);
         try {
-            const response = await userService.withDrawal(amount);
+            const response = await api.put("/api/users/withDrawal", {balance: amount});
             if (response.status === 200) {
                 setSuccessMessage(response.data.message);
                 setErrorMessage('');

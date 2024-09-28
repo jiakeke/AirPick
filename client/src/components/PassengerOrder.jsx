@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import UpdateOrder from './UpdateOrder';
-import api from '../axios';
+import useAxios from '../axios';
 import "../assets/orders.css";
 
 const PassengerOrdersPage = () => {
+  const api = useAxios();
   const [orders, setOrders] = useState({
     new: [],
     pending: [],
