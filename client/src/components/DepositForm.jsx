@@ -1,6 +1,5 @@
 import useAxios from '../axios';
 import React, { useState, useEffect } from 'react';
-import userService from '../services/userService';
 import './Form.css';
 
 const DepositForm = () => {

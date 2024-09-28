@@ -1,6 +1,5 @@
 import useAxios from '../axios';
 import React, { useState, useEffect } from 'react';
-import userService from '../services/userService';
 
 const WithDrawalForm = () => {
     const api = useAxios();
