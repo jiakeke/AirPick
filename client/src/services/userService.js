@@ -1,18 +1,15 @@
 // src/services/userService.js
 import { useAuth } from '../hooks/useAuth';
 
-
-// user/withDrawal
-const withDrawal = async (balance) => {
+const getBalance = async () => {
   try {
-    const response = await api.put("/api/users/withDrawal", { balance });
+    const response = await api.get("/api/users/balance");
     return { status: response.status, data: response.data };
   } catch (error) {
     return { status: error.response.status, data: error.response.data };
   }
-}
-
+};
 
 export default {
-  withDrawal,
+  getBalance,
 };
