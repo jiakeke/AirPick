@@ -1,4 +1,5 @@
 const Order = require('../models/orderModel');
+const User = require('../models/userModel');
 
 // Get all orders
 const getAllOrder = async (req, res) => {
@@ -71,6 +72,20 @@ const createOrder = async (req, res) => {
   }
 
   try {
+    const userOrders = await Order.find({
+      passenger: userId,
+      status: { $in: ['new', 'pending', 'ongoing'] }
+    });
+
+    const totalOrderPrice = userOrders.reduce((total, order) => total + parseFloat(order.price), 0);
+
+    const user = await User.findById(userId);
+    const userBalance = user.balance;
+
+    if (totalOrderPrice + parseFloat(req.body.price) > userBalance) {
+      return res.status(400).json({ message: 'Insufficient balance to create new order' });
+    }
+
     const newOrder = new Order({
       ...req.body,
       passenger: userId,
@@ -307,6 +322,24 @@ const completeOrStopOrder = async (req, res) => {
 
     if (action === 'complete') {
       order.status = 'completed';
+
+      const passenger = await User.findById(order.passenger);
+      const driver = await User.findById(order.driver);
+
+      if (!passenger || !driver) {
+        return res.status(400).json({ message: 'Passenger or driver not found' });
+      }
+
+      const orderPrice = parseFloat(order.price);
+      if (passenger.balance < orderPrice) {
+        return res.status(400).json({ message: 'Insufficient balance to complete the order' });
+      }
+
+      passenger.balance -= orderPrice;
+      driver.balance += orderPrice;
+
+      await passenger.save();
+      await driver.save();
     } else if (action === 'stop') {
       order.status = 'pending';
     }

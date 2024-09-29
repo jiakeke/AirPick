@@ -34,7 +34,11 @@ export default function NewOrderPage() {
       });
       console.log("Order created:", response.data);
     } catch (error) {
-      console.error("Error creating order:", error);
+      if (error.response && error.response.data && error.response.data.message) {
+        alert(error.response.data.message);
+      } else {
+        console.error("Error creating order:", error);
+      }
     }
   };
 
