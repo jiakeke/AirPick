@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import UpdateOrder from './UpdateOrder';
+import useAxios from '../axios';
 import "../assets/orders.css";
-import api from '../axios';
 
-const PassengerOrdersPage = (isAuthed) => {
+const PassengerOrdersPage = () => {
+  const api = useAxios();
   const [orders, setOrders] = useState({
     new: [],
     pending: [],
@@ -18,6 +19,7 @@ const PassengerOrdersPage = (isAuthed) => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
+
         const response = await api.get('api/orders/myorder', {});
         const data = await response.data;
         setOrders(data);
@@ -137,7 +139,6 @@ const PassengerOrdersPage = (isAuthed) => {
                       Update
                   </button>
                   <UpdateOrder
-                    isAuthed={isAuthed}
                     order={order}
                     index={index}
                     onUpdate={(orderId, updatedData) => handleUpdateOrder(orderId, updatedData, () => document.getElementById(`updateorder${index}`).classList.remove('show'))}

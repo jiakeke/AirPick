@@ -1,6 +1,6 @@
 import User from "./User";
+import useAxios from '../axios';
 import { useState, useEffect } from "react";
-import userService from "../services/userService";
 import "bootstrap/dist/css/bootstrap.css";
 
 const UserForm = ({ userId }) => {
@@ -8,10 +8,11 @@ const UserForm = ({ userId }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState(null);
+  const api = useAxios();
 
   const fetchUserById = async () => {
     try {
-      const res = await userService.getUser();
+      const res = await api.get("/api/users");
       if (res.status === 200) {
         setUser(res.data);
         setIsLoading(false);
@@ -40,7 +41,7 @@ const UserForm = ({ userId }) => {
     setIsSaving(true);
     console.log(user);
     try {
-      const response = await userService.updateUser(user); // 假设 updateUser 是更新用户数据的API
+      const response = await api.put("api/users", user);
       if (response.status === 200) {
         alert("User updated successfully");
       } else {

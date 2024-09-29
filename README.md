@@ -57,8 +57,17 @@ The project aims to develop an Airport Pickup Service Platform that allows custo
 ## API Call
 We encapsulate the axios instance, called api, and put it in client/src/axios.js. It can automatically add the user token to the request header. The usage is as follows:
 
- - `import api from '../axios'` //Pay attention to the reference path here
- - `const res = await api.get("/api/users")`
+- `import useAxios from '../axios';` //Pay attention to the reference path here
+- `const api = useAxios();` //Get the axios instance
+- `const res = await api.get("/api/users")`
+
+## Authentication
+We now use useContext to manage and maintain user authentication information. If you want to determine whether the current user is logged in or what the category of the login user is, you can use it as below:
+
+- `import { useAuth } from '../hooks/useAuth'; //Import the useAuth hook`
+- `const { auth } = useAuth(); //Get authentication information from context.`
+- `if (auth.isLoggedIn) {...}; //Determine whether the current user is logged in.`
+- `if (auth.category === "passenger") {...}; //Determine what the category of the login user is.`
 
 ## DOTENV
 - Copy the `.env.example` to `.env` and set the variables inside.
