@@ -3,8 +3,6 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import useAxios from "../axios";
-import { useAuth } from "../hooks/useAuth";
-import useAxios from "../axios";
 
 export default function Login() {
   const { login } = useAuth();
