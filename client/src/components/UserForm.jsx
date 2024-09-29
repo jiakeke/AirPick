@@ -64,15 +64,7 @@ const UserForm = ({ userId }) => {
         <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
           Email
         </label>
-        <div className="col-sm-10">
-          <input
-            type="text"
-            readOnly=""
-            className="form-control-plaintext"
-            id="staticEmail"
-            defaultValue={user.email}
-          />
-        </div>
+        <div className="col-sm-10">{user.email}</div>
       </div>
 
       <div className="mb-3 row">
