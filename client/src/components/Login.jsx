@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from '../hooks/useAuth';
-import useAxios from '../axios';
-
+import { useAuth } from "../hooks/useAuth";
+import useAxios from "../axios";
 
 export default function Login() {
   const { login } = useAuth();
@@ -14,7 +13,7 @@ export default function Login() {
     first_name: "",
     last_name: "",
     password: "",
-    email: "",
+    email: JSON.parse(localStorage.getItem("userEmail")),
     phone: "",
     category: "",
     balance: "",
@@ -25,6 +24,7 @@ export default function Login() {
   const [passwordStrength, setPasswordStrength] = useState(null);
   const [emailInvalidMessage, setemailInvalidMessage] = useState("");
   const [passwordInvalidMessage, setPasswordInvalidMessage] = useState("");
+  const [rememberMeState, setRememberMeState] = useState(false);
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -49,15 +49,22 @@ export default function Login() {
     setPasswordInvalidMessage("");
   };
 
-
   const loginHandler = (e) => {
+    console.log(user.email);
     e.preventDefault();
     if (validateForm()) {
-        login({
+      if (rememberMeState) {
+        localStorage.setItem("userEmail", JSON.stringify(user.email));
+      } else {
+        localStorage.removeItem("userEmail", JSON.stringify(user.email));
+      }
+      userService
+        .userLogin({
           email: user.email,
           password: user.password,
           api,
-        }).then((response) => {
+        })
+        .then((response) => {
           if (response.status != 200) {
             setAPIErrorMessage(response.data);
           } else {
@@ -66,6 +73,8 @@ export default function Login() {
             navigateTo("/");
           }
         });
+
+      return { user, setUser };
     } else {
       console.log("log in error");
     }
@@ -78,15 +87,23 @@ export default function Login() {
     if (user.password === "") {
       setPasswordInvalidMessage("Please enter password.");
     }
-    validateEmail(user.email);
-    validatePassword(user.password);
+    setEmailValid(validateEmail(user.email));
+    setPasswordStrength(validatePassword(user.password));
     if (emailValid === true && passwordStrength === true) {
       console.log("Validate OK");
       return true;
     } else if (emailValid === false) {
       setemailInvalidMessage("Email invalid");
       return false;
+    } else {
+      console.log("email validation" + emailValid);
+      console.log("password validation" + passwordStrength);
+      console.log("Validation Error");
     }
+  };
+
+  const handleRememberMe = () => {
+    setRememberMeState(!rememberMeState);
   };
 
   return (
@@ -169,6 +186,9 @@ export default function Login() {
                           placeholder="Email"
                           className="form-control ps-3"
                           onChange={handleEmailChange}
+                          defaultValue={JSON.parse(
+                            localStorage.getItem("userEmail")
+                          )}
                           style={{
                             borderColor:
                               emailValid === null
@@ -227,6 +247,7 @@ export default function Login() {
                           type="checkbox"
                           required=""
                           className="d-inline"
+                          onChange={handleRememberMe}
                         />
                         &nbsp;
                         <span className="label-body text-black">
