@@ -151,11 +151,15 @@ const updateOrderByPassenger = async (req, res) => {
     }
 
     const updatedFields = {
+      category: req.body.category,
       departure: req.body.departure,
       destination: req.body.destination,
       persons: req.body.persons,
       luggages: req.body.luggages,
+      flight: req.body.flight,
+      date: req.body.date,
       comments: req.body.comments,
+      price: req.body.price,
       updatedAt: Date.now()
     };
 

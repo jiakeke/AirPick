@@ -27,6 +27,11 @@ export default function UpdateOrder({ order, index, onUpdate }) {
     }
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return isNaN(date) ? '' : date.toISOString().split('T')[0];
+  };
+
   return (
     <div className="modal fade" id={`updateorder${index}`} tabIndex="-1" aria-labelledby="updateOrderLabel" aria-hidden="true">
       <div className="modal-dialog">
@@ -107,7 +112,7 @@ export default function UpdateOrder({ order, index, onUpdate }) {
               <input
                 type="date"
                 name="date"
-                value={updatedOrder.date}
+                value={formatDate(updatedOrder.date)}
                 onChange={handleChange}
                 className="form-control"
                 required
