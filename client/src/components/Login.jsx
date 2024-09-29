@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { useRef } from "react";
-import userService from "../services/userService";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import useAxios from "../axios";
 
-export default function Login({ setIsAuthed }) {
+export default function Login() {
+  const { login } = useAuth();
+  const api = useAxios();
+  const navigateTo = useNavigate();
   const closeRef = useRef();
   const [user, setUser] = useState({
     first_name: "",
@@ -45,8 +49,6 @@ export default function Login({ setIsAuthed }) {
     setPasswordInvalidMessage("");
   };
 
-  let navigateTo = useNavigate();
-
   const loginHandler = (e) => {
     console.log(user.email);
     e.preventDefault();
@@ -60,7 +62,7 @@ export default function Login({ setIsAuthed }) {
         .userLogin({
           email: user.email,
           password: user.password,
-          setIsAuthed: setIsAuthed,
+          api,
         })
         .then((response) => {
           if (response.status != 200) {

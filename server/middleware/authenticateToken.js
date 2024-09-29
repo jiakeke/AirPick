@@ -3,6 +3,7 @@ const JWT_SECRET=process.env.JWT_SECRET ;
 
 const authenticateToken=(req,res,next)=>{
     const authHeader=req.headers['authorization'];
+     console.log("authHeader",authHeader);
     const token=authHeader && authHeader.split(" ")[1];
     if(!token){
         return res.status(401).json({message:'No token provided'});
@@ -10,7 +11,7 @@ const authenticateToken=(req,res,next)=>{
 
     jwt.verify(token,JWT_SECRET,(err,decode)=>{
         if(err){
-            return res.status(403).json({message:'Token is not valid'});
+            return res.status(401).json({message:'Token is not valid'});
         }
         req.user=decode;
         next();
@@ -19,3 +20,4 @@ const authenticateToken=(req,res,next)=>{
 }
 
 module.exports =authenticateToken;
+

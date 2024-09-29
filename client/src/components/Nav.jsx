@@ -8,7 +8,7 @@ import Auth from "./Auth.jsx";
 import Login from "./Login";
 import Register from "./Register";
 
-export default function Nav({ isAuthed, setIsAuthed }) {
+export default function Nav() {
   const [isActive, setIsActive] = useState(false);
   let navigateTo = useNavigate();
 
@@ -53,12 +53,12 @@ export default function Nav({ isAuthed, setIsAuthed }) {
                 </a>
               </li>
             </ul>
-            <Auth isAuthed={isAuthed} setIsAuthed={setIsAuthed} />
+            <Auth />
           </section>
         </nav>
       </header>
-      <Login setIsAuthed={setIsAuthed} />
-      <Register setIsAuthed={setIsAuthed} />
+      <Login />
+      <Register />
     </>
   );
 }
