@@ -2,6 +2,7 @@ import { useState } from 'react';
 import useAxios from '../axios';
 import "../assets/newOrder.css";
 
+
 export default function NewOrderPage() {
   const api = useAxios();
   const [newOrder, setNewOrder] = useState({
@@ -16,14 +17,10 @@ export default function NewOrderPage() {
     price: 0,
   });
 
-  const user = JSON.parse(localStorage.getItem("user"));
-  const token = user.token;
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post(`/api/orders/`, newOrder);
-
+      const response = await api.post(`api/orders`, newOrder, {});
       setNewOrder({
         category: 'pick',
         departure: '',

@@ -21,9 +21,9 @@ const getAvailableOrders = async (req, res) => {
   try {
     const availableOrders = await Order.find({ status: 'new' });
 
-    if (availableOrders.length === 0) {
-      return res.status(404).json({ message: 'No available orders found' });
-    }
+    // if (availableOrders.length === 0) {
+    //   return res.status(404).json({ message: 'No available orders found' });
+    // }
 
     res.json(availableOrders);
   } catch (error) {
