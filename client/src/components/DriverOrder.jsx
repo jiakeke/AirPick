@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import "../assets/orders.css";
+import api from '../axios';
 
-const DriverOrdersPage = () => {
-  const [newOrders, setNewOrders] = useState([{}]);
+const DriverOrdersPage = (isAuthed) => {
+  const [newOrders, setNewOrders] = useState([]);
   const [myOrders, setMyOrders] = useState({
     pending: [],
     ongoing: [],
@@ -15,20 +16,12 @@ const DriverOrdersPage = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const availableOrdersRes = await fetch('http://localhost:4000/api/orders/orderlist', {
-          headers: {
-            Authorization: `token: ${token}`,
-          },
-        });
-        const availableOrdersData = await availableOrdersRes.json();
+        const availableOrdersRes = await api.get('api/orders/orderlist', {});
+        const availableOrdersData = await availableOrdersRes.data;
         setNewOrders(availableOrdersData);
 
-        const myOrdersRes = await fetch('http://localhost:4000/api/orders/myorder', {
-          headers: {
-            Authorization: `token: ${token}`,
-          },
-        });
-        const myOrdersData = await myOrdersRes.json();
+        const myOrdersRes = await api.get('api/orders/myorder', {});
+        const myOrdersData = await myOrdersRes.data;
         setMyOrders(myOrdersData);
       } catch (error) {
         console.error('Failed to fetch orders', error);
@@ -42,15 +35,13 @@ const DriverOrdersPage = () => {
 
   const handleAcceptOrder = async (orderId) => {
     try {
-      const response = await fetch(`http://localhost:4000/api/orders/accept/${orderId}`, {
-        method: 'PUT',
+      const response = await api.put(`api/orders/accept/${orderId}`, {
         headers: {
-          Authorization: `token: ${token}`,
           'Content-Type': 'application/json',
         },
       });
       
-      if (response.ok) {
+      if (response) {
         const acceptedOrder = newOrders.find(order => order._id === orderId);
         setNewOrders(newOrders.filter(order => order._id !== orderId));
         setMyOrders((prevOrders) => ({
@@ -67,15 +58,13 @@ const DriverOrdersPage = () => {
 
   const handleStartOrder = async (orderId) => {
     try {
-      const response = await fetch(`http://localhost:4000/api/orders/start/${orderId}`, {
-        method: 'PUT',
+      const response = await api.put(`api/orders/start/${orderId}`, {
         headers: {
-          Authorization: `token: ${token}`,
           'Content-Type': 'application/json',
         },
       });
       
-      if (response.ok) {
+      if (response) {
         const startedOrder = myOrders.pending.find(order => order._id === orderId);
         setMyOrders((prevOrders) => ({
           ...prevOrders,
@@ -92,15 +81,13 @@ const DriverOrdersPage = () => {
 
   const handleCancelOrder = async (orderId) => {
     try {
-      const response = await fetch(`http://localhost:4000/api/orders/cancel/driver/${orderId}`, {
-        method: 'PUT',
+      const response = await api.put(`api/orders/cancel/driver/${orderId}`, {
         headers: {
-          Authorization: `token: ${token}`,
           'Content-Type': 'application/json',
         },
       });
   
-      if (response.ok) {
+      if (response) {
         const cancelledOrder = myOrders.pending.find(order => order._id === orderId);
         
         setMyOrders((prevOrders) => ({
@@ -108,17 +95,10 @@ const DriverOrdersPage = () => {
           pending: prevOrders.pending.filter(order => order._id !== orderId),
         }));
         
-        let prevNewOrders = [];
-        if (prevNewOrders.length > 0) {
-          setNewOrders((prevNewOrders) => [
-            ...prevNewOrders,
-            cancelledOrder,
-          ])
-        } else {
-          setNewOrders(() => [
-            cancelledOrder,
-          ])
-        };
+        setNewOrders((prevNewOrders) => [
+          ...prevNewOrders,
+          cancelledOrder,
+        ]);
       } else {
         console.error('Failed to cancel order');
       }
@@ -126,20 +106,18 @@ const DriverOrdersPage = () => {
       console.error('Failed to cancel order', error);
     }
   };
-  
 
   const handleStopOrder = async (orderId) => {
     try {
-      const response = await fetch(`http://localhost:4000/api/orders/completeorstop/${orderId}`, {
-        method: 'PUT',
+      const response = await api.put(`api/orders/completeorstop/${orderId}`, {
+        action: 'stop',
+      }, {
         headers: {
-          Authorization: `token: ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ action: 'stop' }),
       });
 
-      if (response.ok) {
+      if (response) {
         const stoppedOrder = myOrders.ongoing.find(order => order._id === orderId);
         setMyOrders((prevOrders) => ({
           ...prevOrders,
@@ -156,16 +134,15 @@ const DriverOrdersPage = () => {
 
   const handleCompleteOrder = async (orderId) => {
     try {
-      const response = await fetch(`http://localhost:4000/api/orders/completeorstop/${orderId}`, {
-        method: 'PUT',
+      const response = await api.put(`api/orders/completeorstop/${orderId}`, {
+        action: 'complete',
+      }, {
         headers: {
-          Authorization: `token: ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ action: 'complete' }),
       });
 
-      if (response.ok) {
+      if (response) {
         const completedOrder = myOrders.ongoing.find(order => order._id === orderId);
         setMyOrders((prevOrders) => ({
           ...prevOrders,

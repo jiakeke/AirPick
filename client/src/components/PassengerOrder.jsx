@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import UpdateOrder from './UpdateOrder';
 import "../assets/orders.css";
+import api from '../axios';
 
-const PassengerOrdersPage = () => {
+const PassengerOrdersPage = (isAuthed) => {
   const [orders, setOrders] = useState({
     new: [],
     pending: [],
@@ -13,18 +14,12 @@ const PassengerOrdersPage = () => {
   const [loading, setLoading] = useState(true);
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.token;
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentOrder, setCurrentOrder] = useState(null);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/orders/myorder', {
-          headers: {
-            Authorization: `token: ${token}`,
-          },
-        });
-        const data = await response.json();
+        const response = await api.get('api/orders/myorder', {});
+        const data = await response.data;
         setOrders(data);
       } catch (error) {
         console.error('Failed to fetch orders', error);
@@ -34,23 +29,61 @@ const PassengerOrdersPage = () => {
     };
     
     fetchOrders();
-  }, []);
+  }, [token]);
 
   const handleCancelOrder = async (orderId) => {
     try {
-      await fetch(`http://localhost:4000/api/orders/cancel/passenger/${orderId}`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `token: ${token}`,
-        },
+      await api.put(`api/orders/cancel/passenger/${orderId}`, {});
+      setOrders((prevOrders) => {
+        const cancelledOrder = prevOrders.new.find(order => order._id === orderId) ||
+                               prevOrders.pending.find(order => order._id === orderId);
+  
+        return {
+          ...prevOrders,
+          new: prevOrders.new.filter(order => order._id !== orderId),
+          pending: prevOrders.pending.filter(order => order._id !== orderId),
+          cancelled: [...prevOrders.cancelled, cancelledOrder],
+        };
       });
-      setOrders((prevOrders) => ({
-        ...prevOrders,
-        new: prevOrders.new.filter(order => order._id !== orderId),
-        pending: prevOrders.pending.filter(order => order._id !== orderId),
-      }));
     } catch (error) {
       console.error('Failed to cancel order', error);
+    }
+  };
+
+  const handleUpdateOrder = async (orderId, updatedData, onClose) => {
+    try {
+      const response = await api.put(`api/orders/update/${orderId}`, updatedData);
+      const updatedOrder = response.data;
+      const fetchOrders = async () => {
+        try {
+          const response = await api.get('api/orders/myorder', {});
+          const data = await response.data;
+          setOrders(data);
+        } catch (error) {
+          console.error('Failed to fetch orders', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      console.log('Order updated:', updatedOrder);
+  
+      setOrders((prevOrders) => {
+        const newOrders = prevOrders.new.map(order => order._id === orderId ? updatedOrder : order);
+        const pendingOrders = prevOrders.pending.map(order => order._id === orderId ? updatedOrder : order);
+  
+        return {
+          ...prevOrders,
+          new: newOrders,
+          pending: pendingOrders,
+        };
+      });
+
+      onClose();
+      fetchOrders();
+    } catch (error) {
+      console.error('Failed to update order', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -104,8 +137,10 @@ const PassengerOrdersPage = () => {
                       Update
                   </button>
                   <UpdateOrder
+                    isAuthed={isAuthed}
                     order={order}
                     index={index}
+                    onUpdate={(orderId, updatedData) => handleUpdateOrder(orderId, updatedData, () => document.getElementById(`updateorder${index}`).classList.remove('show'))}
                     onClose={() => document.getElementById(`updateorder${index}`).classList.remove('show')}
                   />
                 </div>

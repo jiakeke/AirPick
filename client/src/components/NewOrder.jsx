@@ -2,7 +2,7 @@ import { useState } from 'react';
 import api from '../axios';
 import "../assets/newOrder.css";
 
-export default function NewOrderPage() {
+export default function NewOrderPage(isAuthed) {
   const [newOrder, setNewOrder] = useState({
     category: 'pick',
     departure: 'Lentäjäntie 3, 01530 Vantaa',
@@ -15,17 +15,10 @@ export default function NewOrderPage() {
     price: 0,
   });
 
-  const user = JSON.parse(localStorage.getItem("user"));
-  const token = user.token;
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`http://localhost:4000/api/orders/`, newOrder, {
-        headers: {
-          Authorization: `token: ${token}`
-        }
-      });
+      const response = await api.post(`api/orders/`, newOrder, {});
 
       setNewOrder({
         category: 'pick',

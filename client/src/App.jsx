@@ -17,9 +17,6 @@ import WithDrawalForm from "./components/WithDrawalForm.jsx";
 function App() {
   const [isAuthed, setIsAuthed] = useState(JSON.parse(localStorage.getItem("user")) || false);
   const [loading, setLoading] = useState(true);
-  const [isAuthed, setIsAuthed] = useState(
-    JSON.parse(localStorage.getItem("user")) || false
-  );
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));

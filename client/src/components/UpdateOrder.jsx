@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import axios from 'axios';
 import { useRef } from 'react';
+import { useNavigate } from "react-router-dom";
 
-export default function UpdateOrder({ order, onClose, index }) {
+export default function UpdateOrder({ order, index, onUpdate, isAuthed }) {
+  const closeRef = useRef();
   const [updatedOrder, setUpdatedOrder] = useState({ ...order });
 
   const handleChange = (e) => {
@@ -12,19 +13,15 @@ export default function UpdateOrder({ order, onClose, index }) {
     });
   };
 
-  const user = JSON.parse(localStorage.getItem("user"));
-  const token = user.token;
+  let navigateTo = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(`http://localhost:4000/api/orders/update/${order._id}`, updatedOrder, {
-        headers: {
-          Authorization: `token: ${token}`,
-        },
+      onUpdate(order._id, updatedOrder, () => {
+        closeRef.current.click();
+        navigateTo("/");
       });
-      console.log('Order updated:', response.data);
-      onClose();
     } catch (error) {
       console.error('Failed to update order', error);
     }
@@ -41,6 +38,7 @@ export default function UpdateOrder({ order, onClose, index }) {
               className="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              ref={closeRef}
             ></button>
           </div>
           <div className="modal-body">
@@ -134,7 +132,12 @@ export default function UpdateOrder({ order, onClose, index }) {
               />
 
               <div className="d-grid my-3">
-                <button type="submit" className="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6">Update</button>
+                <button type="submit" 
+                        className="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6"
+                        data-bs-dismiss="modal"
+                        onClick={handleSubmit}>
+                          Update
+                </button>
               </div>
             </form>
           </div>
