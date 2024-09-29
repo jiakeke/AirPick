@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 
-export default function UpdateOrder({ order, index, onUpdate, isAuthed }) {
+export default function UpdateOrder({ order, index, onUpdate }) {
   const closeRef = useRef();
   const [updatedOrder, setUpdatedOrder] = useState({ ...order });
 

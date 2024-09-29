@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import "../assets/orders.css";
-import api from '../axios';
+import useAxios from '../axios';
 
-const DriverOrdersPage = (isAuthed) => {
+const DriverOrdersPage = () => {
+  const api = useAxios();
   const [newOrders, setNewOrders] = useState([]);
   const [myOrders, setMyOrders] = useState({
     pending: [],
