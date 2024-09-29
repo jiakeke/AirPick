@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from '../hooks/useAuth';
-import useAxios from '../axios';
-
+import { useAuth } from "../hooks/useAuth";
+import useAxios from "../axios";
 
 export default function Login() {
   const { login } = useAuth();
@@ -49,23 +48,29 @@ export default function Login() {
     setPasswordInvalidMessage("");
   };
 
-
   const loginHandler = (e) => {
     e.preventDefault();
     if (validateForm()) {
-        login({
-          email: user.email,
-          password: user.password,
-          api,
-        }).then((response) => {
-          if (response.status != 200) {
-            setAPIErrorMessage(response.data);
-          } else {
-            setAPIErrorMessage("");
-            closeRef.current.click();
-            navigateTo("/");
-          }
-        });
+      if (rememberMeState) {
+        localStorage.setItem("userEmail", JSON.stringify(user.email));
+      } else {
+        localStorage.removeItem("userEmail", JSON.stringify(user.email));
+      }
+      login({
+        email: user.email,
+        password: user.password,
+        api,
+      }).then((response) => {
+        if (response.status != 200) {
+          setAPIErrorMessage(response.data);
+        } else {
+          setAPIErrorMessage("");
+          closeRef.current.click();
+          navigateTo("/");
+        }
+      });
+
+      return { user, setUser };
     } else {
       console.log("log in error");
     }
