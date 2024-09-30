@@ -185,7 +185,7 @@ const DriverOrdersPage = () => {
                         Luggages: {order.luggages}
                       </p>
                       <ul>
-                        <li><i className="lni lni-dollar" /> Price: ${order.price}</li>
+                        <li><i className="lni lni-dollar" /> Price: €{order.price}</li>
                       </ul>
                       <div className="job-button">
                         <ul>
@@ -226,7 +226,7 @@ const DriverOrdersPage = () => {
                       Luggages: {order.luggages}
                     </p>
                     <ul>
-                      <li><i className="lni lni-dollar" /> Price: ${order.price}</li>
+                      <li><i className="lni lni-dollar" /> Price: €{order.price}</li>
                     </ul>
                     <div className="job-button">
                       <ul>
@@ -269,7 +269,7 @@ const DriverOrdersPage = () => {
                       Luggages: {order.luggages}
                     </p>
                     <ul>
-                      <li><i className="lni lni-dollar" /> Price: ${order.price}</li>
+                      <li><i className="lni lni-dollar" /> Price: €{order.price}</li>
                     </ul>
                     <div className="job-button">
                       <ul>
@@ -312,7 +312,7 @@ const DriverOrdersPage = () => {
                       Luggages: {order.luggages}
                     </p>
                     <ul>
-                      <li><i className="lni lni-dollar" /> Price: ${order.price}</li>
+                      <li><i className="lni lni-dollar" /> Price: €{order.price}</li>
                     </ul>
                     <div className="job-button">
                       <ul>
