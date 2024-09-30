@@ -1,11 +1,13 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
 
 const AuthContext = createContext();
 
 // Define AuthProvider to manage and provide the authentication status
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({ isLoggedIn: false, category: null });
+  const loginRef = useRef();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,11 +35,12 @@ export const AuthProvider = ({ children }) => {
     setAuth({ isLoggedIn: false, category: null });
     localStorage.removeItem('user');
     navigate('/');
+    loginRef.current.click();
 
   };
 
   return (
-    <AuthContext.Provider value={{ auth, login, logout }}>
+    <AuthContext.Provider value={{ auth, login, logout, loginRef }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,7 +1,7 @@
 import { useAuth } from '../hooks/useAuth';
 
 export default function Auth() {
-  const { auth, logout } = useAuth();
+  const { auth, logout, loginRef } = useAuth();
 
   if (!auth.isLoggedIn) {
 
@@ -15,6 +15,7 @@ export default function Auth() {
                 href="#"
                 data-bs-toggle="modal"
                 data-bs-target="#loginModal"
+                ref={loginRef}
               >
                 Login
               </a>
