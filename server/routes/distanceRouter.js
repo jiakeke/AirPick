@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get('/distance', async (req, res) => {
   const { origins, destinations } = req.query;
-  const apiKey = 'AIzaSyDRhAGE2MRgz0HcYeIzRolox1W6J2eSgVM';
+  const apiKey = process.env.GOOGLE_MAP_KEY;
 
   try {
     const response = await axios.get('https://maps.googleapis.com/maps/api/distancematrix/json', {
