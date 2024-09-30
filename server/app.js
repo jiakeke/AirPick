@@ -6,6 +6,7 @@ const userRouter = require("./routes/userRouter");
 const connectDB = require("./config/db");
 const {requestLogger,unknownEndpoint,errorHandler} = require("./middleware/customMiddleware");
 const authenticateToken=require("./middleware/authenticateToken");
+const distanceRouter = require("./routes/distanceRouter");
 connectDB();
 
 
@@ -21,6 +22,8 @@ app.use(cors());
 app.use('/api/users',userRouter);
 
 app.use('/api/orders', orderRouter);
+
+app.use('/api', distanceRouter);
 // ==== Set up the routers above ======
 app.use(unknownEndpoint);
 app.use(errorHandler);
