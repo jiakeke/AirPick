@@ -16,6 +16,7 @@ export default function NewOrderPage() {
     comments: '',
     price: 0,
   });
+  const [estimatedPrice, setEstimatedPrice] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,6 +60,31 @@ export default function NewOrderPage() {
     });
   };
 
+  const calculateEstimatedPrice = async () => {
+    const { departure, destination } = newOrder;
+    if (!departure || !destination) return;
+
+    try {
+      const response = await api.get('api/distance', {
+        params: {
+          origins: departure,
+          destinations: destination,
+        },
+      });
+
+      const distanceInMeters = response.data.rows[0].elements[0].distance.value;
+      const distanceInKm = distanceInMeters / 1000;
+
+      const baseFare = 5; // $5 base fare
+      const perKmFare = 1; // $1 per km
+      const estimatedPrice = baseFare + (distanceInKm * perKmFare);
+
+      setEstimatedPrice(estimatedPrice.toFixed(2));
+    } catch (error) {
+      console.error('Failed to calculate estimated price', error);
+    }
+  };
+
   return (
     <div className="new-order-form">
       <h2 className="section-title">Create a New Order</h2>
@@ -96,6 +122,7 @@ export default function NewOrderPage() {
           value={newOrder.category === 'pick' ? 'Lentäjäntie 3, 01530 Vantaa' : newOrder.departure}
           onChange={handleChange}
           readOnly={newOrder.category === 'pick'}
+          onBlur={calculateEstimatedPrice}
           required
         />
 
@@ -107,6 +134,7 @@ export default function NewOrderPage() {
           value={newOrder.category === 'drop' ? 'Lentäjäntie 3, 01530 Vantaa' : newOrder.destination}
           onChange={handleChange}
           readOnly={newOrder.category === 'drop'}
+          onBlur={calculateEstimatedPrice}
           required
         />
 
@@ -157,6 +185,12 @@ export default function NewOrderPage() {
           value={newOrder.comments}
           onChange={handleChange}
         ></textarea>
+
+        {estimatedPrice && (
+          <div className="estimated-price">
+            <p>Estimated Price: €{estimatedPrice}</p>
+          </div>
+        )}
 
         <label htmlFor="price">Price</label>
         <input
