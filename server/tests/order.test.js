@@ -131,12 +131,11 @@ describe("Order test start", () => {
       passenger: "333",
       driver: "222",
       comments: "Child seat required ",
-      price: -1,
+      price: 10,
     };
     await api
-      .post("/api/orders")
+      .post(`/api/orders`, newOrder, {})
       .set("Authorization", "bearer " + token)
-      .send(newOrder)
       .expect(201);
   });
 });
