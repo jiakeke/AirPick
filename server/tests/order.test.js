@@ -96,6 +96,7 @@ const orders = [
 
 beforeAll(async () => {
   await User.deleteMany({});
+  await Order.deleteMany({});
   await api.post("/api/users/regist").send(driver);
   await api.post("/api/users/regist").send(passenger);
 });
