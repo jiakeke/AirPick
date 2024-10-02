@@ -104,8 +104,8 @@ afterAll(() => {
   mongoose.connection.close();
 });
 
-describe("Order test start", () => {
-  it("should log in the user first", async () => {
+describe("Order test for the passenger start", () => {
+  it("should log in the passenger first", async () => {
     const result = await api
       .post("/api/users/login")
       .send({
@@ -118,24 +118,47 @@ describe("Order test start", () => {
     token = result.body.user.token;
   });
 
+  // Test PUT /api/users/deposit
+  it("should deposit some balance to the passenger first", async () => {
+    await api
+      .put("/api/users/deposit")
+      .send({
+        balance: 999,
+      })
+      .set("Authorization", "bearer " + token)
+      .expect(200)
+      .expect("Content-Type", /application\/json/);
+  });
+
   // Test POST /api/orders
   it("should create a new order when POST /api/orders is called", async () => {
     const newOrder = {
       category: "Pick",
-      departure: "Pick up departure",
-      destination: "Pick up destination",
-      persons: 3,
-      luggages: 4,
+      departure: "Lentäjäntie 3, 01530 Vantaa",
+      destination: "Lakitie 8 E 7 02770 Espoo",
+      persons: "3",
+      luggages: "4",
       flight: "E4448",
       date: "02.03.2024",
-      passenger: "333",
-      driver: "222",
-      comments: "Child seat required ",
-      price: 10,
+      comments: "",
+      price: "18",
     };
     await api
-      .post(`/api/orders`, newOrder, {})
+      .post("/api/orders")
+      .send(newOrder)
       .set("Authorization", "bearer " + token)
-      .expect(201);
+      .expect(201)
+      .expect("Content-Type", /application\/json/);
   });
+
+  // Test GET /api/orders/myorder
+  it("should return the orders the passenger has created.", async () => {
+    await api
+      .get("/api/orders/myorder")
+      .set("Authorization", "bearer " + token)
+      .expect(200); // the expect has not been writen yet
+  });
+
+  // Test PUT /api/orders/update/:orderId
+  it("should update the order info when api is called.", async () => {});
 });
