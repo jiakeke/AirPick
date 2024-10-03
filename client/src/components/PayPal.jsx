@@ -20,9 +20,34 @@ export default function PayPal() {
     try {
       const response = await fetch("/api/orders", {
         method: "POST",
-        headers: {},
+        headers: { "Content-Type": "application/json" },
+        // use the "body" param to optionally pass additional order information
+        // like product ids and quantities
+        body: JSON.stringify({
+          cart: [
+            {
+              id: 1,
+              quantity: 2,
+            },
+          ],
+        }),
       });
-    } catch {}
+
+      const orderData = await response.json();
+      if (orderData.id) {
+        return orderData.id;
+      } else {
+        const errorDetail = orderData?.details?.[0];
+        const errorMessage = errorDetail
+          ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
+          : JSON.stringify(orderData);
+
+        throw new Error(errorMessage);
+      }
+    } catch (error) {
+      console.error(error);
+      setMessage(`Could not initiate PayPal Checkout...${error}`);
+    }
   };
 
   return (
