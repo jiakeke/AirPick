@@ -35,7 +35,9 @@ export const AuthProvider = ({ children }) => {
     setAuth({ isLoggedIn: false, category: null });
     localStorage.removeItem('user');
     navigate('/');
-    loginRef.current.click();
+    if (loginRef.current) {
+        loginRef.current.click();
+    }
 
   };
 
