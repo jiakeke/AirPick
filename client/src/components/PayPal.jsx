@@ -15,11 +15,12 @@ export default function PayPal() {
     "data-sdk-integration-source": "integrationbuilder_sc",
   };
 
+  const api = useAxios();
+
   const [message, setMessage] = useState("");
 
   // function to create a order and recieve the order id
   const createOrder = async () => {
-    const api = useAxios();
     try {
       const response = await api.post("/api/paypal/paypalCreateOrder", {
         balance: "100",
@@ -44,7 +45,6 @@ export default function PayPal() {
 
   // function to capture the order id and procced
   const onApprove = async (data, actions) => {
-    const api = useAxios();
     try {
       const response = await api.post("/api/paypal/paypalCaptureOrder");
 
@@ -87,8 +87,8 @@ export default function PayPal() {
             //color:'blue' change the default color of the buttons
             layout: "vertical", //default value. Can be changed to horizontal
           }}
-          createOrder={createOrder()}
-          onApprove={onApprove(data, actions)}
+          createOrder={createOrder}
+          onApprove={onApprove}
         />
       </PayPalScriptProvider>
     </div>

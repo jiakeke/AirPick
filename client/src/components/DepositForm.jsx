@@ -2,8 +2,6 @@ import useAxios from "../axios";
 import React, { useState, useEffect } from "react";
 import "./Form.css";
 
-import PayPal from "./PayPal";
-
 const DepositForm = () => {
   const api = useAxios();
   const [amount, setAmount] = useState(0);
@@ -82,7 +80,6 @@ const DepositForm = () => {
           </div>
         </div>
       </div>
-      <PayPal />
     </>
   );
 };

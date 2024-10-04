@@ -1,8 +1,9 @@
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = process.env;
 const base = "https://api-m.sandbox.paypal.com";
 const User = require("../models/userModel");
-require("dotenv").config;
+require("dotenv").config();
 const mongoose = require("mongoose");
+const axios = require("axios");
 
 // ---------- Funtions that will not export ----------
 /**
@@ -17,8 +18,9 @@ const generateAccessToken = async () => {
     const auth = Buffer.from(
       PAYPAL_CLIENT_ID + ":" + PAYPAL_CLIENT_SECRET
     ).toString("base64");
-    const response = await fetch(`${base}/v1/oauth2/token`, {
+    const response = await axios({
       method: "POST",
+      url: `${base}/v1/oauth2/token`,
       body: "grant_type=client_credentials",
       headers: {
         Authorization: `Basic ${auth}`,
@@ -64,7 +66,6 @@ const createOrder = async (balance) => {
     method: "POST",
     body: JSON.stringify(payload),
   });
-
   return handleResponse(response);
 };
 
