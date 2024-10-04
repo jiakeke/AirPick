@@ -4,6 +4,8 @@ const User = require("../models/userModel");
 require("dotenv").config();
 const mongoose = require("mongoose");
 const axios = require("axios");
+const qs = require("qs");
+const { response } = require("express");
 
 // ---------- Funtions that will not export ----------
 /**
@@ -11,24 +13,26 @@ const axios = require("axios");
  * @see https://developer.paypal.com/api/rest/authentication/
  */
 const generateAccessToken = async () => {
-  try {
-    if (!PAYPAL_CLIENT_ID || !PAYPAL_CLIENT_SECRET) {
-      throw new Error("MISSING_API_CREDENTIALS");
-    }
-    const auth = Buffer.from(
-      PAYPAL_CLIENT_ID + ":" + PAYPAL_CLIENT_SECRET
-    ).toString("base64");
-    const response = await axios({
-      method: "POST",
-      url: `${base}/v1/oauth2/token`,
-      body: "grant_type=client_credentials",
-      headers: {
-        Authorization: `Basic ${auth}`,
-      },
-    });
+  if (!PAYPAL_CLIENT_ID || !PAYPAL_CLIENT_SECRET) {
+    throw new Error("MISSING_API_CREDENTIALS");
+  }
 
-    const data = await response.json();
-    return data.access_token;
+  const clientId = PAYPAL_CLIENT_ID;
+  const clientSecret = PAYPAL_CLIENT_SECRET;
+
+  const datas = qs.stringify({ grant_type: "client_credentials" });
+  const config = {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: `Basic ${Buffer.from(
+        `${clientId}:${clientSecret}`
+      ).toString("base64")}`,
+    },
+  };
+
+  try {
+    const response = await axios.post(`${base}/v1/oauth2/token`, datas, config);
+    return response.data.access_token;
   } catch (error) {
     console.error("Failed to generate Access Token:", error);
   }
@@ -46,27 +50,34 @@ const createOrder = async (balance) => {
   );
 
   const accessToken = await generateAccessToken();
-  const payload = {
-    intent: "CAPTURE",
-    perchase_units: [
+
+  let data = JSON.stringify({
+    purchase_units: [
       {
         amount: {
           currency_code: "USD",
-          value: balance,
+          value: "100.00",
         },
+        reference_id: "d9f80740-38f0-11e8-b467-0ed5f89f718b",
       },
     ],
-  };
+    intent: "CAPTURE",
+  });
 
-  const response = await fetch(`${base}/v2/checkout/orders`, {
+  let config = {
+    method: "post",
+    maxBodyLength: Infinity,
+    url: "https://api-m.sandbox.paypal.com/v2/checkout/orders",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: "Bearer " + accessToken,
     },
-    method: "POST",
-    body: JSON.stringify(payload),
+    data: data,
+  };
+  const response = await axios.request(config).catch((error) => {
+    console.log(error);
   });
-  return handleResponse(response);
+  return response;
 };
 
 /**
@@ -98,7 +109,7 @@ async function handleResponse(response) {
       httpStatusCode: response.status,
     };
   } catch (err) {
-    const errorMessage = await response.text();
+    const errorMessage = await response.json();
     throw new Error(errorMessage);
   }
 }
@@ -128,8 +139,10 @@ const paypalCreateOrder = async (req, res) => {
 
       // Use PayPal to create order
       try {
-        const { jsonResponse, httpStatusCode } = await createOrder(balance);
-        res.status(httpStatusCode).json(jsonResponse);
+        const response = await createOrder(balance);
+        if ((response.status = 201)) {
+          res.status(201).json(response.data);
+        }
       } catch (error) {
         console.error("PayPal failed to create order:", error);
         res.status(500).json({ error: "PayPal failed to create order." });

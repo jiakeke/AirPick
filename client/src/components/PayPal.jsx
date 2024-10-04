@@ -26,7 +26,9 @@ export default function PayPal() {
         balance: "100",
       });
 
-      const orderData = await response.json();
+      console.log("wwwwwww");
+      const orderData = await response.data;
+      console.log(orderData);
       if (orderData.id) {
         return orderData.id;
       } else {
