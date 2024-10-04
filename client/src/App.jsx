@@ -14,7 +14,6 @@ import DepositForm from "./components/DepositForm.jsx";
 import WithDrawalForm from "./components/WithDrawalForm.jsx";
 
 import Donate from "./components/Donate.jsx";
-import PayPal from "./components/PayPal.jsx";
 
 function App() {
   const [loading, setLoading] = useState(true);

@@ -11,6 +11,7 @@ const {
 } = require("./middleware/customMiddleware");
 const authenticateToken = require("./middleware/authenticateToken");
 const distanceRouter = require("./routes/distanceRouter");
+const paypalRouter = require("./routes/paypalRouter");
 connectDB();
 
 // Middleware to parse JSON
@@ -27,6 +28,8 @@ app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
 
 app.use("/api", distanceRouter);
+
+app.use("/api/paypal", paypalRouter);
 // ==== Set up the routers above ======
 app.use(unknownEndpoint);
 app.use(errorHandler);

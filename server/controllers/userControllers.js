@@ -83,10 +83,12 @@ const deposit = async (req, res) => {
       let preBalance = user.balance;
       let balance = Number(req.body.balance);
       if (isNaN(balance)) {
-        return res.status(400).json({ message: 'Invalid balance value' });
+        return res.status(400).json({ message: "Invalid balance value" });
       }
       if (balance < 0) {
-        return res.status(400).json({ message: " The recharge amount cannot be less than 0!! " });
+        return res
+          .status(400)
+          .json({ message: " The recharge amount cannot be less than 0!! " });
       }
       const newBalance = parseFloat((preBalance + balance).toFixed(2));
       const updatedUser = await User.findByIdAndUpdate(
@@ -103,7 +105,9 @@ const deposit = async (req, res) => {
       res.status(404).json({ message: "User not found" });
     }
   } catch (error) {
-    res.status(500).json({ message: "Failed to deposit", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to deposit", error: error.message });
   }
 };
 
@@ -120,16 +124,20 @@ const withDrawal = async (req, res) => {
     if (user && user.category === "driver") {
       let preBalance = await user.balance;
 
-      let balance = Number(req.body.balance)
+      let balance = Number(req.body.balance);
       if (isNaN(balance)) {
         // Handle the error, e.g., return a response indicating invalid input
-        return res.status(400).json({ message: 'Invalid balance value' });
+        return res.status(400).json({ message: "Invalid balance value" });
       }
       if (balance < 0) {
-        return res.status(400).json({ message: " The withdrawal amount cannot be less than 0!! " });
+        return res
+          .status(400)
+          .json({ message: " The withdrawal amount cannot be less than 0!! " });
       }
       if (preBalance < balance) {
-        return res.status(400).json({ message: " Withdrawals cannot exceed the balance!! " });
+        return res
+          .status(400)
+          .json({ message: " Withdrawals cannot exceed the balance!! " });
       }
 
       const newBalance = parseFloat((preBalance - balance).toFixed(2));
@@ -140,22 +148,19 @@ const withDrawal = async (req, res) => {
         { new: true, overwrite: true }
       );
       if (updatedUser) {
-        res.status(200).json({ message: "WithDrawal successfully!" })
+        res.status(200).json({ message: "WithDrawal successfully!" });
       } else {
         res.status(404).json({ message: "User not found" });
       }
     } else {
       res.status(404).json({ message: "User not found" });
     }
-
-
-
   } catch (error) {
-    res.status(500).json({ message: "Failed to WithDrawal", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to WithDrawal", error: error.message });
   }
-}
-
-
+};
 
 // POST /users
 const createUser = async (req, res) => {
@@ -261,4 +266,3 @@ module.exports = {
   withDrawal,
   getBalance,
 };
-
