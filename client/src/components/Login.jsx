@@ -20,11 +20,15 @@ export default function Login() {
   });
 
   const [APIErrorMessage, setAPIErrorMessage] = useState("");
-  const [emailValid, setEmailValid] = useState(null);
+  const [emailValid, setEmailValid] = useState(
+    JSON.parse(localStorage.getItem("userEmail")) ? true : false
+  );
   const [passwordStrength, setPasswordStrength] = useState(null);
   const [emailInvalidMessage, setemailInvalidMessage] = useState("");
   const [passwordInvalidMessage, setPasswordInvalidMessage] = useState("");
-  const [rememberMeState, setRememberMeState] = useState(false);
+  const [rememberMeState, setRememberMeState] = useState(
+    JSON.parse(localStorage.getItem("userEmail")) ? true : false
+  );
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -71,28 +75,6 @@ export default function Login() {
           navigateTo("/");
         }
       });
-
-      return { user, setUser };
-      if (rememberMeState) {
-        localStorage.setItem("userEmail", JSON.stringify(user.email));
-      } else {
-        localStorage.removeItem("userEmail", JSON.stringify(user.email));
-      }
-      userService
-        .userLogin({
-          email: user.email,
-          password: user.password,
-          api,
-        })
-        .then((response) => {
-          if (response.status != 200) {
-            setAPIErrorMessage(response.data);
-          } else {
-            setAPIErrorMessage("");
-            closeRef.current.click();
-            navigateTo("/");
-          }
-        });
 
       return { user, setUser };
     } else {
@@ -266,6 +248,7 @@ export default function Login() {
                         <input
                           type="checkbox"
                           required=""
+                          checked={rememberMeState}
                           className="d-inline"
                           onChange={handleRememberMe}
                         />
