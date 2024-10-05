@@ -8,6 +8,10 @@ const {
 
 router.post("/paypalCreateOrder", authenticateToken, paypalCreateOrder);
 
-router.post("/paypalCaptureOrder", authenticateToken, paypalCaptureOrder);
+router.post(
+  "/paypalCaptureOrder/:orderID",
+  authenticateToken,
+  paypalCaptureOrder
+);
 
 module.exports = router;

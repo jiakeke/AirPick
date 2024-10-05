@@ -87,18 +87,20 @@ const createOrder = async (balance) => {
 const captureOrder = async (orderID) => {
   const accessToken = await generateAccessToken();
 
-  const response = await fetch(
-    `${base}/v2/checkout/orders/${orderID}/capture`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
+  let config = {
+    method: "post",
+    maxBodyLength: Infinity,
+    url: `${base}/v2/checkout/orders/${orderID}/capture`,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
 
-  return handleResponse(response);
+  const response = await axios.request(config).catch((error) => {
+    console.log(error);
+  });
+  return response;
 };
 
 async function handleResponse(response) {
@@ -155,7 +157,7 @@ const paypalCreateOrder = async (req, res) => {
   }
 };
 
-// POST /api/paypal/paypalCaptureOrder
+// POST /api/paypal/paypalCaptureOrder/:orderID
 const paypalCaptureOrder = async (req, res) => {
   const { userId } = req.user;
   if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -163,14 +165,16 @@ const paypalCaptureOrder = async (req, res) => {
   }
   try {
     const { orderID } = req.params;
-    const { jsonResponse, httpStatusCode } = await captureOrder(orderID);
-    res.status(httpStatusCode).json(jsonResponse);
-    if (httpStatusCode === 201) {
+    const response = await captureOrder(orderID);
+    if (response.status === 201) {
       const user = await User.findById(userId);
       if (user && user.category === "passenger") {
+        console.log("wwwwwwwwwwwwww");
+
         let preBalance = user.balance;
-        let balance =
-          jsonResponse.perchase_units.payments.captures.amount.value;
+        let balance = await parseFloat(
+          response.data.purchase_units[0].payments.captures[0].amount.value
+        );
         const newBalance = parseFloat(preBalance + balance).toFixed(2);
         const updatedUser = await User.findByIdAndUpdate(
           { _id: userId },

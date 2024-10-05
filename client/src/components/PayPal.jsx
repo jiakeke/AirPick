@@ -19,6 +19,8 @@ export default function PayPal() {
 
   const [message, setMessage] = useState("");
 
+  let orderID = null;
+
   // function to create a order and recieve the order id
   const createOrder = async () => {
     try {
@@ -26,10 +28,10 @@ export default function PayPal() {
         balance: "100",
       });
 
-      console.log("wwwwwww");
       const orderData = await response.data;
-      console.log(orderData);
+
       if (orderData.id) {
+        orderID = orderData.id;
         return orderData.id;
       } else {
         const errorDetail = orderData?.details?.[0];
@@ -48,7 +50,9 @@ export default function PayPal() {
   // function to capture the order id and procced
   const onApprove = async (data, actions) => {
     try {
-      const response = await api.post("/api/paypal/paypalCaptureOrder");
+      const response = await api.post(
+        `/api/paypal/paypalCaptureOrder/${orderID}`
+      );
 
       const orderData = await response.json();
 
