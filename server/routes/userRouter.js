@@ -9,6 +9,8 @@ const {
     // deleteUser,
     userRegist,
     userLogin,
+    userForgotPassword,
+    userResetPassword,
     deposit,
     withDrawal,
     getBalance,
@@ -22,6 +24,8 @@ router.post('/regist',userRegist)
 
 router.post('/login',userLogin)
 
+router.post('/forgot_password', userForgotPassword)
+router.post('/reset_password/:token', userResetPassword)
 
 router.put('/deposit',authenticateToken,deposit)
 

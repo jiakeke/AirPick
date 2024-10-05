@@ -11,6 +11,8 @@ import Map from "./components/Map";
 import UserForm from "./components/UserForm.jsx";
 import DepositForm from "./components/DepositForm.jsx";
 import WithDrawalForm from "./components/WithDrawalForm.jsx";
+import ForgotPassword from "./pages/ForgotPassword.jsx";
+import ResetPassword from "./pages/ResetPassword.jsx";
 import { useAuth, AuthProvider } from './hooks/useAuth'
 
 function App() {
@@ -45,6 +47,8 @@ function App() {
         <Route path="/profile" element={<UserForm />} />
         <Route path="/deposit" element={<DepositForm />} />
         <Route path="/withDrawal" element={<WithDrawalForm />} />
+        <Route path="/forgot_password" element={<ForgotPassword />} />
+        <Route path="/reset_password/:token" element={<ResetPassword />} />
       </Routes>
       </AuthProvider>
     </BrowserRouter>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import useAxios from "../axios";
 
@@ -237,9 +237,10 @@ export default function Login() {
                           id="passwordHelpBlock"
                           className="form-text text-center"
                         >
-                          <a href="#" className="password">
-                            Forgot Password ?
-                          </a>
+                          <Link to="/forgot_password" onClick={() => closeRef.current.click()}>
+                            Forgot Password?
+                          </Link>
+          
                         </div>
                       </div>
 
