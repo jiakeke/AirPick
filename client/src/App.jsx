@@ -13,9 +13,6 @@ import UserForm from "./components/UserForm.jsx";
 import DepositForm from "./components/DepositForm.jsx";
 import WithDrawalForm from "./components/WithDrawalForm.jsx";
 
-import Donate from "./components/Donate.jsx";
-import PayPal from "./components/PayPal.jsx";
-
 function App() {
   const [loading, setLoading] = useState(true);
   const auth = useAuth();
@@ -49,8 +46,6 @@ function App() {
           <Route path="/deposit" element={<DepositForm />} />
           <Route path="/withDrawal" element={<WithDrawalForm />} />
         </Routes>
-        <Donate />
-        <PayPal />
       </AuthProvider>
     </BrowserRouter>
   );

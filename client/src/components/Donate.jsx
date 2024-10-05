@@ -1,9 +1,9 @@
 export default function Donate() {
   return (
     <>
-      <div className="container mt-5">
+      <div className="container py-5 mt-5">
         <div className="d-flex flex-wrap flex-column justify-content-center align-items-center">
-          <h1 className="page-title display-3 mt-5">Please Support Us!!!</h1>
+          <h2 className="">Please Support Us!!!</h2>
           <form
             action="https://www.paypal.com/cgi-bin/webscr"
             method="post"

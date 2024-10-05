@@ -56,7 +56,7 @@ const createOrder = async (balance) => {
       {
         amount: {
           currency_code: "USD",
-          value: "100.00",
+          value: balance,
         },
         reference_id: "d9f80740-38f0-11e8-b467-0ed5f89f718b",
       },
@@ -128,6 +128,8 @@ const paypalCreateOrder = async (req, res) => {
     const user = await User.findById(userId);
     if (user && user.category === "passenger") {
       let balance = Number(req.body.balance);
+
+      console.log(req.body);
 
       // Check balance amount
       if (isNaN(balance)) {
