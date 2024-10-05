@@ -1,9 +1,13 @@
 const User = require("../models/userModel");
 require("dotenv").config();
 const encryption = require("../utils/encryption");
+const {sendRestePasswordEmail} = require("../utils/send_reset_password_email");
 const jwt = require("jsonwebtoken");
+const crypto = require('crypto');
 const mongoose = require("mongoose");
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
+
+
 // GET /users
 const getAllUsers = async (req, res) => {
   try {
@@ -69,6 +73,76 @@ const userLogin = async (req, res) => {
       .json({ message: "Server error", error: error.message });
   }
 };
+
+// POST /api/user/forgot_password
+
+const userForgotPassword = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User Not Found." });
+    }
+
+    // Generate a random reset token
+    const resetToken = crypto.randomBytes(32).toString('hex');
+
+    // Generate a JWT hash tokent for reset password verification
+    const resetPasswordToken = jwt.sign(
+        { resetToken },
+        JWT_SECRET,
+        { expiresIn: '15m' }
+    );
+
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpires = Date.now() + 15 * 60 * 1000; // 15 minutes
+    await user.save();
+    await sendRestePasswordEmail(email, resetPasswordToken);
+
+    return res.status(200).json({ message: "Password reset link has been sent."});
+
+  } catch (error) {
+
+    console.log("error", error);
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
+  }
+};
+
+
+// POST /api/user/reset_password
+const userResetPassword = async (req, res) => {
+  const { password } = req.body;
+  const { token } = req.params;
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    const user = await User.findOne({
+      resetPasswordToken: decoded.resetToken,
+      resetPasswordExpires: { $gt: Date.now() }, // Token is not expired
+    });
+
+    console.log("user", user);
+    if (!user) {
+      return res.status(400).json({ error: 'Invalid or expired reset link' });
+    }
+
+    // Update user password
+    const hashPassword = await encryption.hashPassword(password);
+    user.password = hashPassword; // Hash the password before saving
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    return res.status(200).json({ message: "Password reset successful."});
+  } catch (error) {
+    res.status(400).json({ error: 'Invalid token' });
+  }
+
+};
+
+
 
 // POST /api/user/deposit
 
@@ -262,6 +336,8 @@ module.exports = {
   // deleteUser,
   userRegist,
   userLogin,
+  userForgotPassword,
+  userResetPassword,
   deposit,
   withDrawal,
   getBalance,

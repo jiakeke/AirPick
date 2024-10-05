@@ -411,7 +411,7 @@ export default function Register() {
                         }}
                       />
                       <span className="label-body text-black">
-                        I agree to the &nbsp;
+                        &nbsp;I agree to the &nbsp;
                         <a
                           href="#"
                           className="text-black password border-bottom"

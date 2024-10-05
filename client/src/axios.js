@@ -1,13 +1,14 @@
 // src/axios.js
-
+import React from 'react';
 import axios from "axios";
 import { useAuth } from "./hooks/useAuth";
+
 
 const useAxios = () => {
   // Create Axios Instance
   const { logout } = useAuth();
   const api = axios.create({
-    baseURL: "http://localhost:4000", // Replace with your API base URL
+    baseURL: import.meta.env.VITE_API_BASE_URL , // Replace with your API base URL
   });
 
   // Request interceptor
