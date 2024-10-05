@@ -1,5 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useAuth, AuthProvider } from "./hooks/useAuth";
+
 import Nav from "./components/Nav.jsx";
 import Carousel from "./components/Carousel";
 import OrdersList from "./components/OrdersList";
@@ -7,13 +9,14 @@ import About from "./components/About.jsx";
 import Service from "./components/Service.jsx";
 import News from "./components/News.jsx";
 import Contact from "./components/Contact.jsx";
-import Map from "./components/Map";
 import UserForm from "./components/UserForm.jsx";
 import DepositForm from "./components/DepositForm.jsx";
 import WithDrawalForm from "./components/WithDrawalForm.jsx";
+
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
 import { useAuth, AuthProvider } from './hooks/useAuth'
+
 
 function App() {
   const [loading, setLoading] = useState(true);

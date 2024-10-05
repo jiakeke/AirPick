@@ -4,6 +4,8 @@ import "bootstrap/dist/js/bootstrap.js";
 import blog3 from "../assets/imgs/blog3.jpg";
 import blog2 from "../assets/imgs/blog2.jpg";
 
+import Donate from "./Donate";
+
 export default function About() {
   return (
     <>
@@ -157,105 +159,6 @@ export default function About() {
           </div>
         </div>
       </section>
-      {/* faq section start  */}
-      <section id="faq">
-        <div className="container my-5 py-5 ">
-          <h2 className=" text-center my-5">
-            We've got <span className="text-primary"> answers</span>
-          </h2>
-          <div
-            className="accordion col-md-8 offset-md-2"
-            id="accordionPanelsStayOpenExample"
-          >
-            <div className="accordion-item mt-3">
-              <h5 className="accordion-header" id="panelsStayOpen-headingOne">
-                <button
-                  className="accordion-button"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#panelsStayOpen-collapseOne"
-                  aria-expanded="true"
-                  aria-controls="panelsStayOpen-collapseOne"
-                >
-                  Why to believe with GoCar Car rental service ?
-                </button>
-              </h5>
-              <div
-                id="panelsStayOpen-collapseOne"
-                className="accordion-collapse collapse show"
-              >
-                <div className="accordion-body">
-                  <p>
-                    Diam orci gravida convallis at enim risus viverra. Hac mi
-                    tristique in aliquet tincidunt nam lectus nec. Placerat
-                    interdum auctor facilisi massa laoreet hendrerit posuere a.
-                    Tristique ultricies consectetu at.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <hr />
-            <div className="accordion-item mt-3">
-              <h2 className="accordion-header" id="panelsStayOpen-headingTwo">
-                <button
-                  className="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#panelsStayOpen-collapseTwo"
-                  aria-expanded="false"
-                  aria-controls="panelsStayOpen-collapseTwo"
-                >
-                  How to know which hosting service provider is best?
-                </button>
-              </h2>
-              <div
-                id="panelsStayOpen-collapseTwo"
-                className="accordion-collapse collapse"
-                aria-labelledby="panelsStayOpen-headingTwo"
-              >
-                <div className="accordion-body">
-                  <p>
-                    Diam orci gravida convallis at enim risus viverra. Hac mi
-                    tristique in aliquet tincidunt nam lectus nec. Placerat
-                    interdum auctor facilisi massa laoreet hendrerit posuere a.
-                    Tristique ultricies consectetu at.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <hr />
-            <div className="accordion-item mt-3">
-              <h2 className="accordion-header" id="panelsStayOpen-headingThree">
-                <button
-                  className="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#panelsStayOpen-collapseThree"
-                  aria-expanded="false"
-                  aria-controls="panelsStayOpen-collapseThree"
-                >
-                  What are the special features of hosthub?
-                </button>
-              </h2>
-              <div
-                id="panelsStayOpen-collapseThree"
-                className="accordion-collapse collapse"
-                aria-labelledby="panelsStayOpen-headingThree"
-              >
-                <div className="accordion-body">
-                  <p>
-                    Diam orci gravida convallis at enim risus viverra. Hac mi
-                    tristique in aliquet tincidunt nam lectus nec. Placerat
-                    interdum auctor facilisi massa laoreet hendrerit posuere a.
-                    Tristique ultricies consectetu at.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <hr />
-          </div>
-        </div>
-      </section>
       {/* call-to-action section start  */}
       <section id="action" className="position-relative">
         <div className="container  py-5 my-5">
@@ -278,6 +181,9 @@ export default function About() {
             </div>
           </div>
         </div>
+      </section>
+      <section id="donate" className="position-relative">
+        <Donate />
       </section>
     </>
   );
