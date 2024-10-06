@@ -14,7 +14,6 @@ import WithDrawalForm from "./components/WithDrawalForm.jsx";
 
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
-import { useAuth, AuthProvider } from "./hooks/useAuth";
 
 function App() {
   const [loading, setLoading] = useState(true);

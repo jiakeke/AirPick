@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import UpdateOrder from './UpdateOrder';
+import NewOrderPage from './NewOrder';
 import useAxios from '../axios';
 import "../assets/orders.css";
 
@@ -97,6 +98,15 @@ const PassengerOrdersPage = () => {
     <div className="container mt-5">
       <div className="d-flex flex-wrap flex-column justify-content-center align-items-center">
         <h1 className="page-title display-3 mt-5">Your Orders</h1>
+        <button
+          type="button"
+          className="btn btn-primary btn-lg mt-3"
+          data-bs-toggle="modal"
+          data-bs-target="#newOrderModal"
+        >
+          Create New Order
+        </button>
+        <NewOrderPage onClose={() => remove('show')} />
       </div>
       <div>
         <h2>New Orders</h2>

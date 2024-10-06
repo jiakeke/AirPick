@@ -56,6 +56,7 @@ export default function UpdateOrder({ order, index, onUpdate }) {
                 onChange={handleChange}
                 className="form-control"
                 required
+                disabled
               />
 
               <label htmlFor="departure" className="fs-6 text-uppercase fw-bold text-black">Departure</label>
@@ -66,6 +67,7 @@ export default function UpdateOrder({ order, index, onUpdate }) {
                 onChange={handleChange}
                 className="form-control"
                 required
+                disabled
               />
 
               <label htmlFor="destination" className="fs-6 text-uppercase fw-bold text-black">Destination</label>
@@ -76,6 +78,7 @@ export default function UpdateOrder({ order, index, onUpdate }) {
                 onChange={handleChange}
                 className="form-control"
                 required
+                disabled
               />
 
               <label htmlFor="persons" className="fs-6 text-uppercase fw-bold text-black">Persons</label>
