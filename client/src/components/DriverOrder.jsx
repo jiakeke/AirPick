@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import "../assets/orders.css";
+import { Link } from "react-router-dom";
 import useAxios from '../axios';
 
 const DriverOrdersPage = () => {
@@ -180,7 +181,7 @@ const DriverOrdersPage = () => {
                   <div className="single-job" key={order._id}>
                     <div className="job-content">
                       <h4>
-                        <a href={order.url}>Category: {order.category}</a>
+                        <Link to={order.url}>Category: {order.category}</Link>
                       </h4>
                       <p>
                         From: {order.departure} <br />
@@ -221,7 +222,7 @@ const DriverOrdersPage = () => {
                 <div className="single-job" key={order._id}>
                   <div className="job-content">
                     <h4>
-                      <a href={order.url}>Category: {order.category}</a>
+                      <Link to={order.url}>Category: {order.category}</Link>
                     </h4>
                     <p>
                       From: {order.departure} <br />
@@ -266,7 +267,7 @@ const DriverOrdersPage = () => {
                 <div className="single-job" key={order._id}>
                   <div className="job-content">
                     <h4>
-                      <a href={order.url}>Category: {order.category}</a>
+                      <Link to={order.url}>Category: {order.category}</Link>
                     </h4>
                     <p>
                       From: {order.departure} <br />
@@ -311,7 +312,7 @@ const DriverOrdersPage = () => {
                 <div className="single-job" key={order._id}>
                   <div className="job-content">
                     <h4>
-                      <a href={order.url}>Category: {order.category}</a>
+                      <Link to={order.url}>Category: {order.category}</Link>
                     </h4>
                     <p>
                       From: {order.departure} <br />

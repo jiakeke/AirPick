@@ -64,6 +64,7 @@ const DepositForm = () => {
                   disabled={!amount || amount <= 0}
                   className="Form-btn"
                 >
+                  Deposit
                 </button>
               </div>
               </>

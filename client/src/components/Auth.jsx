@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useAuth } from '../hooks/useAuth';
 
 export default function Auth() {
@@ -10,15 +11,15 @@ export default function Auth() {
         <div className="d-flex mt-5 mt-lg-0 ps-xl-5 align-items-center justify-content-center">
           <ul className="navbar-nav justify-content-end align-items-center">
             <li className="nav-item">
-              <a
+              <Link
                 className="nav-link px-3"
-                href="#"
+                to="#"
                 data-bs-toggle="modal"
                 data-bs-target="#loginModal"
                 ref={loginRef}
               >
                 Login
-              </a>
+              </Link>
             </li>
           </ul>
           <button
@@ -37,24 +38,24 @@ export default function Auth() {
       <>
         <ul className="navbar-nav justify-content-end align-items-center fs-4">
           <li className="nav-item">
-            <a className="nav-link px-3" href="/profile">
+            <Link className="nav-link px-3" to="/profile">
               Profile
-            </a>
+            </Link>
           </li>
         </ul>
 
         {auth.category === "passenger" && (<ul className="navbar-nav justify-content-end align-items-center fs-4">
           <li className="nav-item">
-            <a className="nav-link px-3" href="/deposit">
+            <Link className="nav-link px-3" to="/deposit">
               Deposit
-            </a>
+            </Link>
           </li>
         </ul>)}
         {auth.category === "driver" && (<ul className="navbar-nav justify-content-end align-items-center fs-4">
           <li className="nav-item">
-            <a className="nav-link px-3" href="/withDrawal">
+            <Link className="nav-link px-3" to="/withDrawal">
               WithDrawal
-            </a>
+            </Link>
           </li>
         </ul>)}
 

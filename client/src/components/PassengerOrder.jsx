@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import UpdateOrder from './UpdateOrder';
 import NewOrderPage from './NewOrder';
 import useAxios from '../axios';
+import { Link } from "react-router-dom";
 import "../assets/orders.css";
 
 const PassengerOrdersPage = () => {
@@ -117,7 +118,7 @@ const PassengerOrdersPage = () => {
                 <div className="single-job" key={order._id}>
                   <div className="job-content">
                     <h4>
-                      <a href={order.url}>Category: {order.category}</a>
+                      <Link to={order.url}>Category: {order.category}</Link>
                     </h4>
                     <p>
                       From: {order.departure} <br />
@@ -170,7 +171,7 @@ const PassengerOrdersPage = () => {
                 <div className="single-job" key={order._id}>
                   <div className="job-content">
                     <h4>
-                      <a href={order.url}>Category: {order.category}</a>
+                      <Link to={order.url}>Category: {order.category}</Link>
                     </h4>
                     <p>
                       From: {order.departure} <br />
@@ -211,7 +212,7 @@ const PassengerOrdersPage = () => {
                 <div className="single-job" key={order._id}>
                   <div className="job-content">
                     <h4>
-                      <a href={order.url}>Category: {order.category}</a>
+                      <Link to={order.url}>Category: {order.category}</Link>
                     </h4>
                     <p>
                       From: {order.departure} <br />
@@ -248,7 +249,7 @@ const PassengerOrdersPage = () => {
                 <div className="single-job" key={order._id}>
                   <div className="job-content">
                     <h4>
-                      <a href={order.url}>Category: {order.category}</a>
+                      <Link to={order.url}>Category: {order.category}</Link>
                     </h4>
                     <p>
                       From: {order.departure} <br />
@@ -283,7 +284,7 @@ const PassengerOrdersPage = () => {
                 <div className="single-job" key={order._id}>
                   <div className="job-content">
                     <h4>
-                      <a href={order.url}>Category: {order.category}</a>
+                      <Link to={order.url}>Category: {order.category}</Link>
                     </h4>
                     <p>
                       From: {order.departure} <br />
