@@ -2,7 +2,7 @@ import "bootstrap/js/src/collapse.js";
 import "../assets/nav.scss";
 import classNames from "classnames";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Auth from "./Auth.jsx";
 
 import Login from "./Login";
@@ -33,9 +33,9 @@ export default function Nav() {
           >
             <ul className="navbar-nav me-auto text-center fs-4">
               <li className="nav-item">
-                <a className="nav-link px-3" href="/about">
+                <Link className="nav-link px-3" to="/about">
                   About
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
                 <a className="nav-link px-3" href="/service">
