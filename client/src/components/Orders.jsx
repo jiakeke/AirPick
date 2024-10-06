@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 
@@ -37,7 +38,7 @@ export default function Orders() {
                   </div>
                   <div className="job-content">
                     <h4>
-                      <a href={order.url}>Category: {order.category}</a>
+                      <Link to={order.url}>Category: {order.category}</Link>
                     </h4>
                     <p>
                       From: {order.departure} <br />
@@ -53,7 +54,7 @@ export default function Orders() {
                   <div className="job-button">
                     <ul>
                       <li>
-                        <a href="#">View Details</a>
+                        <Link to="#">View Details</Link>
                       </li>
                       <li>
                         <span>{order.status}</span>

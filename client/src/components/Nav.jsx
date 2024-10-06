@@ -16,9 +16,9 @@ export default function Nav() {
     <>
       <header className="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
         <nav className="container">
-          <a className="navbar-brand fs-3" href="/">
+          <Link className="navbar-brand fs-3" to="/">
             AirPick
-          </a>
+          </Link>
           <button
             className="navbar-toggler boder-warning boder-2"
             onClick={() => setIsActive(!isActive)}
@@ -38,22 +38,22 @@ export default function Nav() {
                 </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link px-3" href="/service">
+                <Link className="nav-link px-3" to="/service">
                   Service
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link px-3" href="/news">
+                <Link className="nav-link px-3" to="/news">
                   News
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link px-3" href="/contact">
+                <Link className="nav-link px-3" to="/contact">
                   Contact
-                </a>
+                </Link>
               </li>
             </ul>
-            <Auth />
+            <Linkuth />
           </section>
         </nav>
       </header>
