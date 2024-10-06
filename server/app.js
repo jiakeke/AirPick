@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const orderRouter = require("./routes/orderRouter");
 const userRouter = require("./routes/userRouter");
+const messageRouter = require("./routes/messageRouter");
 const connectDB = require("./config/db");
 const {
   requestLogger,
@@ -26,6 +27,8 @@ app.use(cors());
 app.use("/api/users", userRouter);
 
 app.use("/api/orders", orderRouter);
+
+app.use("/api/messages", messageRouter);
 
 app.use("/api", distanceRouter);
 
