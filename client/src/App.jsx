@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate} from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth, AuthProvider } from "./hooks/useAuth";
 
@@ -18,7 +18,17 @@ import ResetPassword from "./pages/ResetPassword.jsx";
 
 function App() {
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
   const auth = useAuth();
+
+  useEffect(() => {
+    const hash = window.location.hash;
+
+    if (hash.startsWith('#/')) {
+      const path = hash.slice(1);
+      navigate(path, { replace: true });
+    }
+  }, [navigate]);
 
   useEffect(() => {
     setLoading(false);
@@ -28,7 +38,6 @@ function App() {
     return <div>Loading...</div>;
   }
   return (
-    <BrowserRouter>
       <AuthProvider>
         <Nav />
         <Routes>
@@ -52,8 +61,13 @@ function App() {
           <Route path="/reset_password/:token" element={<ResetPassword />} />
         </Routes>
       </AuthProvider>
-    </BrowserRouter>
   );
 }
 
-export default App;
+const Root = () => (
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+);
+
+export default Root;
