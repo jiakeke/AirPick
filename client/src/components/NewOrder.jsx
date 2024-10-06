@@ -114,7 +114,7 @@ export default function NewOrderModal() {
                     checked={newOrder.category === 'pick'}
                     onChange={handleTypeChange}
                   />
-                  Pick
+                  &nbsp;&nbsp;Pick
                 </label>
                 <label className="form-check form-check-inline">
                   <input
@@ -124,7 +124,7 @@ export default function NewOrderModal() {
                     checked={newOrder.category === 'drop'}
                     onChange={handleTypeChange}
                   />
-                  Drop
+                  &nbsp;&nbsp;Drop
                 </label>
               </div>
 
