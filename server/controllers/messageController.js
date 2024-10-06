@@ -1,5 +1,5 @@
-const Message = require('../models/Message');
-const Order = require('../models/Order');
+const Message = require('../models/messageModel');
+const Order = require('../models/orderModel');
 
 // Send a message
 const sendMessage = async (req, res) => {
