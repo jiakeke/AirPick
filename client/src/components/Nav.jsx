@@ -53,7 +53,7 @@ export default function Nav() {
                 </Link>
               </li>
             </ul>
-            <Linkuth />
+            <Auth />
           </section>
         </nav>
       </header>
