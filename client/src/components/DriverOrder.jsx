@@ -53,7 +53,11 @@ const DriverOrdersPage = () => {
         console.error('Failed to accept order');
       }
     } catch (error) {
-      console.error('Failed to accept order', error);
+      if (error.response && error.response.status === 400) {
+        alert(error.response.data.message);
+      } else {
+        console.error('Failed to accept order', error);
+      }
     }
   };
 

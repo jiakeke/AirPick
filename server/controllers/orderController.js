@@ -73,6 +73,11 @@ const createOrder = async (req, res) => {
     return res.status(403).json({ message: 'Only passengers can create orders' });
   }
 
+  const passenger = await User.findById(userId);
+  if (!passenger.phone) {
+    return res.status(400).json({ message: 'Please complete your profile information before place an order.' });
+  }
+
   try {
     const userOrders = await Order.find({
       passenger: userId,
@@ -200,6 +205,11 @@ const acceptOrder = async (req, res) => {
 
   if (userCategory !== 'driver') {
     return res.status(403).json({ message: 'Invalid user type' });
+  }
+
+  const driver = await User.findById(userId);
+  if (!driver.phone) {
+    return res.status(400).json({ message: 'Please complete your profile information before accept an order.' });
   }
 
   try {
