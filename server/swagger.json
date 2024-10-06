@@ -1,0 +1,728 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "AirPick API Documentation",
+    "version": "1.0.0",
+    "description": "API documentation for the application"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000/api"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "paths": {
+    "/users/regist": {
+      "post": {
+        "summary": "Register a new user",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "first_name": { "type": "string" },
+                  "last_name": { "type": "string" },
+                  "email": { "type": "string" },
+                  "password": { "type": "string" },
+                  "category": { "type": "string" }
+                },
+                "required": ["first_name", "last_name", "email", "password", "category"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully"
+          },
+          "400": {
+            "description": "Failed to register user"
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "summary": "Login a user",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User logged in successfully"
+          },
+          "400": {
+            "description": "Invalid email or password"
+          }
+        }
+      }
+    },
+    "/users/forgot_password": {
+      "post": {
+        "summary": "Forgot password",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" }
+                },
+                "required": ["email"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password reset email sent"
+          },
+          "400": {
+            "description": "Failed to send password reset email"
+          }
+        }
+      }
+    },
+    "/users/reset_password/{token}": {
+      "post": {
+        "summary": "Reset password",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": { "type": "string" }
+                },
+                "required": ["password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password reset successfully"
+          },
+          "400": {
+            "description": "Failed to reset password"
+          }
+        }
+      }
+    },
+    "/users/deposit": {
+      "put": {
+        "summary": "Deposit money",
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "balance": {
+                "type": "number",
+                "example": 100.0
+              }
+            },
+            "required": ["balance"]
+          }
+        }
+      }
+    },
+        "responses": {
+          "200": {
+            "description": "Deposit successful"
+          },
+          "400": {
+            "description": "Failed to deposit money"
+          }
+        }
+      }
+    },
+    "/users/withDrawal": {
+      "put": {
+        "summary": "Withdraw money",
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+      "required": true,
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "balance": {
+                "type": "number",
+                "example": 100.0
+              }
+            },
+            "required": ["balance"]
+          }
+        }
+      }
+    },
+        "responses": {
+          "200": {
+            "description": "Withdrawal successful"
+          },
+          "400": {
+            "description": "Failed to withdraw money"
+          }
+        }
+      }
+    },
+    "/users/balance": {
+      "get": {
+        "summary": "Get user balance",
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Balance retrieved successfully"
+          },
+          "400": {
+            "description": "Failed to retrieve balance"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Get user details",
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User details retrieved successfully"
+          },
+          "400": {
+            "description": "Failed to retrieve user details"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update user details",
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "first_name": { "type": "string" },
+                  "last_name": { "type": "string" },
+                  "email": { "type": "string" },
+                  "phone": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User details updated successfully"
+          },
+          "400": {
+            "description": "Failed to update user details"
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "summary": "Get all orders",
+        "tags": ["Orders"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Orders retrieved successfully"
+          },
+          "500": {
+            "description": "Failed to retrieve orders"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new order",
+        "tags": ["Orders"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "category": { "type": "string" },
+                  "departure": { "type": "string" },
+                  "destination": { "type": "string" },
+                  "persons": { "type": "number" },
+                  "luggages": { "type": "number" },
+                  "flight": { "type": "string" },
+                  "date": { "type": "string", "format": "date" },
+                  "comments": { "type": "string" },
+                  "price": { "type": "number" },
+                  "status": { "type": "string" }
+                },
+                "required": ["category", "departure", "destination", "persons", "luggages", "flight", "date", "passenger", "price"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Order created successfully"
+          },
+          "400": {
+            "description": "Failed to create order"
+          }
+        }
+      }
+    },
+    "/orders/orderlist": {
+      "get": {
+        "summary": "Get available orders",
+        "tags": ["Orders"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Available orders retrieved successfully"
+          },
+          "403": {
+            "description": "Only drivers can view available orders"
+          },
+          "500": {
+            "description": "Failed to retrieve available orders"
+          }
+        }
+      }
+    },
+    "/orders/myorder": {
+      "get": {
+        "summary": "Get user orders",
+        "tags": ["Orders"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User orders retrieved successfully"
+          },
+          "500": {
+            "description": "Failed to retrieve user orders"
+          }
+        }
+      }
+    },
+    "/orders/{orderId}": {
+      "get": {
+        "summary": "Get order by ID",
+        "tags": ["Orders"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order retrieved successfully"
+          },
+          "500": {
+            "description": "Failed to retrieve order"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update order by ID",
+        "tags": ["Orders"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "category": { "type": "string" },
+                  "departure": { "type": "string" },
+                  "destination": { "type": "string" },
+                  "persons": { "type": "number" },
+                  "luggages": { "type": "number" },
+                  "flight": { "type": "string" },
+                  "date": { "type": "string", "format": "date" },
+                  "passenger": { "type": "string" },
+                  "driver": { "type": "string" },
+                  "comments": { "type": "string" },
+                  "price": { "type": "number" },
+                  "status": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Order updated successfully"
+          },
+          "500": {
+            "description": "Failed to update order"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete order by ID",
+        "tags": ["Orders"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order deleted successfully"
+          },
+          "500": {
+            "description": "Failed to delete order"
+          }
+        }
+      }
+    },
+    "/orders/update/{orderId}": {
+      "put": {
+        "summary": "Update order by passenger",
+        "tags": ["Orders"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order updated successfully"
+          },
+          "500": {
+            "description": "Failed to update order"
+          }
+        }
+      }
+    },
+    "/orders/accept/{orderId}": {
+      "put": {
+        "summary": "Accept order by driver",
+        "tags": ["Orders"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order accepted successfully"
+          },
+          "500": {
+            "description": "Failed to accept order"
+          }
+        }
+      }
+    },
+    "/orders/cancel/driver/{orderId}": {
+      "put": {
+        "summary": "Cancel order by driver",
+        "tags": ["Orders"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order cancelled successfully"
+          },
+          "500": {
+            "description": "Failed to cancel order"
+          }
+        }
+      }
+    },
+    "/orders/cancel/passenger/{orderId}": {
+      "put": {
+        "summary": "Cancel order by passenger",
+        "tags": ["Orders"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order cancelled successfully"
+          },
+          "500": {
+            "description": "Failed to cancel order"
+          }
+        }
+      }
+    },
+    "/orders/start/{orderId}": {
+      "put": {
+        "summary": "Start order by driver",
+        "tags": ["Orders"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order started successfully"
+          },
+          "500": {
+            "description": "Failed to start order"
+          }
+        }
+      }
+    },
+    "/orders/completeorstop/{orderId}": {
+      "put": {
+        "summary": "Complete or stop order by driver",
+        "tags": ["Orders"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "action": { "type": "string" }
+                },
+                "required": ["action"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Order completed or stopped successfully"
+          },
+          "500": {
+            "description": "Failed to complete or stop order"
+          }
+        }
+      }
+    },
+ 
+    
+    "/distance": {
+      "get": {
+        "summary": "Get distance between origins and destinations",
+        "tags": ["Distance"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "origins",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "destinations",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Distance retrieved successfully"
+          },
+          "500": {
+            "description": "Failed to retrieve distance"
+          }
+        }
+      }
+    }
+  }
+}

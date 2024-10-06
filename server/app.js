@@ -12,6 +12,8 @@ const {
 const authenticateToken = require("./middleware/authenticateToken");
 const distanceRouter = require("./routes/distanceRouter");
 const paypalRouter = require("./routes/paypalRouter");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
 connectDB();
 
 // Middleware to parse JSON
@@ -30,6 +32,7 @@ app.use("/api/orders", orderRouter);
 app.use("/api", distanceRouter);
 
 app.use("/api/paypal", paypalRouter);
+app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument));
 // ==== Set up the routers above ======
 app.use(unknownEndpoint);
 app.use(errorHandler);
