@@ -176,7 +176,9 @@ const PassengerOrdersPage = () => {
                       From: {order.departure} <br />
                       To: {order.destination} <br />
                       Passengers: {order.persons} <br />
-                      Luggages: {order.luggages}
+                      Luggages: {order.luggages} <br />
+                      Driver Name: {order.driver.first_name} {order.driver.last_name}<br />
+                      Contact number: {order.driver.phone} 
                     </p>
                     <ul>
                       <li><i className="lni lni-dollar" /> Price: €{order.price}</li>
@@ -215,7 +217,9 @@ const PassengerOrdersPage = () => {
                       From: {order.departure} <br />
                       To: {order.destination} <br />
                       Passengers: {order.persons} <br />
-                      Luggages: {order.luggages}
+                      Luggages: {order.luggages} <br />
+                      Driver Name: {order.driver.first_name} {order.driver.last_name} <br />
+                      Contact number: {order.driver.phone} 
                     </p>
                     <ul>
                       <li><i className="lni lni-dollar" /> Price: €{order.price}</li>

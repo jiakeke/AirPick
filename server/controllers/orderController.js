@@ -41,9 +41,11 @@ const getOrdersByUser = async (req, res) => {
     let orders;
     
     if (userCategory === 'passenger') {
-      orders = await Order.find({ passenger: userId });
+      orders = await Order.find({ passenger: userId })
+        .populate('driver', 'first_name last_name phone');
     } else if (userCategory === 'driver') {
-      orders = await Order.find({ driver: userId });
+      orders = await Order.find({ driver: userId })
+        .populate('passenger', 'first_name last_name phone');
     } else {
       return res.status(403).json({ message: 'Invalid user type' });
     }
