@@ -19,7 +19,9 @@ import ResetPassword from "./pages/ResetPassword.jsx";
 function App() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const auth = useAuth();
+  const auth = useAuth().auth;
+  console.log("app.auth",auth);
+  const email=("email",JSON.parse(localStorage.getItem("user")).email)
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -38,16 +40,20 @@ function App() {
     return <div>Loading...</div>;
   }
   return (
-      <AuthProvider>
-        <Nav />
+    <>
+    <Nav />
         <Routes>
           <Route
             path="/"
             element={
-              <>
+              auth.isLoggedIn ? <>
+              <h2 style={{ marginTop: '100px', textAlign: 'center' }}>Welcome {email}
+              </h2>
+              <OrdersList />
+              </> :
+             
                 <Carousel />
-                <OrdersList />
-              </>
+                
             }
           />
           <Route path="/about" element={<About />} />
@@ -60,13 +66,17 @@ function App() {
           <Route path="/forgot_password" element={<ForgotPassword />} />
           <Route path="/reset_password/:token" element={<ResetPassword />} />
         </Routes>
-      </AuthProvider>
+    </>
+        
+      
   );
 }
 
 const Root = () => (
   <BrowserRouter>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </BrowserRouter>
 );
 
