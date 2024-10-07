@@ -43,11 +43,6 @@ export default function Nav() {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link px-3" to="/news">
-                  News
-                </Link>
-              </li>
-              <li className="nav-item">
                 <Link className="nav-link px-3" to="/contact">
                   Contact
                 </Link>
