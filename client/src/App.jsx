@@ -21,7 +21,7 @@ function App() {
   const navigate = useNavigate();
   const auth = useAuth().auth;
   console.log("app.auth",auth);
-  const email=("email",JSON.parse(localStorage.getItem("user")).email)
+  // const email=("email",JSON.parse(localStorage.getItem("user")).email)
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -47,7 +47,7 @@ function App() {
             path="/"
             element={
               auth.isLoggedIn ? <>
-              <h2 style={{ marginTop: '100px', textAlign: 'center' }}>Welcome {email}
+              <h2 style={{ marginTop: '100px', textAlign: 'center' }}>Welcome {JSON.parse(localStorage.getItem("user")).email}
               </h2>
               <OrdersList />
               </> :
