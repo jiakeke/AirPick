@@ -6,6 +6,7 @@ import './MessagePage.css';
 export default function MessagePage() {
   const { updateUnreadCount } = useMessage();
   const [messagesByOrder, setMessagesByOrder] = useState({});
+  const [orderInfoById, setOrderInfoById] = useState({}); // State to store order information
   const [expandedOrderId, setExpandedOrderId] = useState(null);
   const [newMessage, setNewMessage] = useState({});
   const api = useAxios();
@@ -26,7 +27,7 @@ export default function MessagePage() {
     fetchMessages();
   }, []);
 
-  // Sort messages by order ID
+  // Group messages by order ID
   const groupMessagesByOrder = (messages) => {
     return messages.reduce((group, message) => {
       const orderId = message.order._id;
@@ -37,6 +38,40 @@ export default function MessagePage() {
       return group;
     }, {});
   };
+
+  // Get date, departure, and destination from the order
+  const getOrderInfo = async (orderId) => {
+    try {
+      const response = await api.get(`/api/orders/${orderId}`);
+      const { date, departure, destination } = response.data;
+      const formattedDate = new Date(date).toISOString().split('T')[0];
+      return `${formattedDate}: ${departure} -> ${destination}`;
+    } catch (error) {
+      console.error('Failed to get order info:', error);
+      return null;
+    }
+  };
+
+  // Fetch order info when messages are loaded
+  useEffect(() => {
+    const fetchOrderInfo = async () => {
+      const orderIds = Object.keys(messagesByOrder);
+      const infoPromises = orderIds.map(async (orderId) => {
+        const info = await getOrderInfo(orderId);
+        return { orderId, info };
+      });
+      const infos = await Promise.all(infoPromises);
+      const infoMap = infos.reduce((map, { orderId, info }) => {
+        map[orderId] = info;
+        return map;
+      }, {});
+      setOrderInfoById(infoMap); // Update state with order info
+    };
+    
+    if (Object.keys(messagesByOrder).length > 0) {
+      fetchOrderInfo();
+    }
+  }, [messagesByOrder]);
 
   // Mark messages as read
   const markMessagesAsRead = async (messageIds) => {
@@ -113,7 +148,10 @@ export default function MessagePage() {
       {Object.keys(messagesByOrder).map((orderId) => (
         <div key={orderId} className="order-message">
           <button onClick={() => toggleExpand(orderId)} className="order-title-btn">
-            Order: {orderId}
+            Order: {orderInfoById[orderId] || 'Loading...'}
+            <span style={{ float: 'right' }}>
+              {expandedOrderId === orderId ? '▲' : '▼'}
+            </span>
           </button>
 
           {expandedOrderId === orderId && (

@@ -21,7 +21,7 @@ router.get('/', getAllOrder);//
 router.get('/orderlist', authenticateToken, getAvailableOrders);
 router.get('/myorder', authenticateToken, getOrdersByUser);
 router.post('/', authenticateToken, createOrder);
-router.get('/:orderId', getOrderById);
+router.get('/:orderId', authenticateToken, getOrderById);
 router.put('/:orderId', updateOrder);
 router.delete('/:orderId', deleteOrder);//
 router.put('/update/:orderId', authenticateToken, updateOrderByPassenger);
