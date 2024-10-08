@@ -40,7 +40,7 @@ export default function () {
                     </div>
                     <div className="contact-number ">
                       <a href="#">+358 61 888 8888</a><br />
-                      <a href="#">+258 61 666 6666</a>
+                      <a href="#">+358 61 666 6666</a>
                     </div>
                     <div className="email-address">
                       <p>
