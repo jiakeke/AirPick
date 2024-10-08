@@ -64,7 +64,7 @@ const userLogin = async (req, res) => {
       { expiresIn: "1h" }
       // 1s: 1 second, 1m: 1 minute, 1h: 1 hour, 1d: 1 day, 1w: 1 week, 1m: 1 month, 1y: 1 year
     );
-    const user = { email: user_.email, category: user_.category, token: token };
+    const user = { email: user_.email, category: user_.category, token: token, userId: user_._id };
 
     return res.status(200).json({ message: "Login successful", user });
   } catch (error) {
