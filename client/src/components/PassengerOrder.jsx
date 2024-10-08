@@ -49,6 +49,7 @@ const PassengerOrdersPage = () => {
           cancelled: [...prevOrders.cancelled, cancelledOrder],
         };
       });
+      window.location.reload();
     } catch (error) {
       console.error('Failed to cancel order', error);
     }

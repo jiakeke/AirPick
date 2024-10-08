@@ -34,8 +34,8 @@ export default function NewOrderModal() {
         comments: '',
         price: 0,
       });
+      window.location.reload();
       closeRef.current.click();
-      navigateTo("/");
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
         alert(error.response.data.message);
