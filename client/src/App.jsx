@@ -40,8 +40,7 @@ function App() {
     return <div>Loading...</div>;
   }
   return (
-    <AuthProvider>
-      <MessageProvider>
+      <>
         <Nav />
         <Routes>
           <Route
@@ -64,14 +63,17 @@ function App() {
           <Route path="/reset_password/:token" element={<ResetPassword />} />
           <Route path="/messages" element={<MessagesPage />} />
         </Routes>
-      </MessageProvider>
-    </AuthProvider>
+      </>
   );
 }
 
 const Root = () => (
   <BrowserRouter>
-    <App />
+    <AuthProvider>
+      <MessageProvider>
+        <App />
+      </MessageProvider>
+    </AuthProvider>
   </BrowserRouter>
 );
 
