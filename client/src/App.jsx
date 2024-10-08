@@ -6,10 +6,9 @@ import { MessageProvider } from './context/MessageContext.jsx';
 import Nav from "./components/Nav.jsx";
 import Carousel from "./components/Carousel";
 import OrdersList from "./components/OrdersList";
-import About from "./components/About.jsx";
-import Service from "./components/Service.jsx";
-import News from "./components/News.jsx";
-import Contact from "./components/Contact.jsx";
+import About from "./pages/About.jsx";
+import Service from "./pages/Service.jsx";
+import Contact from "./pages/Contact.jsx";
 import UserForm from "./components/UserForm.jsx";
 import DepositForm from "./components/DepositForm.jsx";
 import WithDrawalForm from "./components/WithDrawalForm.jsx";
@@ -21,7 +20,9 @@ import ResetPassword from "./pages/ResetPassword.jsx";
 function App() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const auth = useAuth();
+  const auth = useAuth().auth;
+  console.log("app.auth",auth);
+  // const email=("email",JSON.parse(localStorage.getItem("user")).email)
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -40,21 +41,25 @@ function App() {
     return <div>Loading...</div>;
   }
   return (
-      <>
-        <Nav />
+    <>
+    
+      <Nav />
         <Routes>
           <Route
             path="/"
             element={
-              <>
+              auth.isLoggedIn ? <>
+              <h2 style={{ marginTop: '100px', textAlign: 'center' }}>Welcome {JSON.parse(localStorage.getItem("user")).email}
+              </h2>
+              <OrdersList />
+              </> :
+             
                 <Carousel />
-                <OrdersList />
-              </>
+                
             }
           />
           <Route path="/about" element={<About />} />
           <Route path="/service" element={<Service />} />
-          <Route path="/news" element={<News />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/profile" element={<UserForm />} />
           <Route path="/deposit" element={<DepositForm />} />
@@ -63,7 +68,8 @@ function App() {
           <Route path="/reset_password/:token" element={<ResetPassword />} />
           <Route path="/messages" element={<MessagesPage />} />
         </Routes>
-      </>
+
+    </>
   );
 }
 

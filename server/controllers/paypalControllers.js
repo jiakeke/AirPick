@@ -55,7 +55,7 @@ const createOrder = async (balance) => {
     purchase_units: [
       {
         amount: {
-          currency_code: "USD",
+          currency_code: "EUR",
           value: balance,
         },
         reference_id: "d9f80740-38f0-11e8-b467-0ed5f89f718b",
@@ -171,8 +171,6 @@ const paypalCaptureOrder = async (req, res) => {
     if (response.status === 201) {
       const user = await User.findById(userId);
       if (user && user.category === "passenger") {
-        console.log("wwwwwwwwwwwwww");
-
         let preBalance = user.balance;
         let balance = await parseFloat(
           response.data.purchase_units[0].payments.captures[0].amount.value

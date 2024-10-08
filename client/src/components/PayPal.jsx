@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { PayPalScriptProvider, PayPalButtons, FUNDING } from "@paypal/react-paypal-js";
+import {
+  PayPalScriptProvider,
+  PayPalButtons,
+  FUNDING,
+} from "@paypal/react-paypal-js";
 import useAxios from "../axios";
 
 // Render errors or successfull transaction on the screen
@@ -7,12 +11,13 @@ function Message({ content }) {
   return <p>{content}</p>;
 }
 
-export default function PayPal({amount, onSuccess}) {
+export default function PayPal({ amount, onSuccess }) {
   const initialOptions = {
     "client-id":
       "AUsqi_wjEzUTjGGgk955r01czotj3pdc7DaPX8YNksmHJQYb5BdRZ5ROtG2xrcMleavf4iUsZXDcXJ5b",
     "enable-funding": "paylater,venmo",
     "data-sdk-integration-source": "integrationbuilder_sc",
+    currency: "EUR",
   };
 
   const api = useAxios();

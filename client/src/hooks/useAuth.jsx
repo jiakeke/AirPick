@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
 
 const AuthContext = createContext();
@@ -8,7 +8,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({ isLoggedIn: false, category: null });
   const loginRef = useRef();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -34,7 +34,8 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setAuth({ isLoggedIn: false, category: null });
     localStorage.removeItem('user');
-    navigate('/');
+    // navigate('/');
+    window.location.href = '/';
     if (loginRef.current) {
         loginRef.current.click();
     }

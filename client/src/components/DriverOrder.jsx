@@ -36,6 +36,11 @@ const DriverOrdersPage = () => {
     fetchOrders();
   }, [token]);
 
+//  useEffect(() => {
+    
+//       window.location.reload();
+  
+//   }, [handleAcceptOrder，handleStartOrder，handleCancelOrder，handleStopOrder，handleCompleteOrder]);
   const handleAcceptOrder = async (orderId) => {
     try {
       const response = await api.put(`api/orders/accept/${orderId}`, {
@@ -51,6 +56,7 @@ const DriverOrdersPage = () => {
           ...prevOrders,
           pending: [...prevOrders.pending, acceptedOrder],
         }));
+        window.location.reload();
       } else {
         console.error('Failed to accept order');
       }
@@ -78,6 +84,7 @@ const DriverOrdersPage = () => {
           pending: prevOrders.pending.filter(order => order._id !== orderId),
           ongoing: [...prevOrders.ongoing, startedOrder],
         }));
+        window.location.reload();
       } else {
         console.error('Failed to start order');
       }
@@ -106,6 +113,7 @@ const DriverOrdersPage = () => {
           ...prevNewOrders,
           cancelledOrder,
         ]);
+        window.location.reload();
       } else {
         console.error('Failed to cancel order');
       }
@@ -131,6 +139,7 @@ const DriverOrdersPage = () => {
           ongoing: prevOrders.ongoing.filter(order => order._id !== orderId),
           pending: [...prevOrders.pending, stoppedOrder],
         }));
+        window.location.reload();
       } else {
         console.error('Failed to stop order');
       }
@@ -156,6 +165,7 @@ const DriverOrdersPage = () => {
           ongoing: prevOrders.ongoing.filter(order => order._id !== orderId),
           completed: [...prevOrders.completed, completedOrder],
         }));
+        window.location.reload();
       } else {
         console.error('Failed to complete order');
       }
