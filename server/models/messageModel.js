@@ -24,6 +24,12 @@ const messageSchema = new Schema(
         type: String, 
         required: true 
     },
+
+    status: { 
+        type: String, 
+        enum: ['unread', 'read'], 
+        default: 'unread' 
+    }
   }, 
   { timestamps: true }
 );

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import "../assets/orders.css";
 import { Link } from "react-router-dom";
 import useAxios from '../axios';
+import ContactPassenger from './MessageBox';
 
 const DriverOrdersPage = () => {
   const api = useAxios();
@@ -177,7 +178,7 @@ const DriverOrdersPage = () => {
           <div className="container">
             <div className="single-head">
               {newOrders.length > 0 ? (
-                newOrders.map(order => (
+                newOrders.map((order, index) => (
                   <div className="single-job" key={order._id}>
                     <div className="job-content">
                       <h4>
@@ -204,6 +205,12 @@ const DriverOrdersPage = () => {
                       className="btn btn-outline-primary text-uppercase me-3">
                         Accept
                     </button>
+                    <button type="button" data-bs-toggle="modal" data-bs-target={`#contactPassenger${index}`}
+                      className="btn btn-outline-primary nav-button mx-3 text-white bg-dark text-nowrap"
+                      >
+                        Contact Passenger
+                    </button>
+                    <ContactPassenger order={order} index={index} />
                   </div>
               ))) : (
                 <p>No available orders.</p>
