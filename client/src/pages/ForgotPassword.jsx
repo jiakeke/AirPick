@@ -20,7 +20,6 @@ export default function ForgotPassword() {
         setError(response.data.message);
       }
     } catch (err) {
-        console.log("err", err);
         setError('Something went wrong. Please try again later.');
     }
   };

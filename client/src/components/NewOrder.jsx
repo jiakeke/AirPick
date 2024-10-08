@@ -34,7 +34,6 @@ export default function NewOrderModal() {
         comments: '',
         price: 0,
       });
-      console.log("Order created:", response.data);
       closeRef.current.click();
       navigateTo("/");
     } catch (error) {

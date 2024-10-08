@@ -5,7 +5,6 @@ import { useAuth } from '../hooks/useAuth';
 
 export default function OrdersList() {
   const { auth } =  useAuth();
-  console.log("orderlist.auth",auth);
 
   return (
           <>

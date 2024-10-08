@@ -24,7 +24,6 @@ export default function ResetPassword() {
         setError(data.error);
       }
     } catch (err) {
-      console.log("err", );
       setError(err.response.data.error);
     }
   };

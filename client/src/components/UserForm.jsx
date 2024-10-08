@@ -39,7 +39,6 @@ const UserForm = ({ userId }) => {
 
   const saveUser = async () => {
     setIsSaving(true);
-    console.log(user);
     try {
       const response = await api.put("api/users", user);
       if (response.status === 200) {

@@ -69,7 +69,6 @@ const PassengerOrdersPage = () => {
           setLoading(false);
         }
       };
-      console.log('Order updated:', updatedOrder);
   
       setOrders((prevOrders) => {
         const newOrders = prevOrders.new.map(order => order._id === orderId ? updatedOrder : order);

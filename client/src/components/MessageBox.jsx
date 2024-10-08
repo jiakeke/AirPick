@@ -13,8 +13,6 @@ export default function ContactPassenger({ order, index }) {
     e.preventDefault();
     const receiverId = order.passenger;
     const orderId = order._id;
-    console.log('receiverId', receiverId);
-    console.log('orderId', orderId);
     try {
       await api.post("/api/messages/send", { receiverId, orderId, content: message });
       alert('Message sent successfully!');

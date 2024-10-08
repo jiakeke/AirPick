@@ -101,7 +101,7 @@ export default function Register() {
           }
         });
     } else {
-      console.log("Sign up error");
+      console.error("Sign up error");
     }
   };
 
@@ -147,10 +147,9 @@ export default function Register() {
       user.password === user.confirmPassword &&
       policyChecked === true
     ) {
-      console.log("Validate OK");
       return true;
     } else {
-      console.log("Validate Error");
+      console.error("Validate Error");
       return false;
     }
   };

@@ -21,7 +21,6 @@ function App() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const auth = useAuth().auth;
-  console.log("app.auth",auth);
   // const email=("email",JSON.parse(localStorage.getItem("user")).email)
 
   useEffect(() => {
@@ -49,7 +48,8 @@ function App() {
             path="/"
             element={
               auth.isLoggedIn ? <>
-              <h2 style={{ marginTop: '100px', textAlign: 'center' }}>Welcome {JSON.parse(localStorage.getItem("user")).email}
+              <h2 style={{ marginTop: '100px', textAlign: 'center' }}>Welcome
+              {auth.name ? `, ${auth.name}` : ''}!
               </h2>
               <OrdersList />
               </> :

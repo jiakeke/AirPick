@@ -54,7 +54,6 @@ export default function Login() {
   };
 
   const loginHandler = (e) => {
-    console.log(user.email);
     e.preventDefault();
     if (validateForm()) {
       if (rememberMeState) {
@@ -78,7 +77,7 @@ export default function Login() {
 
       return { user, setUser };
     } else {
-      console.log("log in error");
+      console.error("log in error");
     }
   };
 
@@ -92,15 +91,12 @@ export default function Login() {
     setEmailValid(validateEmail(user.email));
     setPasswordStrength(validatePassword(user.password));
     if (emailValid === true && passwordStrength === true) {
-      console.log("Validate OK");
       return true;
     } else if (emailValid === false) {
       setemailInvalidMessage("Email invalid");
       return false;
     } else {
-      console.log("email validation" + emailValid);
-      console.log("password validation" + passwordStrength);
-      console.log("Validation Error");
+      console.error("Validation Error");
     }
   };
 

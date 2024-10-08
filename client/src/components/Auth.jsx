@@ -14,7 +14,6 @@ export default function Auth() {
       const fetchUnreadMessages = async () => {
         try {
           const response = await api.get('/api/messages/unread-count');
-          console.log('Unread messages count:', response.data.unreadMessagesCount);
           setUnreadCount(response.data.unreadMessagesCount);
         } catch (error) {
           console.error("Failed to fetch unread messages count:", error);

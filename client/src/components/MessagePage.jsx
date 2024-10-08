@@ -72,7 +72,6 @@ export default function MessagePage() {
   // Send a new message
   const sendMessage = async (orderId) => {
     let receiverId;
-    console.log(user.category);
     if (user.category === 'driver') {
       receiverId = messagesByOrder[orderId][0].receiver._id;
     };
