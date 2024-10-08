@@ -215,12 +215,12 @@ const DriverOrdersPage = () => {
                       className="btn btn-outline-primary text-uppercase me-3">
                         Accept
                     </button>
-                    <button type="button" data-bs-toggle="modal" data-bs-target={`#contactPassenger${index}`}
+                    <button type="button" data-bs-toggle="modal" data-bs-target={`#contactPassenger${order._id}`}
                       className="btn btn-outline-primary nav-button mx-3 text-white bg-dark text-nowrap"
                       >
                         Contact Passenger
                     </button>
-                    <ContactPassenger order={order} index={index} />
+                    <ContactPassenger order={order} index={order._id} />
                   </div>
               ))) : (
                 <p>No available orders.</p>
@@ -235,7 +235,7 @@ const DriverOrdersPage = () => {
         <section className="find-job job-list section">
           <div className="container">
             <div className="single-head">
-              {myOrders.pending.map(order => (
+              {myOrders.pending.map((order, index) => (
                 <div className="single-job" key={order._id}>
                   <div className="job-content">
                     <h4>
@@ -268,6 +268,12 @@ const DriverOrdersPage = () => {
                     className="btn btn-outline-primary text-uppercase me-3">
                       Cancel
                   </button>
+                  <button type="button" data-bs-toggle="modal" data-bs-target={`#contactPassenger${order._id}`}
+                      className="btn btn-outline-primary nav-button mx-3 text-white bg-dark text-nowrap"
+                      >
+                        Contact Passenger
+                    </button>
+                    <ContactPassenger order={order} index={order._id} />
                 </div>
               ))}
             </div>
@@ -280,7 +286,7 @@ const DriverOrdersPage = () => {
         <section className="find-job job-list section">
           <div className="container">
             <div className="single-head">
-              {myOrders.ongoing.map(order => (
+              {myOrders.ongoing.map((order, index) => (
                 <div className="single-job" key={order._id}>
                   <div className="job-content">
                     <h4>
@@ -313,6 +319,12 @@ const DriverOrdersPage = () => {
                     className="btn btn-outline-primary text-uppercase me-3">
                       Complete
                   </button>
+                  <button type="button" data-bs-toggle="modal" data-bs-target={`#contactPassenger${order._id}`}
+                      className="btn btn-outline-primary nav-button mx-3 text-white bg-dark text-nowrap"
+                      >
+                        Contact Passenger
+                    </button>
+                    <ContactPassenger order={order} index={order._id} />
                 </div>
               ))}
             </div>

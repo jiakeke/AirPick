@@ -18,11 +18,13 @@ const sendMessage = async (req, res) => {
     }
 
     if (order.status !== 'new') {
-      if (order.passenger !== senderId && order.driver !== senderId) {
+      const passengerId = order.passenger.toString();
+      const driverId = order.driver.toString();
+      if (passengerId !== senderId && driverId !== senderId) {
         return res.status(403).json({ message: 'You are not authorized to send messages for this order.' });
       }
 
-      if (order.passenger !== receiverId && order.driver !== receiverId) {
+      if (passengerId !== receiverId && driverId !== receiverId) {
         return res.status(403).json({ message: 'Receiver is not part of this order.' });
       }
     }

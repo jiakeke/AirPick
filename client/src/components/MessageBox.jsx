@@ -11,7 +11,12 @@ export default function ContactPassenger({ order, index }) {
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    const receiverId = order.passenger;
+    let receiverId;
+    if (typeof order.passenger === 'string') {
+        receiverId = order.passenger;
+    } else {
+        receiverId = order.passenger._id;
+    }
     const orderId = order._id;
     try {
       await api.post("/api/messages/send", { receiverId, orderId, content: message });
