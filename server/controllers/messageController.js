@@ -43,41 +43,12 @@ const sendMessage = async (req, res) => {
   }
 };
 
-// Fetch messages for a specific order
-const getMessagesForOrder = async (req, res) => {
-  const { orderId } = req.params;
-  const userId = req.user.userId;
-
-  try {
-    const order = await Order.findById(orderId);
-
-    if (!order) {
-      return res.status(404).json({ message: 'Order not found.' });
-    }
-
-    if (!order.passengers.includes(userId) && order.driver !== userId) {
-      return res.status(403).json({ message: 'You are not authorized to view messages for this order.' });
-    }
-
-    const messages = await Message.find({ order: orderId })
-      .or([{ sender: userId }, { receiver: userId }])
-      .populate('sender', 'name')
-      .populate('receiver', 'name')
-      .sort('timestamp');
-
-    res.status(200).json(messages);
-  } catch (error) {
-    console.error('Error fetching messages:', error);
-    res.status(500).json({ message: 'Error fetching messages', error });
-  }
-};
-
 // Get unread messages count for a user
 const getUnreadMessagesCount = async (req, res) => {
     const userId = req.user.userId;
   
     try {
-      const count = await Message.countDocuments({ receiver: userId, rstatus: 'unread' });
+      const count = await Message.countDocuments({ receiver: userId, status: 'unread' });
       res.status(200).json({ unreadMessagesCount: count });
     } catch (error) {
       console.error('Error fetching unread messages count:', error);
@@ -107,9 +78,28 @@ const markMessagesAsRead = async (req, res) => {
   }
 };
 
+const getUserMessages = async (req, res) => {
+  const userId = req.user.userId;
+  
+  try {
+    const messages = await Message.find({
+      $or: [{ sender: userId }, { receiver: userId }]
+    })
+    .populate('sender', 'name')
+    .populate('receiver', 'name')
+    .populate('order', '_id')
+    .sort('createdAt');
+
+    res.status(200).json(messages);
+  } catch (error) {
+    console.error('Error fetching messages:', error);
+    res.status(500).json({ message: 'Error fetching messages', error });
+  }
+};
+
 module.exports = {
   sendMessage,
-  getMessagesForOrder,
   getUnreadMessagesCount,
   markMessagesAsRead,
+  getUserMessages
 };

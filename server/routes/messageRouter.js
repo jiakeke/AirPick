@@ -3,13 +3,13 @@ const router = express.Router();
 const authenticateToken=require("../middleware/authenticateToken");
 const {
     sendMessage, 
-    getMessagesForOrder, 
     getUnreadMessagesCount,
-    markMessagesAsRead
+    markMessagesAsRead,
+    getUserMessages
 }=require("../controllers/messageController");
 
 router.post('/send', authenticateToken, sendMessage);
-router.get('/order/:orderId', authenticateToken, getMessagesForOrder);
+router.get('', authenticateToken, getUserMessages);
 router.get('/unread-count', authenticateToken, getUnreadMessagesCount);
 router.post('/mark-read', authenticateToken, markMessagesAsRead);
 
