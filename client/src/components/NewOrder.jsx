@@ -57,8 +57,8 @@ export default function NewOrderModal() {
     setNewOrder({
       ...newOrder,
       category,
-      departure: category === 'pick' ? 'Lentäjäntie 3, 01530 Vantaa' : newOrder.departure,
-      destination: category === 'drop' ? 'Lentäjäntie 3, 01530 Vantaa' : newOrder.destination,
+      departure: category === 'pick' ? 'Lentäjäntie 3, 01530 Vantaa' : '',
+      destination: category === 'drop' ? 'Lentäjäntie 3, 01530 Vantaa' : '',
     });
   };
 
