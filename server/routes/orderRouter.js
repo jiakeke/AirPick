@@ -17,13 +17,13 @@ const {
     completeOrStopOrder,
 }=require("../controllers/orderController")
 
-router.get('/', getAllOrder);//
+// router.get('/', getAllOrder); // Disabled during production, used for development purposes
 router.get('/orderlist', authenticateToken, getAvailableOrders);
 router.get('/myorder', authenticateToken, getOrdersByUser);
 router.post('/', authenticateToken, createOrder);
 router.get('/:orderId', authenticateToken, getOrderById);
-router.put('/:orderId', updateOrder);
-router.delete('/:orderId', deleteOrder);//
+// router.put('/:orderId', updateOrder); // Disabled during production, used for development purposes
+// router.delete('/:orderId', deleteOrder); // Disabled during production, used for development purposes
 router.put('/update/:orderId', authenticateToken, updateOrderByPassenger);
 router.put('/accept/:orderId', authenticateToken, acceptOrder);
 router.put('/cancel/driver/:orderId', authenticateToken, cancelOrderByDriver);
