@@ -17,7 +17,7 @@ The project aims to develop an Airport Pickup Service Platform that allows custo
 - [Sprint Ceremony Insights](./docs/SprintCeremonyInsights.md)
 - [Team Contributions](./docs/TeamContributions.md)
 - [Presentation Slides](./docs/AirPick-Presentation-final.pptx)
-- [API Documentation](https://airpick-be.onrender.com/api-docs)
+- [API Documentation](https://airpick-be.onrender.com/api-docs) // The first time to open may be slow, please wait a moment.
 - [Backend Testing](./server/tests)
 - [Frontend Deployment](https://airpick.onrender.com/)
 - [Backend Deployment](https://airpick-be.onrender.com/)
