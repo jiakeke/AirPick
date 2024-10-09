@@ -22,7 +22,7 @@ const PassengerOrdersPage = () => {
     const fetchOrders = async () => {
       try {
 
-        const response = await api.get('api/orders/myorder', {});
+        const response = await api.get('/api/orders/myorder', {});
         const data = await response.data;
         setOrders(data);
       } catch (error) {
@@ -37,7 +37,7 @@ const PassengerOrdersPage = () => {
 
   const handleCancelOrder = async (orderId) => {
     try {
-      await api.put(`api/orders/cancel/passenger/${orderId}`, {});
+      await api.put(`/api/orders/cancel/passenger/${orderId}`, {});
       setOrders((prevOrders) => {
         const cancelledOrder = prevOrders.new.find(order => order._id === orderId) ||
                                prevOrders.pending.find(order => order._id === orderId);
@@ -57,11 +57,11 @@ const PassengerOrdersPage = () => {
 
   const handleUpdateOrder = async (orderId, updatedData, onClose) => {
     try {
-      const response = await api.put(`api/orders/update/${orderId}`, updatedData);
+      const response = await api.put(`/api/orders/update/${orderId}`, updatedData);
       const updatedOrder = response.data;
       const fetchOrders = async () => {
         try {
-          const response = await api.get('api/orders/myorder', {});
+          const response = await api.get('/api/orders/myorder', {});
           const data = await response.data;
           setOrders(data);
         } catch (error) {

@@ -22,7 +22,7 @@ export default function NewOrderModal() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post(`api/orders`, newOrder, {});
+      const response = await api.post(`/api/orders`, newOrder, {});
       setNewOrder({
         category: 'pick',
         departure: '',
@@ -67,7 +67,7 @@ export default function NewOrderModal() {
     if (!departure || !destination) return;
 
     try {
-      const response = await api.get('api/distance', {
+      const response = await api.get('/api/distance', {
         params: {
           origins: departure,
           destinations: destination,

@@ -19,11 +19,11 @@ const DriverOrdersPage = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const availableOrdersRes = await api.get('api/orders/orderlist', {});
+        const availableOrdersRes = await api.get('/api/orders/orderlist', {});
         const availableOrdersData = await availableOrdersRes.data;
         setNewOrders(availableOrdersData);
 
-        const myOrdersRes = await api.get('api/orders/myorder', {});
+        const myOrdersRes = await api.get('/api/orders/myorder', {});
         const myOrdersData = await myOrdersRes.data;
         setMyOrders(myOrdersData);
       } catch (error) {
@@ -43,7 +43,7 @@ const DriverOrdersPage = () => {
 //   }, [handleAcceptOrder，handleStartOrder，handleCancelOrder，handleStopOrder，handleCompleteOrder]);
   const handleAcceptOrder = async (orderId) => {
     try {
-      const response = await api.put(`api/orders/accept/${orderId}`, {
+      const response = await api.put(`/api/orders/accept/${orderId}`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -71,7 +71,7 @@ const DriverOrdersPage = () => {
 
   const handleStartOrder = async (orderId) => {
     try {
-      const response = await api.put(`api/orders/start/${orderId}`, {
+      const response = await api.put(`/api/orders/start/${orderId}`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -95,7 +95,7 @@ const DriverOrdersPage = () => {
 
   const handleCancelOrder = async (orderId) => {
     try {
-      const response = await api.put(`api/orders/cancel/driver/${orderId}`, {
+      const response = await api.put(`/api/orders/cancel/driver/${orderId}`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -124,7 +124,7 @@ const DriverOrdersPage = () => {
 
   const handleStopOrder = async (orderId) => {
     try {
-      const response = await api.put(`api/orders/completeorstop/${orderId}`, {
+      const response = await api.put(`/api/orders/completeorstop/${orderId}`, {
         action: 'stop',
       }, {
         headers: {
@@ -150,7 +150,7 @@ const DriverOrdersPage = () => {
 
   const handleCompleteOrder = async (orderId) => {
     try {
-      const response = await api.put(`api/orders/completeorstop/${orderId}`, {
+      const response = await api.put(`/api/orders/completeorstop/${orderId}`, {
         action: 'complete',
       }, {
         headers: {
