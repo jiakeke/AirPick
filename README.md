@@ -12,8 +12,8 @@ The project aims to develop an Airport Pickup Service Platform that allows custo
 - Yang Yang
 
 ## Sprint 3: Deliverables
-- [Front-End Code](./client)
-- [Back-End Code](./server)
+- [Frontend Code](./client)
+- [Backend Code](./server)
 - [Sprint Ceremony Insights](./docs/SprintCeremonyInsights.md)
 - [Team Contributions](./docs/TeamContributions.md)
 - [Presentation Slides](./docs/AirPick-Presentation-final.pptx)

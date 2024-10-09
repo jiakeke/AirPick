@@ -28,4 +28,9 @@ everyone's progress, update each other and troubleshoot problems.
 5. Testting of the user and order API.
 
 ### Yang Yang
-TODO
+1. User system backend API development.
+2. User deposit and withdrawal page and backend development
+3. API-doc development
+4. Project presentation PPT writing
+5. Order Listing Page display bug fixes
+
