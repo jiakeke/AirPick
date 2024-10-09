@@ -26,7 +26,7 @@ const getAvailableOrders = async (req, res) => {
     //   return res.status(404).json({ message: 'No available orders found' });
     // }
 
-    res.json(availableOrders);
+    res.status(200).json({ message: 'Successive get orders', availableOrders });
   } catch (error) {
     res.status(500).json({ message: 'Failed to retrieve available orders', error });
   }
@@ -58,7 +58,7 @@ const getOrdersByUser = async (req, res) => {
       cancelled: orders.filter(order => order.status === 'cancelled'),
     };
 
-    res.json(categorizedOrders);
+  res.status(200).json({ message: 'Successive get orders', categorizedOrders });
   } catch (error) {
     res.status(500).json({ message: 'Error retrieving orders', error });
   }
@@ -100,7 +100,7 @@ const createOrder = async (req, res) => {
     });
 
     const savedOrder = await newOrder.save();
-    res.status(201).json(savedOrder);
+    res.status(201).json({ message: "Order created", savedOrder });
   } catch (error) {
     res.status(400).json({ message: "Failed to create order", error });
   }
@@ -112,7 +112,7 @@ const getOrderById = async (req, res) => {
   try {
     const order = await Order.findById(orderId);
     if (order) {
-      res.json(order);
+      res.status(200).json({ message: "Successive get order", order });
     } else {
       res.status(404).json({ message: "Order not found" });
     }
@@ -130,7 +130,7 @@ const updateOrder = async (req, res) => {
       runValidators: true,
     });
     if (updatedOrder) {
-      res.json(updatedOrder);
+      res.status(200).json({ message: "Order updated", updatedOrder });
     } else {
       res.status(404).json({ message: "Order not found" });
     }
@@ -223,7 +223,7 @@ const acceptOrder = async (req, res) => {
     order.driver = userId;
 
     await order.save();
-    res.json({ message: 'Order accepted', order });
+    res.status(200).json({ message: 'Order accepted', order });
   } catch (error) {
     res.status(500).json({ message: 'Error accepting order', error });
   }
@@ -280,7 +280,7 @@ const cancelOrderByPassenger = async (req, res) => {
       sendNotificationToDriver(order.driverId, { message: 'Passenger cancelled the order' });
     }
 
-    res.json({ message: 'Order cancelled successfully', order });
+    res.status(200).json({ message: 'Order cancelled successfully', order });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error cancelling order' });
@@ -308,7 +308,7 @@ const startOrder = async (req, res) => {
     order.updatedAt = Date.now();
 
     await order.save();
-    res.json({ message: 'Order started', order });
+    res.status(200).json({ message: 'Order started', order });
   } catch (error) {
     res.status(500).json({ message: 'Error starting order', error: error.message });
   }
@@ -359,7 +359,7 @@ const completeOrStopOrder = async (req, res) => {
     order.updatedAt = Date.now();
     await order.save();
 
-    res.json({ message: `Order ${action}d`, order });
+    res.status(200).json({ message: `Order ${action}`, order });
   } catch (error) {
     res.status(500).json({ message: `Error ${action}ing order`, error });
   }

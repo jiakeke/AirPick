@@ -22,77 +22,7 @@ const passenger = {
 };
 
 let token = null;
-
-const orders = [
-  {
-    category: "Pick",
-    departure: "Pick up departure",
-    destination: "Pick up destination",
-    persons: 3,
-    luggages: 4,
-    flight: "E4448",
-    date: "02.03.2024",
-    passenger: "333",
-    driver: "222",
-    comments: "Child seat required ",
-    price: 888,
-    status: "new",
-    created: "02.03.2024",
-    modified: "02.03.2024",
-    completed: "02.03.2024",
-  },
-  {
-    category: "Drop",
-    departure: "Drop up departure",
-    destination: "Drop up destination",
-    persons: 3,
-    luggages: 4,
-    flight: "E4448",
-    date: "02.03.2024",
-    passenger: "333",
-    driver: "222",
-    comments: "Child seat required ",
-    price: 888,
-    status: "ongoing",
-    created: "02.03.2024",
-    modified: "02.03.2024",
-    completed: "02.03.2024",
-  },
-  {
-    category: "Pick",
-    departure: "Pick up departure",
-    destination: "Pick up destination",
-    persons: 3,
-    luggages: 4,
-    flight: "E4448",
-    date: "02.03.2024",
-    passenger: "333",
-    driver: "222",
-    comments: "Child seat required ",
-    price: 888,
-    status: "completed",
-    created: "02.03.2024",
-    modified: "02.03.2024",
-    completed: "02.03.2024",
-  },
-  {
-    category: "Drop",
-    departure: "Drop up departure",
-    destination: "Drop up destination",
-    persons: 3,
-    luggages: 4,
-    flight: "E4448",
-    date: "02.03.2024",
-    passenger: "333",
-    driver: "222",
-    comments: "Child seat required ",
-    price: 888,
-    status: "cancelled",
-    created: "02.03.2024",
-    modified: "02.03.2024",
-    completed: "02.03.2024",
-  },
-];
+let createdOrderId = null;
 
 beforeAll(async () => {
   await User.deleteMany({});
@@ -101,38 +31,53 @@ beforeAll(async () => {
   await api.post("/api/users/regist").send(passenger);
 });
 
-afterAll(() => {
+afterAll(async () => {
+  await User.deleteMany({});
+  await Order.deleteMany({});
   mongoose.connection.close();
 });
 
+// Order test need logged in passenger
 describe("Order test for the passenger start", () => {
-  it("should log in the passenger first", async () => {
+  it("should log in the passenger first.", async () => {
     const result = await api
       .post("/api/users/login")
       .send({
         email: passenger.email,
         password: passenger.password,
       })
-      .expect(200)
-      .expect("Content-Type", /application\/json/);
+
+    expect(result.status).toBe(200);
+    expect(result.body.message).toBe('Login successful');
 
     token = result.body.user.token;
   });
 
-  // Test PUT /api/users/deposit
-  it("should deposit some balance to the passenger first", async () => {
-    await api
+  // Need balance to create an order
+  it("should deposit some balance to the passenger first.", async () => {
+    const result = await api
       .put("/api/users/deposit")
       .send({
         balance: 999,
       })
       .set("Authorization", "bearer " + token)
-      .expect(200)
-      .expect("Content-Type", /application\/json/);
+
+    expect(result.status).toBe(200);
+    expect(result.body.message).toBe('Deposit successful!');
+  });
+
+  // Need to add a phone number to create an order
+  it("should add a phone number to the passenger.", async () => {
+    const result = await api
+      .put("/api/users")
+      .send({ phone: "123456789" })
+      .set("Authorization", "bearer " + token)
+      
+    expect(result.status).toBe(200);
   });
 
   // Test POST /api/orders
-  it("should create a new order when POST /api/orders is called", async () => {
+  it("should create a new order.", async () => {
     const newOrder = {
       category: "Pick",
       departure: "Lentäjäntie 3, 01530 Vantaa",
@@ -144,22 +89,180 @@ describe("Order test for the passenger start", () => {
       comments: "",
       price: "18",
     };
-    await api
+    const result = await api
       .post("/api/orders")
       .send(newOrder)
       .set("Authorization", "bearer " + token)
-      .expect(201)
-      .expect("Content-Type", /application\/json/);
+
+    expect(result.status).toBe(201);
+    expect(result.body.message).toBe('Order created');
+
+    createdOrderId = result.body.savedOrder._id;
   });
 
   // Test GET /api/orders/myorder
   it("should return the orders the passenger has created.", async () => {
-    await api
+    const result = await api
       .get("/api/orders/myorder")
       .set("Authorization", "bearer " + token)
-      .expect(200); // the expect has not been writen yet
+
+    expect(result.status).toBe(200);
+    expect(result.body.message).toBe('Successive get orders');
   });
 
   // Test PUT /api/orders/update/:orderId
-  it("should update the order info when api is called.", async () => {});
+  it("should update the order info.", async () => {
+    const updatedOrder = {
+      persons: "1",
+    };
+    const result = await api
+      .put(`/api/orders/update/${createdOrderId}`)
+      .send(updatedOrder)
+      .set("Authorization", "bearer " + token)
+
+    expect(result.status).toBe(200);
+    expect(result.body.message).toBe('Order updated successfully');
+  });
+
+  // Test Get /api/orders/:orderId
+  it("should return the order info.", async () => {
+    const result = await api
+      .get(`/api/orders/${createdOrderId}`)
+      .set("Authorization", "bearer " + token)
+
+    expect(result.status).toBe(200);
+    expect(result.body.message).toBe('Successive get order');
+  });
+
+  // Test PUT /api/orders/cancel/passenger/:orderId
+  it("should cancel the order.", async () => {
+    const result = await api
+      .put(`/api/orders/cancel/passenger/${createdOrderId}`)
+      .set("Authorization", "bearer " + token)
+    
+    expect(result.status).toBe(200);
+    expect(result.body.message).toBe('Order cancelled successfully');
+
+    const newOrder = {
+      category: "Pick",
+      departure: "Lentäjäntie 3, 01530 Vantaa",
+      destination: "Lakitie 8 E 7 02770 Espoo",
+      persons: "3",
+      luggages: "4",
+      flight: "E4448",
+      date: "02.03.2024",
+      comments: "",
+      price: "18",
+    };
+  
+    const createResult = await api
+      .post("/api/orders")
+      .send(newOrder)
+      .set("Authorization", "bearer " + token);
+  
+    expect(createResult.status).toBe(201);
+    expect(createResult.body.message).toBe('Order created');
+    
+    createdOrderId = createResult.body.savedOrder._id;
+  });
+});
+
+// Order test need logged in driver
+describe("Order test for the driver start", () => {
+  it("should log in the driver first", async () => {
+    const result = await api
+      .post("/api/users/login")
+      .send({
+        email: driver.email,
+        password: driver.password,
+      })
+
+    expect(result.status).toBe(200);
+    expect(result.body.message).toBe('Login successful');
+
+    token = result.body.user.token;
+
+    const result2 = await api
+      .put("/api/users")
+      .send({ phone: "123456789" })
+      .set ("Authorization", "bearer " + token)
+
+    expect(result2.status).toBe(200);
+  });
+
+  // Test GET /api/orders/orderlist
+  it("should return the orders the driver can see.", async () => {
+    const result = await api
+      .get("/api/orders/orderlist")
+      .set("Authorization", "bearer " + token)
+
+    expect(result.status).toBe(200);
+    expect(result.body.message).toBe('Successive get orders');
+  });
+
+  // Test PUT /api/orders/accept/:orderId
+  it("should accept the order.", async () => {
+    const result = await api
+      .put(`/api/orders/accept/${createdOrderId}`)
+      .set("Authorization", "bearer " + token)
+
+    expect(result.status).toBe(200);
+    expect(result.body.message).toBe('Order accepted');
+  });
+
+  // Test PUT /api/orders/cancel/driver/:orderId
+  it("should cancel the order.", async () => {
+    const result = await api
+      .put(`/api/orders/cancel/driver/${createdOrderId}`)
+      .set("Authorization", "bearer " + token);
+
+    expect(result.status).toBe(200);
+    expect(result.body.message).toBe('Order is now available again');
+
+    const newresult = await api
+      .put(`/api/orders/accept/${createdOrderId}`)
+      .set ("Authorization", "bearer " + token)
+
+    expect(newresult.status).toBe(200);
+    expect(newresult.body.message).toBe('Order accepted');
+  });
+
+  // Test PUT /api/orders/start/:orderId
+  it("should start the order.", async () => {
+    const result = await api
+      .put(`/api/orders/start/${createdOrderId}`)
+      .set("Authorization", "bearer " + token)
+
+    expect(result.status).toBe(200);
+    expect(result.body.message).toBe('Order started');
+  });
+
+  // Test PUT /api/orders/completeorstop/:orderId (stop)
+  it("should stop the order.", async () => {
+    const result = await api
+      .put(`/api/orders/completeorstop/${createdOrderId}`)
+      .send({ action: "stop" })
+      .set("Authorization", "bearer " + token)
+
+    expect(result.status).toBe(200);
+    expect(result.body.message).toBe('Order stop');
+
+    const newresult = await api
+      .put(`/api/orders/start/${createdOrderId}`)
+      .set ("Authorization", "bearer " + token)
+
+    expect(newresult.status).toBe(200);
+    expect(newresult.body.message).toBe('Order started');
+  });
+
+  // Test PUT /api/orders/completeorstop/:orderId (complete)
+  it("should complete the order.", async () => {
+    const result = await api
+      .put(`/api/orders/completeorstop/${createdOrderId}`)
+      .send({ action: "complete" })
+      .set("Authorization", "bearer " + token)
+
+    expect(result.status).toBe(200);
+    expect(result.body.message).toBe('Order complete');
+  });
 });
