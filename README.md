@@ -11,6 +11,20 @@ The project aims to develop an Airport Pickup Service Platform that allows custo
 - Runzhou Zhu
 - Yang Yang
 
+## Sprint 3: Deliverables
+- [Front-End Code](./client)
+- [Back-End Code](./server)
+- [Sprint Ceremony Insights](./docs/SprintCeremonyInsights.md)
+- [Team Contributions](./docs/TeamContributions.md)
+- [Presentation Slides](./docs/AirPick-Presentation-final.pptx)
+- [API Documentation](https://airpick-be.onrender.com/api-docs)
+- [Backend Testing](./server/tests)
+- [Frontend Deployment](https://airpick.onrender.com/)
+- [Backend Deployment](https://airpick-be.onrender.com/)
+- [Self-Assessment](./docs/SelfAssessment.md)
+
+
+
 ## Key Features:
 
 - Customer Features:
@@ -52,6 +66,7 @@ The project aims to develop an Airport Pickup Service Platform that allows custo
 
 - [Sprint 1 (04.09.2024)](./docs/AirPick-Presentation-1st.pptx)
 - [Sprint 2 (18.09.2024)](./docs/AirPick-Presentation-2nd.pptx)
+- [Sprint 3 (09.10.2024)](./docs/AirPick-Presentation-final.pptx)
 
 
 ## API Call
@@ -72,6 +87,28 @@ We now use useContext to manage and maintain user authentication information. If
 ## DOTENV
 - Copy the `.env.example` to `.env` and set the variables inside.
 - Never put the `.env` into repository.
+
+### Client Side:
+```bash
+VITE_API_BASE_URL=YOUR_API_BASE_URL // Modify the API base URL here
+```
+
+### Server Side:
+```bash
+PORT=4000
+DBLINK=YOUR_MONGODB_LINK
+JWT_SECRET=YOUR_JWT_SECRET
+GOOGLE_MAP_KEY=YOUR_GOOGLE_MAP_KEY
+MAIL_SMTP_HOST=YOUR_SMTP_HOST
+MAIL_SMTP_PORT=587
+MAIL_SMTP_USER=YOUR_SMTP_USER
+MAIL_SMTP_PASS=YOUR_SMTP_PASS
+MAIL_SMTP_FROM=YOUR_SMTP_FROM
+PAYPAL_CLIENT_ID=YOUR_PAYPAL_CLIENT_ID
+PAYPAL_CLIENT_SECRET=YOUR_PAYPAL_CLIENT_SECRET
+FRONTEND_BASE_URL=YOUR_FRONTEND_BASE_URL // Set this only for the reset password link
+```
+
 
 ## Database
 - Set the mongoDB connection link in .env first.
