@@ -249,7 +249,7 @@ const cancelOrderByDriver = async (req, res) => {
       return res.status(400).json({ message: 'Order cannot be cancelled' });
     }
 
-    res.json({ message: 'Order is now available again', order });
+    res.status(200).json({ message: 'Order is now available again', order });
   } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Error cancelling order' });
