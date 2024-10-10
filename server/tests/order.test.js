@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const supertest = require("supertest");
-const app = require("../app");
+const app = require("./testApp");
 const api = supertest(app);
 const User = require("../models/userModel");
 const Order = require("../models/orderModel");
