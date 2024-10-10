@@ -291,23 +291,6 @@
       }
     },
     "/orders": {
-      "get": {
-        "summary": "Get all orders",
-        "tags": ["Orders"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Orders retrieved successfully"
-          },
-          "500": {
-            "description": "Failed to retrieve orders"
-          }
-        }
-      },
       "post": {
         "summary": "Create a new order",
         "tags": ["Orders"],
@@ -415,84 +398,6 @@
           },
           "500": {
             "description": "Failed to retrieve order"
-          }
-        }
-      },
-      "put": {
-        "summary": "Update order by ID",
-        "tags": ["Orders"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "orderId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "category": { "type": "string" },
-                  "departure": { "type": "string" },
-                  "destination": { "type": "string" },
-                  "persons": { "type": "number" },
-                  "luggages": { "type": "number" },
-                  "flight": { "type": "string" },
-                  "date": { "type": "string", "format": "date" },
-                  "passenger": { "type": "string" },
-                  "driver": { "type": "string" },
-                  "comments": { "type": "string" },
-                  "price": { "type": "number" },
-                  "status": { "type": "string" }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Order updated successfully"
-          },
-          "500": {
-            "description": "Failed to update order"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete order by ID",
-        "tags": ["Orders"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "orderId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Order deleted successfully"
-          },
-          "500": {
-            "description": "Failed to delete order"
           }
         }
       }
