@@ -31,6 +31,7 @@ let createdMessageId = null;
 beforeAll(async () => {
   await User.deleteMany({});
   await Order.deleteMany({});
+  await Message.deleteMany({});
   await api.post("/api/users/regist").send(driver);
   await api.post("/api/users/regist").send(passenger);
 });
@@ -38,6 +39,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await User.deleteMany({});
   await Order.deleteMany({});
+  await Message.deleteMany({});
   mongoose.connection.close();
 });
 
